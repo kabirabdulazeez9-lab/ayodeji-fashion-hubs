@@ -1,102 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Product Details | Ayodeji Fashion Hubs</title>
-
     <meta
         name="description"
-        content="View product details and shop quality shoes and fashion from Ayodeji Fashion Hubs."
+        content="View product details and shop at Ayodeji Fashion Hubs."
     >
 
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/product.css">
+    <title>Product | Ayodeji Fashion Hubs</title>
+
+    <link
+        rel="stylesheet"
+        href="css/product.css"
+    >
+
 </head>
 
 <body>
 
-    <!-- =========================================
-         HEADER
-    ========================================== -->
 
-    <header class="site-header">
+<!-- =========================================
+     HEADER
+     ========================================= -->
 
-        <div class="header-inner">
+<header class="site-header">
 
-            <a href="index.html" class="brand">
+    <div class="header-container">
 
-                <span class="brand-mark">
-                    AF
-                </span>
-
-                <span class="brand-text">
-                    <strong>Ayodeji</strong>
-                    <small>Fashion Hubs</small>
-                </span>
-
-            </a>
-
-
-            <!-- Desktop Navigation -->
-
-            <nav class="desktop-nav">
-
-                <a href="index.html">
-                    Home
-                </a>
-
-                <a href="shop.html">
-                    Shop
-                </a>
-
-                <a href="#">
-                    My Orders
-                </a>
-
-                <a href="#">
-                    Account
-                </a>
-
-            </nav>
-
-
-            <!-- Cart -->
-
-            <a
-                href="cart.html"
-                class="cart-button"
-                aria-label="Shopping cart"
-            >
-                🛒
-                <span id="cartCount">0</span>
-            </a>
-
-
-            <!-- Mobile Menu -->
-
-            <button
-                type="button"
-                class="menu-button"
-                id="menuButton"
-                aria-label="Open menu"
-            >
-                ☰
-            </button>
-
-        </div>
-
-
-        <!-- Mobile Navigation -->
-
-        <nav
-            class="mobile-nav"
-            id="mobileNav"
+        <a
+            href="index.html"
+            class="brand"
         >
+            <span class="brand-icon">👟</span>
+
+            <span>
+                Ayodeji Fashion Hubs
+            </span>
+        </a>
+
+
+        <!-- DESKTOP NAVIGATION -->
+
+        <nav class="desktop-nav">
 
             <a href="index.html">
                 Home
@@ -106,761 +59,659 @@
                 Shop
             </a>
 
-            <a href="#">
-                My Orders
+            <a href="track-order.html">
+                Track Order
             </a>
 
-            <a href="#">
-                Account
+            <a href="profile.html">
+                Profile
+            </a>
+
+            <a
+                href="cart.html"
+                class="cart-link"
+            >
+                Cart
+
+                <span
+                    id="cartCount"
+                    class="cart-count"
+                >
+                    0
+                </span>
+
             </a>
 
         </nav>
 
-    </header>
+
+        <!-- MOBILE MENU BUTTON -->
+
+        <button
+            type="button"
+            class="menu-toggle"
+            id="menuToggle"
+            aria-label="Open menu"
+            aria-expanded="false"
+            aria-controls="mobileMenu"
+        >
+            ☰
+        </button>
+
+    </div>
+
+</header>
 
 
-    <!-- =========================================
-         MAIN
-    ========================================== -->
+<!-- =========================================
+     MOBILE MENU
+     ========================================= -->
 
-    <main class="product-page">
+<nav
+    class="mobile-menu"
+    id="mobileMenu"
+    aria-hidden="true"
+>
 
-        <div class="container">
+    <div class="mobile-menu-header">
+
+        <strong>
+            Menu
+        </strong>
+
+        <button
+            type="button"
+            id="closeMobileMenu"
+            class="close-menu"
+            aria-label="Close menu"
+        >
+            ✕
+        </button>
+
+    </div>
 
 
-            <!-- Breadcrumb -->
+    <a href="index.html">
+        🏠 Home
+    </a>
 
-            <div class="breadcrumb">
+    <a href="shop.html">
+        🛍️ Shop
+    </a>
 
-                <a href="shop.html">
-                    Shop
-                </a>
+    <a href="cart.html">
+        🛒 Cart
 
-                <span>›</span>
+        <span
+            id="mobileCartCount"
+            class="mobile-cart-count"
+        >
+            0
+        </span>
 
-                <span id="breadcrumbProduct">
-                    Product
-                </span>
+    </a>
+
+    <a href="track-order.html">
+        📦 Track Order
+    </a>
+
+    <a href="profile.html">
+        👤 Profile
+    </a>
+
+    <a href="login.html">
+        🔐 Login
+    </a>
+
+</nav>
+
+
+<!-- =========================================
+     MENU OVERLAY
+     ========================================= -->
+
+<div
+    class="menu-overlay"
+    id="menuOverlay"
+></div>
+
+
+<!-- =========================================
+     PRODUCT PAGE
+     ========================================= -->
+
+<main class="product-page">
+
+    <div class="product-container">
+
+
+        <!-- BREADCRUMB -->
+
+        <div class="product-breadcrumb">
+
+            <a href="shop.html">
+                Shop
+            </a>
+
+            <span class="separator">
+                /
+            </span>
+
+            <span id="breadcrumbCategory">
+                Product
+            </span>
+
+            <span class="separator">
+                /
+            </span>
+
+            <span
+                id="breadcrumbProduct"
+                class="current"
+            >
+                Loading...
+            </span>
+
+        </div>
+
+
+        <!-- =====================================
+             LOADING
+             ===================================== -->
+
+        <section
+            id="productLoading"
+            class="product-loading"
+        >
+
+            <div>
+
+                <div class="product-spinner"></div>
+
+                <p>
+                    Loading product...
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================
+             ERROR
+             ===================================== -->
+
+        <section
+            id="productError"
+            class="product-error"
+            hidden
+        >
+
+            <div class="product-error-icon">
+                😕
+            </div>
+
+            <h2>
+                Product Not Found
+            </h2>
+
+            <p id="productErrorMessage">
+                This product could not be found.
+            </p>
+
+            <a
+                href="shop.html"
+                class="back-shop-button"
+            >
+                Back to Shop
+            </a>
+
+        </section>
+
+
+        <!-- =====================================
+             PRODUCT CONTENT
+             ===================================== -->
+
+        <section
+            id="productContent"
+            class="product-layout"
+            hidden
+        >
+
+
+            <!-- =================================
+                 PRODUCT IMAGE
+                 ================================= -->
+
+            <div class="product-image-section">
+
+                <div class="product-image-wrapper">
+
+                    <img
+                        id="productImage"
+                        src=""
+                        alt="Product"
+                    >
+
+                    <div
+                        id="productImagePlaceholder"
+                        class="product-image-placeholder"
+                        hidden
+                    >
+                        👟
+                    </div>
+
+                    <span
+                        id="productBadge"
+                        class="product-badge"
+                        hidden
+                    >
+                    </span>
+
+                </div>
 
             </div>
 
 
-            <!-- =====================================
-                 ERROR
-            ====================================== -->
+            <!-- =================================
+                 PRODUCT DETAILS
+                 ================================= -->
 
-            <section
-                class="product-error"
-                id="productError"
-                hidden
-            >
+            <div class="product-details">
 
-                <div class="error-icon">
-                    ⚠️
-                </div>
 
-                <h2>
-                    Product Not Found
-                </h2>
+                <!-- CATEGORY -->
 
-                <p>
-                    Sorry, this product could not be
-                    found or is no longer available.
+                <span
+                    id="productCategory"
+                    class="product-category"
+                >
+                    Category
+                </span>
+
+
+                <!-- TITLE -->
+
+                <h1
+                    id="productTitle"
+                    class="product-title"
+                >
+                    Product Name
+                </h1>
+
+
+                <!-- DESCRIPTION -->
+
+                <p
+                    id="productDescription"
+                    class="product-description"
+                >
+                    Product description.
                 </p>
 
-                <a
-                    href="shop.html"
-                    class="primary-button"
-                >
-                    Back to Shop
-                </a>
-
-            </section>
-
-
-            <!-- =====================================
-                 PRODUCT CONTENT
-            ====================================== -->
-
-            <section
-                class="product-layout"
-                id="productContent"
-                hidden
-            >
-
 
                 <!-- =================================
-                     PRODUCT IMAGE
-                ================================== -->
+                     PRICE
+                     ================================= -->
 
-                <div class="product-gallery">
+                <div class="product-price-box">
 
-                    <div class="product-image-card">
-
-                        <div
-                            class="product-badge"
-                            id="productBadge"
-                            hidden
-                        >
-                        </div>
-
-
-                        <div
-                            class="product-image"
-                            id="productImage"
-                        >
-                            <span class="image-placeholder">
-                                👟
-                            </span>
-                        </div>
-
-                    </div>
-
-
-                    <div class="gallery-note">
-                        Quality fashion product
-                    </div>
-
-                </div>
-
-
-                <!-- =================================
-                     PRODUCT DETAILS
-                ================================== -->
-
-                <div class="product-details">
-
-
-                    <!-- Category -->
-
-                    <div
-                        class="product-category"
-                        id="productCategory"
+                    <span
+                        id="productPrice"
+                        class="product-price"
                     >
-                        Product
-                    </div>
-
-
-                    <!-- Name -->
-
-                    <h1 id="productName">
-                        Product Name
-                    </h1>
-
-
-                    <!-- Price -->
-
-                    <div class="product-price-row">
-
-                        <strong id="productPrice">
-                            ₦0
-                        </strong>
-
-                        <span
-                            id="productOldPrice"
-                            hidden
-                        >
-                            ₦0
-                        </span>
-
-                    </div>
-
-
-                    <!-- Description -->
-
-                    <div class="product-description">
-
-                        <h3>
-                            Description
-                        </h3>
-
-                        <p id="productDescription">
-                            Product description will appear here.
-                        </p>
-
-                    </div>
-
-
-                    <!-- Stock -->
-
-                    <div class="stock-row">
-
-                        <span>
-                            Stock:
-                        </span>
-
-                        <strong id="productStock">
-                            0 available
-                        </strong>
-
-                    </div>
-
-
-                    <!-- =================================
-                         SIZE
-                    ================================== -->
-
-                    <div class="option-section">
-
-                        <div class="option-header">
-
-                            <h3>
-                                Select Size
-                            </h3>
-
-                            <span id="selectedSizeText">
-                                Select a size
-                            </span>
-
-                        </div>
-
-
-                        <div
-                            class="size-grid"
-                            id="sizeOptions"
-                        >
-                        </div>
-
-
-                        <p
-                            class="option-error"
-                            id="sizeError"
-                            hidden
-                        >
-                            Please select a size.
-                        </p>
-
-                    </div>
-
-
-                    <!-- =================================
-                         QUANTITY
-                    ================================== -->
-
-                    <div class="option-section">
-
-                        <div class="option-header">
-
-                            <h3>
-                                Quantity
-                            </h3>
-
-                        </div>
-
-
-                        <div class="quantity-control">
-
-                            <button
-                                type="button"
-                                id="decreaseQuantity"
-                                aria-label="Decrease quantity"
-                            >
-                                −
-                            </button>
-
-                            <span id="quantity">
-                                1
-                            </span>
-
-                            <button
-                                type="button"
-                                id="increaseQuantity"
-                                aria-label="Increase quantity"
-                            >
-                                +
-                            </button>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- =================================
-                         PAYMENT
-                    ================================== -->
-
-                    <div class="option-section">
-
-                        <div class="option-header">
-
-                            <h3>
-                                Payment Option
-                            </h3>
-
-                        </div>
-
-
-                        <div class="payment-options">
-
-
-                            <!-- 60% DEPOSIT -->
-
-                            <label
-                                class="payment-option selected"
-                                id="depositOption"
-                            >
-
-                                <input
-                                    type="radio"
-                                    name="payment"
-                                    value="deposit"
-                                    checked
-                                >
-
-
-                                <div class="payment-option-content">
-
-                                    <div class="payment-option-title">
-
-                                        <strong>
-                                            Pay 60% Deposit
-                                        </strong>
-
-                                        <span class="payment-tag">
-                                            Flexible
-                                        </span>
-
-                                    </div>
-
-
-                                    <p>
-                                        Pay 60% now and the
-                                        remaining 40% later.
-                                    </p>
-
-
-                                    <strong id="depositAmount">
-                                        ₦0
-                                    </strong>
-
-                                </div>
-
-                            </label>
-
-
-                            <!-- 100% FULL PAYMENT -->
-
-                            <label
-                                class="payment-option"
-                                id="fullOption"
-                            >
-
-                                <input
-                                    type="radio"
-                                    name="payment"
-                                    value="full"
-                                >
-
-
-                                <div class="payment-option-content">
-
-                                    <div class="payment-option-title">
-
-                                        <strong>
-                                            Pay 100% in Full
-                                        </strong>
-
-                                        <span class="payment-tag">
-                                            Complete
-                                        </span>
-
-                                    </div>
-
-
-                                    <p>
-                                        Pay the complete order
-                                        amount now.
-                                    </p>
-
-
-                                    <strong id="fullAmount">
-                                        ₦0
-                                    </strong>
-
-                                </div>
-
-                            </label>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- =================================
-                         ORDER SUMMARY
-                    ================================== -->
-
-                    <div class="order-summary">
-
-                        <div class="summary-title">
-                            Order Summary
-                        </div>
-
-
-                        <div class="summary-row">
-
-                            <span>
-                                Item
-                            </span>
-
-                            <strong id="summaryItem">
-                                Product
-                            </strong>
-
-                        </div>
-
-
-                        <div class="summary-row">
-
-                            <span>
-                                Quantity
-                            </span>
-
-                            <strong id="summaryQuantity">
-                                1
-                            </strong>
-
-                        </div>
-
-
-                        <div class="summary-row">
-
-                            <span>
-                                Total
-                            </span>
-
-                            <strong id="summaryTotal">
-                                ₦0
-                            </strong>
-
-                        </div>
-
-
-                        <div class="summary-row pay-now">
-
-                            <span>
-                                Pay Now
-                            </span>
-
-                            <strong id="summaryPayNow">
-                                ₦0
-                            </strong>
-
-                        </div>
-
-
-                        <div
-                            class="summary-row balance-row"
-                            id="balanceRow"
-                        >
-
-                            <span>
-                                Remaining Balance
-                            </span>
-
-                            <strong id="summaryBalance">
-                                ₦0
-                            </strong>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- =================================
-                         ACTION BUTTONS
-                    ================================== -->
-
-                    <div class="product-actions">
-
-                        <button
-                            type="button"
-                            class="secondary-button"
-                            id="addToCartButton"
-                        >
-                            Add to Cart
-                        </button>
-
-
-                        <button
-                            type="button"
-                            class="primary-button"
-                            id="buyNowButton"
-                        >
-                            Buy Now
-                        </button>
-
-                    </div>
-
-
-                    <!-- Action message -->
-
-                    <div
-                        class="action-message"
-                        id="actionMessage"
+                        ₦0
+                    </span>
+
+                    <span
+                        id="productOldPrice"
+                        class="product-old-price"
                         hidden
                     >
-                    </div>
+                        ₦0
+                    </span>
 
-
-                    <!-- =================================
-                         TRUST
-                    ================================== -->
-
-                    <div class="trust-grid">
-
-                        <div class="trust-item">
-
-                            <span>
-                                ✓
-                            </span>
-
-                            <div>
-
-                                <strong>
-                                    Quality Products
-                                </strong>
-
-                                <small>
-                                    Carefully selected
-                                </small>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="trust-item">
-
-                            <span>
-                                🔒
-                            </span>
-
-                            <div>
-
-                                <strong>
-                                    Secure Payment
-                                </strong>
-
-                                <small>
-                                    Safe checkout
-                                </small>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="trust-item">
-
-                            <span>
-                                🚚
-                            </span>
-
-                            <div>
-
-                                <strong>
-                                    Delivery
-                                </strong>
-
-                                <small>
-                                    We deliver to customers
-                                </small>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="trust-item">
-
-                            <span>
-                                💬
-                            </span>
-
-                            <div>
-
-                                <strong>
-                                    Customer Support
-                                </strong>
-
-                                <small>
-                                    We are here to help
-                                </small>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-        </div>
-
-    </main>
-
-
-    <!-- =========================================
-         PAYMENT INFORMATION
-    ========================================== -->
-
-    <section class="payment-info">
-
-        <div class="container">
-
-            <div class="payment-info-content">
-
-                <div>
-
-                    <span class="payment-info-icon">
-                        💳
+                    <span
+                        id="productDiscount"
+                        class="product-discount"
+                        hidden
+                    >
+                        Save
                     </span>
 
                 </div>
 
 
-                <div>
+                <!-- =================================
+                     STOCK
+                     ================================= -->
 
-                    <h2>
-                        Choose How You Pay
-                    </h2>
+                <div
+                    id="productStock"
+                    class="product-stock"
+                >
 
-                    <p>
-                        Pay 60% now and complete the
-                        remaining 40% later, or pay
-                        100% in full.
-                    </p>
+                    <span class="stock-dot"></span>
+
+                    <span id="stockText">
+                        Checking stock...
+                    </span>
 
                 </div>
 
-            </div>
 
-        </div>
+                <!-- =================================
+                     SIZE
+                     ================================= -->
 
-    </section>
+                <div
+                    id="sizeOption"
+                    class="product-option"
+                >
 
+                    <div class="product-option-label">
 
-    <!-- =========================================
-         FOOTER
-    ========================================== -->
-
-    <footer class="site-footer">
-
-        <div class="container">
-
-            <div class="footer-grid">
-
-
-                <!-- Brand -->
-
-                <div>
-
-                    <div class="footer-brand">
-
-                        <span class="brand-mark">
-                            AF
+                        <span>
+                            Select Size
                         </span>
 
-                        <strong>
-                            Ayodeji Fashion Hubs
+                        <span id="selectedSizeText">
+                            Not selected
+                        </span>
+
+                    </div>
+
+                    <div
+                        id="sizeOptions"
+                        class="size-options"
+                    >
+                    </div>
+
+                </div>
+
+
+                <!-- =================================
+                     QUANTITY
+                     ================================= -->
+
+                <div class="product-option">
+
+                    <div class="product-option-label">
+
+                        <span>
+                            Quantity
+                        </span>
+
+                    </div>
+
+                    <div class="quantity-control">
+
+                        <button
+                            type="button"
+                            id="decreaseQuantity"
+                            class="quantity-button"
+                            aria-label="Decrease quantity"
+                        >
+                            −
+                        </button>
+
+                        <span
+                            id="quantityValue"
+                            class="quantity-value"
+                        >
+                            1
+                        </span>
+
+                        <button
+                            type="button"
+                            id="increaseQuantity"
+                            class="quantity-button"
+                            aria-label="Increase quantity"
+                        >
+                            +
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================
+                     PAYMENT PLAN
+                     ================================= -->
+
+                <div class="product-option">
+
+                    <div class="product-option-label">
+
+                        <span>
+                            Payment Plan
+                        </span>
+
+                    </div>
+
+
+                    <div class="payment-plan">
+
+
+                        <!-- 60% -->
+
+                        <label class="payment-plan-option">
+
+                            <input
+                                type="radio"
+                                name="paymentPlan"
+                                id="depositPlan"
+                                value="60"
+                                checked
+                            >
+
+                            <span class="payment-plan-card">
+
+                                <span class="payment-plan-title">
+                                    60% Deposit
+                                </span>
+
+                                <span class="payment-plan-text">
+                                    Pay 60% now
+                                </span>
+
+                            </span>
+
+                        </label>
+
+
+                        <!-- 100% -->
+
+                        <label class="payment-plan-option">
+
+                            <input
+                                type="radio"
+                                name="paymentPlan"
+                                id="fullPlan"
+                                value="100"
+                            >
+
+                            <span class="payment-plan-card">
+
+                                <span class="payment-plan-title">
+                                    100% Full Payment
+                                </span>
+
+                                <span class="payment-plan-text">
+                                    Pay everything now
+                                </span>
+
+                            </span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================
+                     PAYMENT SUMMARY
+                     ================================= -->
+
+                <div class="payment-summary">
+
+                    <div class="payment-summary-row">
+
+                        <span>
+                            Product Total
+                        </span>
+
+                        <strong id="summarySubtotal">
+                            ₦0
                         </strong>
 
                     </div>
 
 
-                    <p>
-                        Quality shoes and fashion
-                        for every style.
-                    </p>
+                    <div class="payment-summary-row">
+
+                        <span>
+                            Pay Now
+                        </span>
+
+                        <strong id="summaryPayNow">
+                            ₦0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="payment-summary-row">
+
+                        <span>
+                            Balance
+                        </span>
+
+                        <strong id="summaryBalance">
+                            ₦0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="payment-summary-row total">
+
+                        <span>
+                            Order Total
+                        </span>
+
+                        <strong id="summaryTotal">
+                            ₦0
+                        </strong>
+
+                    </div>
 
                 </div>
 
 
-                <!-- Shop -->
+                <!-- =================================
+                     ACTION BUTTONS
+                     ================================= -->
 
-                <div>
+                <div class="product-actions">
 
-                    <h3>
-                        Shop
-                    </h3>
+                    <button
+                        type="button"
+                        id="addToCartButton"
+                        class="add-to-cart-button"
+                    >
+                        🛒 Add to Cart
+                    </button>
 
-                    <a href="shop.html">
-                        All Products
-                    </a>
 
-                    <a href="shop.html?category=sneakers">
-                        Sneakers
-                    </a>
-
-                    <a href="shop.html?category=formal">
-                        Formal
-                    </a>
-
-                    <a href="shop.html?category=casual">
-                        Casual
-                    </a>
+                    <button
+                        type="button"
+                        id="buyNowButton"
+                        class="buy-now-button"
+                    >
+                        ⚡ Buy Now
+                    </button>
 
                 </div>
 
 
-                <!-- Help -->
+                <!-- =================================
+                     MESSAGE
+                     ================================= -->
 
-                <div>
+                <div
+                    id="productMessage"
+                    class="product-message"
+                    aria-live="polite"
+                >
+                </div>
 
-                    <h3>
-                        Help
-                    </h3>
 
-                    <a href="#">
-                        My Orders
-                    </a>
+                <!-- =================================
+                     DELIVERY
+                     ================================= -->
 
-                    <a href="#">
-                        Contact Us
-                    </a>
+                <div class="delivery-info">
 
-                    <a href="#">
-                        Delivery
-                    </a>
+
+                    <div class="delivery-card">
+
+                        <div class="delivery-card-icon">
+                            🚚
+                        </div>
+
+                        <div class="delivery-card-title">
+                            Delivery
+                        </div>
+
+                        <div class="delivery-card-text">
+                            Delivery available across Nigeria.
+                        </div>
+
+                    </div>
+
+
+                    <div class="delivery-card">
+
+                        <div class="delivery-card-icon">
+                            💳
+                        </div>
+
+                        <div class="delivery-card-title">
+                            Payment
+                        </div>
+
+                        <div class="delivery-card-text">
+                            OPay bank transfer or Cash on Delivery.
+                        </div>
+
+                    </div>
+
 
                 </div>
 
             </div>
 
+        </section>
 
-            <div class="footer-bottom">
+    </div>
 
-                <span>
-                    ©
-                    <span id="currentYear"></span>
-                    Ayodeji Fashion Hubs
-                </span>
-
-                <span>
-                    All rights reserved.
-                </span>
-
-            </div>
-
-        </div>
-
-    </footer>
+</main>
 
 
-    <!-- =========================================
-         SCRIPTS
-    ========================================== -->
+<!-- =========================================
+     JAVASCRIPT
+     ========================================= -->
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <script src="js/supabase.js"></script>
+<script src="js/supabase.js"></script>
 
-    <script src="js/main.js"></script>
+<script src="js/product.js"></script>
 
-    <script src="js/product.js"></script>
 
 </body>
 </html>

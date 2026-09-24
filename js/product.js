@@ -1,68 +1,96 @@
-/* =========================================
-   AYODEJI FASHION HUBS
-   PRODUCT DETAILS - SUPABASE
-========================================= */
+// =========================================
+// AYODEJI FASHION HUBS
+// PRODUCT PAGE JAVASCRIPT
+// =========================================
 
 let currentProduct = null;
-let selectedSize = null;
+
+let selectedSize = "";
+
 let quantity = 1;
-let paymentMethod = "deposit";
+
+let paymentPlan = 60;
 
 
-/* =========================================
-   HELPERS
-========================================= */
+// =========================================
+// PAGE START
+// =========================================
 
-function formatNaira(amount) {
-    return new Intl.NumberFormat("en-NG", {
-        style: "currency",
-        currency: "NGN",
-        maximumFractionDigits: 0
-    }).format(Number(amount) || 0);
-}
+document.addEventListener(
+    "DOMContentLoaded",
+    async function () {
 
+        console.log(
+            "Ayodeji Product Page loaded."
+        );
+
+
+        setupMobileMenu();
+
+        updateCartCount();
+
+
+        const supabaseClient =
+            window.supabaseClient;
+
+
+        if (!supabaseClient) {
+
+            console.error(
+                "Supabase client not found."
+            );
+
+            showProductError(
+                "The store could not connect to the database."
+            );
+
+            return;
+        }
+
+
+        await loadProduct();
+
+    }
+);
+
+
+// =========================================
+// GET PRODUCT ID
+// =========================================
 
 function getProductId() {
-    const params = new URLSearchParams(
-        window.location.search
-    );
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
 
     return params.get("id");
 }
 
 
-function formatCategory(category) {
-    if (!category) {
-        return "Product";
-    }
-
-    return category.charAt(0).toUpperCase()
-        + category.slice(1);
-}
-
-
-/* =========================================
-   LOAD PRODUCT FROM SUPABASE
-========================================= */
+// =========================================
+// LOAD PRODUCT
+// =========================================
 
 async function loadProduct() {
 
-    const productId = getProductId();
+    const productId =
+        getProductId();
 
-    const productContent =
-        document.getElementById("productContent");
 
-    const productError =
-        document.getElementById("productError");
+    console.log(
+        "Product ID:",
+        productId
+    );
 
 
     if (!productId) {
 
-        productContent.hidden = true;
-        productError.hidden = false;
-
-        document.title =
-            "Product Not Found | Ayodeji Fashion Hubs";
+        showProductError(
+            "No product was selected. Please return to the shop and choose a product."
+        );
 
         return;
     }
@@ -72,90 +100,101 @@ async function loadProduct() {
         window.supabaseClient;
 
 
-    if (!supabaseClient) {
-
-        console.error(
-            "Supabase client was not loaded."
-        );
-
-        productContent.hidden = true;
-        productError.hidden = false;
-
-        return;
-    }
-
-
     try {
 
-        const { data, error } =
+        const {
+            data,
+            error
+        } =
             await supabaseClient
                 .from("products")
-                .select(`
-                    id,
-                    name,
-                    category,
-                    price,
-                    old_price,
-                    badge,
-                    icon,
-                    image,
-                    description,
-                    sizes,
-                    stock,
-                    is_active
-                `)
+                .select("*")
                 .eq("id", productId)
                 .eq("is_active", true)
                 .maybeSingle();
 
 
         if (error) {
-            throw error;
-        }
+
+            console.error(
+                "Product loading error:",
+                error
+            );
 
 
-        if (!data) {
+            showProductError(
+                "Unable to load this product right now."
+            );
 
-            productContent.hidden = true;
-            productError.hidden = false;
-
-            document.title =
-                "Product Not Found | Ayodeji Fashion Hubs";
 
             return;
         }
 
 
-        currentProduct = data;
+        if (!data) {
+
+            console.error(
+                "Product not found:",
+                productId
+            );
+
+
+            showProductError(
+                "This product is unavailable or no longer exists."
+            );
+
+
+            return;
+        }
+
+
+        currentProduct =
+            data;
+
+
+        console.log(
+            "Product loaded:",
+            currentProduct
+        );
+
 
         quantity = 1;
-        selectedSize = null;
-        paymentMethod = "deposit";
 
+        selectedSize = "";
 
-        productContent.hidden = false;
-        productError.hidden = true;
+        paymentPlan = 60;
+
 
         renderProduct();
+
+        setupProductControls();
+
+        updateQuantityDisplay();
+
+        updateProductSummary();
+
+        hideLoading();
 
 
     } catch (error) {
 
         console.error(
-            "Could not load product:",
+            "Unexpected product error:",
             error
         );
 
-        productContent.hidden = true;
-        productError.hidden = false;
+
+        showProductError(
+            "Something went wrong while loading this product."
+        );
 
     }
 }
 
 
-/* =========================================
-   RENDER PRODUCT
-========================================= */
+// =========================================
+// RENDER PRODUCT
+// =========================================
 
 function renderProduct() {
 
@@ -164,117 +203,136 @@ function renderProduct() {
     }
 
 
+    const product =
+        currentProduct;
+
+
+    // PAGE TITLE
+
     document.title =
-        `${currentProduct.name} | Ayodeji Fashion Hubs`;
+        `${product.name} | Ayodeji Fashion Hubs`;
 
 
-    document.getElementById(
-        "breadcrumbProduct"
-    ).textContent =
-        currentProduct.name;
+    // BREADCRUMB
+
+    setText(
+        "breadcrumbCategory",
+        product.category || "Product"
+    );
 
 
-    document.getElementById(
-        "productCategory"
-    ).textContent =
-        formatCategory(currentProduct.category);
+    setText(
+        "breadcrumbProduct",
+        product.name || "Product"
+    );
 
 
-    document.getElementById(
-        "productName"
-    ).textContent =
-        currentProduct.name;
+    // CATEGORY
+
+    setText(
+        "productCategory",
+        product.category || "Fashion"
+    );
 
 
-    document.getElementById(
-        "productPrice"
-    ).textContent =
-        formatNaira(currentProduct.price);
+    // TITLE
+
+    setText(
+        "productTitle",
+        product.name || "Product"
+    );
 
 
-    /* =====================================
-       OLD PRICE
-    ===================================== */
+    // DESCRIPTION
 
-    const oldPriceElement =
+    setText(
+        "productDescription",
+        product.description ||
+        "Quality fashion product from Ayodeji Fashion Hubs."
+    );
+
+
+    // PRICE
+
+    setText(
+        "productPrice",
+        formatCurrency(
+            product.price
+        )
+    );
+
+
+    // OLD PRICE
+
+    const oldPrice =
         document.getElementById(
             "productOldPrice"
         );
 
 
-    if (
-        currentProduct.old_price !== null &&
-        Number(currentProduct.old_price) > 0
-    ) {
-
-        oldPriceElement.hidden = false;
-
-        oldPriceElement.textContent =
-            formatNaira(
-                currentProduct.old_price
-            );
-
-    } else {
-
-        oldPriceElement.hidden = true;
-
-    }
-
-
-    /* =====================================
-       DESCRIPTION
-    ===================================== */
-
-    document.getElementById(
-        "productDescription"
-    ).textContent =
-        currentProduct.description ||
-        "Quality product from Ayodeji Fashion Hubs.";
-
-
-    /* =====================================
-       STOCK
-    ===================================== */
-
-    const stock =
-        Number(currentProduct.stock) || 0;
-
-
-    const stockElement =
+    const discount =
         document.getElementById(
-            "productStock"
+            "productDiscount"
         );
 
 
-    if (stock > 0) {
+    if (
+        oldPrice &&
+        Number(product.old_price) >
+        Number(product.price)
+    ) {
 
-        stockElement.textContent =
-            `${stock} available`;
+        oldPrice.textContent =
+            formatCurrency(
+                product.old_price
+            );
 
-        stockElement.style.color =
-            "#18753c";
+
+        oldPrice.hidden =
+            false;
+
+
+        if (discount) {
+
+            const percentage =
+                calculateDiscount(
+                    Number(product.old_price),
+                    Number(product.price)
+                );
+
+
+            discount.textContent =
+                `${percentage}% OFF`;
+
+
+            discount.hidden =
+                false;
+        }
+
 
     } else {
 
-        stockElement.textContent =
-            "Out of stock";
+        if (oldPrice) {
 
-        stockElement.style.color =
-            "#c62828";
+            oldPrice.hidden =
+                true;
+        }
 
+
+        if (discount) {
+
+            discount.hidden =
+                true;
+        }
     }
 
 
-    /* =====================================
-       IMAGE
-    ===================================== */
+    // IMAGE
 
     renderProductImage();
 
 
-    /* =====================================
-       BADGE
-    ===================================== */
+    // BADGE
 
     const badge =
         document.getElementById(
@@ -282,35 +340,201 @@ function renderProduct() {
         );
 
 
-    if (currentProduct.badge) {
+    if (badge) {
 
-        badge.hidden = false;
+        if (product.badge) {
 
-        badge.textContent =
-            currentProduct.badge;
+            badge.textContent =
+                product.badge;
 
-    } else {
+            badge.hidden =
+                false;
 
-        badge.hidden = true;
+        } else {
 
+            badge.hidden =
+                true;
+        }
     }
 
 
-    /* =====================================
-       SIZES
-    ===================================== */
+    // STOCK
+
+    renderStock();
+
+
+    // SIZES
 
     renderSizes();
+}
 
 
-    /* =====================================
-       DISABLE PURCHASE IF OUT OF STOCK
-    ===================================== */
+// =========================================
+// IMAGE
+// =========================================
+
+function renderProductImage() {
+
+    const image =
+        document.getElementById(
+            "productImage"
+        );
+
+
+    const placeholder =
+        document.getElementById(
+            "productImagePlaceholder"
+        );
+
+
+    if (!image) {
+        return;
+    }
+
+
+    image.onerror =
+        function () {
+
+            console.warn(
+                "Product image failed:",
+                image.src
+            );
+
+
+            image.hidden =
+                true;
+
+
+            if (placeholder) {
+
+                placeholder.hidden =
+                    false;
+            }
+        };
+
+
+    if (currentProduct.image) {
+
+        image.src =
+            currentProduct.image;
+
+
+        image.alt =
+            currentProduct.name ||
+            "Product";
+
+
+        image.hidden =
+            false;
+
+
+        if (placeholder) {
+
+            placeholder.hidden =
+                true;
+        }
+
+
+    } else {
+
+        image.hidden =
+            true;
+
+
+        if (placeholder) {
+
+            placeholder.hidden =
+                false;
+        }
+    }
+}
+
+
+// =========================================
+// STOCK
+// =========================================
+
+function renderStock() {
+
+    const stock =
+        Number(
+            currentProduct.stock || 0
+        );
+
+
+    const container =
+        document.getElementById(
+            "productStock"
+        );
+
+
+    const text =
+        document.getElementById(
+            "stockText"
+        );
+
+
+    if (!container || !text) {
+        return;
+    }
+
+
+    container.classList.remove(
+        "low-stock",
+        "out-of-stock"
+    );
+
+
+    if (stock <= 0) {
+
+        container.classList.add(
+            "out-of-stock"
+        );
+
+
+        text.textContent =
+            "Out of stock";
+
+
+        disablePurchaseButtons();
+
+
+        return;
+    }
+
+
+    if (stock <= 5) {
+
+        container.classList.add(
+            "low-stock"
+        );
+
+
+        text.textContent =
+            `Only ${stock} left in stock`;
+
+    } else {
+
+        text.textContent =
+            `${stock} available`;
+    }
+
+
+    enablePurchaseButtons();
+}
+
+
+// =========================================
+// ENABLE PURCHASE BUTTONS
+// =========================================
+
+function enablePurchaseButtons() {
 
     const addButton =
         document.getElementById(
             "addToCartButton"
         );
+
 
     const buyButton =
         document.getElementById(
@@ -318,292 +542,463 @@ function renderProduct() {
         );
 
 
-    if (stock <= 0) {
+    if (addButton) {
 
-        addButton.disabled = true;
-        buyButton.disabled = true;
-
-        addButton.textContent =
-            "Out of Stock";
-
-        buyButton.textContent =
-            "Out of Stock";
-
-    } else {
-
-        addButton.disabled = false;
-        buyButton.disabled = false;
-
-        addButton.textContent =
-            "Add to Cart";
-
-        buyButton.textContent =
-            "Buy Now";
-
+        addButton.disabled =
+            false;
     }
 
 
-    updateSummary();
+    if (buyButton) {
 
+        buyButton.disabled =
+            false;
+    }
 }
 
 
-/* =========================================
-   PRODUCT IMAGE
-========================================= */
+// =========================================
+// DISABLE PURCHASE BUTTONS
+// =========================================
 
-function renderProductImage() {
+function disablePurchaseButtons() {
 
-    const imageElement =
+    const addButton =
         document.getElementById(
-            "productImage"
+            "addToCartButton"
         );
 
 
-    imageElement.innerHTML = "";
-
-
-    if (currentProduct.image) {
-
-        const image =
-            document.createElement("img");
-
-
-        image.src =
-            currentProduct.image;
-
-
-        image.alt =
-            currentProduct.name;
-
-
-        image.loading = "eager";
-
-
-        image.onerror = () => {
-
-            imageElement.innerHTML =
-                "";
-
-            imageElement.textContent =
-                currentProduct.icon || "👟";
-
-        };
-
-
-        imageElement.appendChild(
-            image
+    const buyButton =
+        document.getElementById(
+            "buyNowButton"
         );
 
-    } else {
 
-        imageElement.textContent =
-            currentProduct.icon || "👟";
+    const increase =
+        document.getElementById(
+            "increaseQuantity"
+        );
 
+
+    if (addButton) {
+
+        addButton.disabled =
+            true;
+    }
+
+
+    if (buyButton) {
+
+        buyButton.disabled =
+            true;
+    }
+
+
+    if (increase) {
+
+        increase.disabled =
+            true;
     }
 }
 
 
-/* =========================================
-   SIZES
-========================================= */
+// =========================================
+// RENDER SIZES
+// =========================================
 
 function renderSizes() {
 
-    const sizeContainer =
+    const container =
         document.getElementById(
             "sizeOptions"
         );
 
 
-    sizeContainer.innerHTML = "";
+    const section =
+        document.getElementById(
+            "sizeOption"
+        );
+
+
+    if (!container) {
+        return;
+    }
+
+
+    container.innerHTML =
+        "";
+
+
+    selectedSize =
+        "";
 
 
     const sizes =
-        Array.isArray(currentProduct.sizes)
+        Array.isArray(
+            currentProduct.sizes
+        )
             ? currentProduct.sizes
             : [];
 
 
     if (sizes.length === 0) {
 
-        sizeContainer.innerHTML =
-            `<span style="color:#777;font-size:13px;">
-                No size options available
-            </span>`;
+        if (section) {
+
+            section.style.display =
+                "none";
+        }
+
+
+        setText(
+            "selectedSizeText",
+            "Not required"
+        );
+
 
         return;
     }
 
 
-    sizes.forEach(size => {
+    if (section) {
 
-        const button =
-            document.createElement("button");
-
-
-        button.type = "button";
-
-        button.className =
-            "size-button";
-
-        button.textContent =
-            size;
-
-        button.dataset.size =
-            size;
+        section.style.display =
+            "block";
+    }
 
 
-        button.addEventListener(
-            "click",
-            () => {
+    setText(
+        "selectedSizeText",
+        "Not selected"
+    );
 
-                selectSize(size);
+
+    sizes.forEach(
+        function (size) {
+
+            const button =
+                document.createElement(
+                    "button"
+                );
+
+
+            button.type =
+                "button";
+
+
+            button.className =
+                "size-option";
+
+
+            button.textContent =
+                size;
+
+
+            button.dataset.size =
+                String(size);
+
+
+            button.addEventListener(
+                "click",
+                function () {
+
+                    selectSize(
+                        String(size)
+                    );
+
+                }
+            );
+
+
+            container.appendChild(
+                button
+            );
+
+        }
+    );
+}
+
+
+// =========================================
+// SELECT SIZE
+// =========================================
+
+function selectSize(size) {
+
+    selectedSize =
+        String(size);
+
+
+    document
+        .querySelectorAll(
+            ".size-option"
+        )
+        .forEach(
+            function (button) {
+
+                button.classList.toggle(
+                    "active",
+                    button.dataset.size ===
+                        selectedSize
+                );
 
             }
         );
 
 
-        sizeContainer.appendChild(
-            button
-        );
+    setText(
+        "selectedSizeText",
+        `Size ${selectedSize}`
+    );
 
-    });
+
+    clearProductMessage();
+
+    updateProductSummary();
 }
 
 
-/* =========================================
-   SELECT SIZE
-========================================= */
+// =========================================
+// SETUP PRODUCT CONTROLS
+// =========================================
 
-function selectSize(size) {
+function setupProductControls() {
 
-    selectedSize = String(size);
+    const decrease =
+        document.getElementById(
+            "decreaseQuantity"
+        );
 
 
-    document
-        .querySelectorAll(
-            ".size-button"
-        )
-        .forEach(button => {
+    const increase =
+        document.getElementById(
+            "increaseQuantity"
+        );
 
-            button.classList.toggle(
-                "selected",
-                button.dataset.size ===
-                selectedSize
+
+    const addButton =
+        document.getElementById(
+            "addToCartButton"
+        );
+
+
+    const buyButton =
+        document.getElementById(
+            "buyNowButton"
+        );
+
+
+    const deposit =
+        document.getElementById(
+            "depositPlan"
+        );
+
+
+    const full =
+        document.getElementById(
+            "fullPlan"
+        );
+
+
+    // -----------------------------------------
+    // DECREASE
+    // -----------------------------------------
+
+    if (decrease) {
+
+        decrease.onclick =
+            function () {
+
+                if (quantity <= 1) {
+                    return;
+                }
+
+
+                quantity--;
+
+
+                updateQuantityDisplay();
+
+                updateProductSummary();
+            };
+    }
+
+
+    // -----------------------------------------
+    // INCREASE
+    // -----------------------------------------
+
+    if (increase) {
+
+        increase.onclick =
+            function () {
+
+                if (!currentProduct) {
+                    return;
+                }
+
+
+                const stock =
+                    Number(
+                        currentProduct.stock || 0
+                    );
+
+
+                if (quantity >= stock) {
+
+                    showProductMessage(
+                        `Only ${stock} item${stock === 1 ? "" : "s"} available.`,
+                        "error"
+                    );
+
+
+                    return;
+                }
+
+
+                quantity++;
+
+
+                updateQuantityDisplay();
+
+                updateProductSummary();
+            };
+    }
+
+
+    // -----------------------------------------
+    // DEPOSIT
+    // -----------------------------------------
+
+    if (deposit) {
+
+        deposit.onchange =
+            function () {
+
+                if (deposit.checked) {
+
+                    paymentPlan =
+                        60;
+
+
+                    updateProductSummary();
+                }
+            };
+    }
+
+
+    // -----------------------------------------
+    // FULL PAYMENT
+    // -----------------------------------------
+
+    if (full) {
+
+        full.onchange =
+            function () {
+
+                if (full.checked) {
+
+                    paymentPlan =
+                        100;
+
+
+                    updateProductSummary();
+                }
+            };
+    }
+
+
+    // -----------------------------------------
+    // ADD TO CART
+    // -----------------------------------------
+
+    if (addButton) {
+
+        addButton.onclick =
+            function () {
+
+                addProductToCart();
+            };
+    }
+
+
+    // -----------------------------------------
+    // BUY NOW
+    // -----------------------------------------
+
+    if (buyButton) {
+
+        buyButton.onclick =
+            function () {
+
+                buyProductNow();
+            };
+    }
+
+
+    updateQuantityDisplay();
+}
+
+
+// =========================================
+// QUANTITY DISPLAY
+// =========================================
+
+function updateQuantityDisplay() {
+
+    const value =
+        document.getElementById(
+            "quantityValue"
+        );
+
+
+    const decrease =
+        document.getElementById(
+            "decreaseQuantity"
+        );
+
+
+    const increase =
+        document.getElementById(
+            "increaseQuantity"
+        );
+
+
+    if (value) {
+
+        value.textContent =
+            quantity;
+    }
+
+
+    if (decrease) {
+
+        decrease.disabled =
+            quantity <= 1;
+    }
+
+
+    if (increase) {
+
+        const stock =
+            Number(
+                currentProduct?.stock || 0
             );
 
-        });
 
-
-    document.getElementById(
-        "selectedSizeText"
-    ).textContent =
-        `Size ${selectedSize}`;
-
-
-    document.getElementById(
-        "sizeError"
-    ).hidden = true;
+        increase.disabled =
+            stock <= 0 ||
+            quantity >= stock;
+    }
 }
 
 
-/* =========================================
-   QUANTITY
-========================================= */
+// =========================================
+// UPDATE PRODUCT SUMMARY
+// =========================================
 
-function increaseQuantity() {
-
-    if (!currentProduct) {
-        return;
-    }
-
-
-    const stock =
-        Number(currentProduct.stock) || 0;
-
-
-    if (stock <= 0) {
-        return;
-    }
-
-
-    if (quantity >= stock) {
-
-        showMessage(
-            "You cannot add more than the available stock.",
-            false
-        );
-
-        return;
-    }
-
-
-    quantity++;
-
-    updateSummary();
-}
-
-
-function decreaseQuantity() {
-
-    if (quantity <= 1) {
-        return;
-    }
-
-
-    quantity--;
-
-    updateSummary();
-}
-
-
-/* =========================================
-   PAYMENT METHOD
-========================================= */
-
-function updatePaymentMethod() {
-
-    const selected =
-        document.querySelector(
-            'input[name="payment"]:checked'
-        );
-
-
-    if (!selected) {
-        return;
-    }
-
-
-    paymentMethod =
-        selected.value;
-
-
-    document.getElementById(
-        "depositOption"
-    ).classList.toggle(
-        "selected",
-        paymentMethod === "deposit"
-    );
-
-
-    document.getElementById(
-        "fullOption"
-    ).classList.toggle(
-        "selected",
-        paymentMethod === "full"
-    );
-
-
-    updateSummary();
-}
-
-
-/* =========================================
-   UPDATE SUMMARY
-========================================= */
-
-function updateSummary() {
+function updateProductSummary() {
 
     if (!currentProduct) {
         return;
@@ -611,186 +1006,148 @@ function updateSummary() {
 
 
     const price =
-        Number(currentProduct.price) || 0;
+        Number(
+            currentProduct.price || 0
+        );
 
 
-    const total =
+    const subtotal =
         price * quantity;
 
 
-    const deposit =
-        Math.round(total * 0.60);
+    const payNow =
+        paymentPlan === 60
+            ? subtotal * 0.60
+            : subtotal;
 
 
     const balance =
-        total - deposit;
+        subtotal - payNow;
 
 
-    const payNow =
-        paymentMethod === "deposit"
-            ? deposit
-            : total;
+    setText(
+        "summarySubtotal",
+        formatCurrency(subtotal)
+    );
 
 
-    const remainingBalance =
-        paymentMethod === "deposit"
-            ? balance
-            : 0;
+    setText(
+        "summaryPayNow",
+        formatCurrency(payNow)
+    );
 
 
-    document.getElementById(
-        "depositAmount"
-    ).textContent =
-        formatNaira(deposit);
+    setText(
+        "summaryBalance",
+        formatCurrency(balance)
+    );
 
 
-    document.getElementById(
-        "fullAmount"
-    ).textContent =
-        formatNaira(total);
-
-
-    document.getElementById(
-        "summaryItem"
-    ).textContent =
-        currentProduct.name;
-
-
-    document.getElementById(
-        "summaryQuantity"
-    ).textContent =
-        quantity;
-
-
-    document.getElementById(
-        "summaryTotal"
-    ).textContent =
-        formatNaira(total);
-
-
-    document.getElementById(
-        "summaryPayNow"
-    ).textContent =
-        formatNaira(payNow);
-
-
-    document.getElementById(
-        "summaryBalance"
-    ).textContent =
-        formatNaira(remainingBalance);
-
-
-    document.getElementById(
-        "quantity"
-    ).textContent =
-        quantity;
-
-
-    document.getElementById(
-        "balanceRow"
-    ).style.display =
-        paymentMethod === "deposit"
-            ? "flex"
-            : "none";
-}
-
-
-/* =========================================
-   CART
-========================================= */
-
-function getCart() {
-
-    try {
-
-        const cart =
-            JSON.parse(
-                localStorage.getItem(
-                    "ayodejiCart"
-                )
-            );
-
-
-        return Array.isArray(cart)
-            ? cart
-            : [];
-
-    } catch (error) {
-
-        console.error(
-            "Could not read cart:",
-            error
-        );
-
-        return [];
-    }
-}
-
-
-function saveCart(cart) {
-
-    localStorage.setItem(
-        "ayodejiCart",
-        JSON.stringify(cart)
+    setText(
+        "summaryTotal",
+        formatCurrency(subtotal)
     );
 }
 
 
-/* =========================================
-   ADD TO CART
-========================================= */
+// =========================================
+// CREATE CART ITEM
+// =========================================
 
-function addToCart() {
+function createCartItem() {
+
+    return {
+
+        id:
+            currentProduct.id,
+
+        name:
+            currentProduct.name,
+
+        price:
+            Number(
+                currentProduct.price || 0
+            ),
+
+        old_price:
+            Number(
+                currentProduct.old_price || 0
+            ),
+
+        image:
+            currentProduct.image || "",
+
+        icon:
+            currentProduct.icon || "👟",
+
+        category:
+            currentProduct.category || "",
+
+        size:
+            selectedSize || "",
+
+        quantity:
+            quantity
+
+    };
+}
+
+
+// =========================================
+// ADD TO CART
+// =========================================
+
+function addProductToCart() {
 
     if (!currentProduct) {
-        return false;
+
+        showProductMessage(
+            "Product is not loaded yet.",
+            "error"
+        );
+
+        return;
     }
 
 
     const stock =
-        Number(currentProduct.stock) || 0;
+        Number(
+            currentProduct.stock || 0
+        );
 
 
     if (stock <= 0) {
 
-        showMessage(
+        showProductMessage(
             "This product is currently out of stock.",
-            false
+            "error"
         );
 
-        return false;
+        return;
     }
 
 
-    /* Require size */
+    // CHECK SIZE
 
-    if (!selectedSize) {
-
-        document.getElementById(
-            "sizeError"
-        ).hidden = false;
-
-
-        document.getElementById(
-            "sizeOptions"
-        ).scrollIntoView({
-            behavior: "smooth",
-            block: "center"
-        });
+    const sizes =
+        Array.isArray(
+            currentProduct.sizes
+        )
+            ? currentProduct.sizes
+            : [];
 
 
-        return false;
-    }
+    if (
+        sizes.length > 0 &&
+        !selectedSize
+    ) {
 
-
-    if (quantity > stock) {
-
-        showMessage(
-            "There is not enough stock for that quantity.",
-            false
+        showProductMessage(
+            "Please select a size first.",
+            "error"
         );
 
-        return false;
+        return;
     }
 
 
@@ -798,67 +1155,65 @@ function addToCart() {
         getCart();
 
 
-    const existingItem =
-        cart.find(item =>
-            item.id === currentProduct.id &&
-            String(item.size) ===
-                String(selectedSize)
+    const existingIndex =
+        cart.findIndex(
+            function (item) {
+
+                return (
+                    String(item.id) ===
+                        String(
+                            currentProduct.id
+                        )
+                    &&
+                    String(item.size || "") ===
+                        String(
+                            selectedSize || ""
+                        )
+                );
+
+            }
         );
 
 
-    if (existingItem) {
+    // EXISTING ITEM
+
+    if (existingIndex !== -1) {
+
+        const existingQuantity =
+            Number(
+                cart[
+                    existingIndex
+                ].quantity || 0
+            );
+
 
         const newQuantity =
-            Number(existingItem.quantity || 0)
-            + quantity;
+            existingQuantity +
+            quantity;
 
 
         if (newQuantity > stock) {
 
-            showMessage(
-                "There is not enough stock for that quantity.",
-                false
+            showProductMessage(
+                `Only ${stock} item${stock === 1 ? "" : "s"} available.`,
+                "error"
             );
 
-            return false;
+            return;
         }
 
 
-        existingItem.quantity =
+        cart[
+            existingIndex
+        ].quantity =
             newQuantity;
 
 
     } else {
 
-        cart.push({
-
-            id: currentProduct.id,
-
-            name: currentProduct.name,
-
-            price: Number(
-                currentProduct.price
-            ),
-
-            image:
-                currentProduct.image ||
-                null,
-
-            icon:
-                currentProduct.icon ||
-                "👟",
-
-            category:
-                currentProduct.category ||
-                "",
-
-            size:
-                selectedSize,
-
-            quantity:
-                quantity
-
-        });
+        cart.push(
+            createCartItem()
+        );
     }
 
 
@@ -867,39 +1222,232 @@ function addToCart() {
     updateCartCount();
 
 
-    showMessage(
-        `${currentProduct.name} has been added to your cart.`,
-        true
+    showProductMessage(
+        "Product added to cart successfully.",
+        "success"
     );
-
-
-    return true;
 }
 
 
-/* =========================================
-   BUY NOW
-========================================= */
+// =========================================
+// BUY NOW
+// =========================================
 
-function buyNow() {
+function buyProductNow() {
 
-    const added =
-        addToCart();
+    if (!currentProduct) {
 
+        showProductMessage(
+            "Product is not loaded yet.",
+            "error"
+        );
 
-    if (!added) {
         return;
     }
 
+
+    const stock =
+        Number(
+            currentProduct.stock || 0
+        );
+
+
+    if (stock <= 0) {
+
+        showProductMessage(
+            "This product is currently out of stock.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    // CHECK SIZE
+
+    const sizes =
+        Array.isArray(
+            currentProduct.sizes
+        )
+            ? currentProduct.sizes
+            : [];
+
+
+    if (
+        sizes.length > 0 &&
+        !selectedSize
+    ) {
+
+        showProductMessage(
+            "Please select a size first.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    const cart =
+        getCart();
+
+
+    const existingIndex =
+        cart.findIndex(
+            function (item) {
+
+                return (
+                    String(item.id) ===
+                        String(
+                            currentProduct.id
+                        )
+                    &&
+                    String(item.size || "") ===
+                        String(
+                            selectedSize || ""
+                        )
+                );
+
+            }
+        );
+
+
+    if (existingIndex !== -1) {
+
+        const existingQuantity =
+            Number(
+                cart[
+                    existingIndex
+                ].quantity || 0
+            );
+
+
+        const newQuantity =
+            existingQuantity +
+            quantity;
+
+
+        if (newQuantity > stock) {
+
+            showProductMessage(
+                `Only ${stock} item${stock === 1 ? "" : "s"} available.`,
+                "error"
+            );
+
+            return;
+        }
+
+
+        cart[
+            existingIndex
+        ].quantity =
+            newQuantity;
+
+
+    } else {
+
+        cart.push(
+            createCartItem()
+        );
+    }
+
+
+    saveCart(cart);
+
+    updateCartCount();
+
+
+    // SAVE PAYMENT PLAN
+
+    localStorage.setItem(
+        "ayodejiPaymentMethod",
+        paymentPlan === 60
+            ? "deposit"
+            : "full"
+    );
+
+
+    // GO TO CART
 
     window.location.href =
         "cart.html";
 }
 
 
-/* =========================================
-   CART COUNT
-========================================= */
+// =========================================
+// GET CART
+// =========================================
+
+function getCart() {
+
+    try {
+
+        const saved =
+            localStorage.getItem(
+                "ayodejiCart"
+            );
+
+
+        if (!saved) {
+
+            return [];
+        }
+
+
+        const parsed =
+            JSON.parse(saved);
+
+
+        return Array.isArray(parsed)
+            ? parsed
+            : [];
+
+
+    } catch (error) {
+
+        console.error(
+            "Unable to read cart:",
+            error
+        );
+
+
+        return [];
+    }
+}
+
+
+// =========================================
+// SAVE CART
+// =========================================
+
+function saveCart(cart) {
+
+    try {
+
+        localStorage.setItem(
+            "ayodejiCart",
+            JSON.stringify(cart)
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Unable to save cart:",
+            error
+        );
+
+
+        showProductMessage(
+            "Unable to save your cart on this device.",
+            "error"
+        );
+    }
+}
+
+
+// =========================================
+// CART COUNT
+// =========================================
 
 function updateCartCount() {
 
@@ -909,243 +1457,460 @@ function updateCartCount() {
 
     const count =
         cart.reduce(
-            (total, item) =>
-                total +
-                Number(
-                    item.quantity || 0
-                ),
+            function (total, item) {
+
+                return total +
+                    Number(
+                        item.quantity || 0
+                    );
+
+            },
             0
         );
 
 
-    const cartCount =
+    const desktopCount =
         document.getElementById(
             "cartCount"
         );
 
 
-    if (cartCount) {
+    const mobileCount =
+        document.getElementById(
+            "mobileCartCount"
+        );
 
-        cartCount.textContent =
+
+    if (desktopCount) {
+
+        desktopCount.textContent =
+            count;
+    }
+
+
+    if (mobileCount) {
+
+        mobileCount.textContent =
             count;
     }
 }
 
 
-/* =========================================
-   MESSAGE
-========================================= */
+// =========================================
+// MOBILE MENU
+// =========================================
 
-function showMessage(
-    message,
-    success = true
-) {
+function setupMobileMenu() {
 
-    const messageElement =
+    const menuToggle =
         document.getElementById(
-            "actionMessage"
+            "menuToggle"
         );
 
 
-    if (!messageElement) {
+    const mobileMenu =
+        document.getElementById(
+            "mobileMenu"
+        );
+
+
+    const closeButton =
+        document.getElementById(
+            "closeMobileMenu"
+        );
+
+
+    const overlay =
+        document.getElementById(
+            "menuOverlay"
+        );
+
+
+    if (!menuToggle || !mobileMenu) {
+
+        console.warn(
+            "Mobile menu elements not found."
+        );
+
         return;
     }
 
 
-    messageElement.hidden =
-        false;
+    function openMenu() {
 
-
-    messageElement.textContent =
-        message;
-
-
-    if (success) {
-
-        messageElement.style.background =
-            "#eaf7ee";
-
-        messageElement.style.color =
-            "#176b35";
-
-    } else {
-
-        messageElement.style.background =
-            "#fff0f0";
-
-        messageElement.style.color =
-            "#b42318";
-    }
-
-
-    clearTimeout(
-        showMessage.timeout
-    );
-
-
-    showMessage.timeout =
-        setTimeout(() => {
-
-            messageElement.hidden =
-                true;
-
-        }, 3500);
-}
-
-
-/* =========================================
-   BUTTON FEEDBACK
-========================================= */
-
-function buttonFeedback(
-    button,
-    text
-) {
-
-    const originalText =
-        button.textContent;
-
-
-    button.textContent =
-        text;
-
-
-    button.disabled =
-        true;
-
-
-    setTimeout(() => {
-
-        button.textContent =
-            originalText;
-
-        button.disabled =
-            false;
-
-    }, 1200);
-}
-
-
-/* =========================================
-   EVENT LISTENERS
-========================================= */
-
-function setupProductEvents() {
-
-    const increaseButton =
-        document.getElementById(
-            "increaseQuantity"
+        mobileMenu.classList.add(
+            "active"
         );
 
 
-    const decreaseButton =
-        document.getElementById(
-            "decreaseQuantity"
-        );
+        if (overlay) {
 
-
-    const addButton =
-        document.getElementById(
-            "addToCartButton"
-        );
-
-
-    const buyButton =
-        document.getElementById(
-            "buyNowButton"
-        );
-
-
-    if (increaseButton) {
-
-        increaseButton.addEventListener(
-            "click",
-            increaseQuantity
-        );
-    }
-
-
-    if (decreaseButton) {
-
-        decreaseButton.addEventListener(
-            "click",
-            decreaseQuantity
-        );
-    }
-
-
-    if (addButton) {
-
-        addButton.addEventListener(
-            "click",
-            () => {
-
-                const added =
-                    addToCart();
-
-
-                if (added) {
-
-                    buttonFeedback(
-                        addButton,
-                        "Added ✓"
-                    );
-                }
-            }
-        );
-    }
-
-
-    if (buyButton) {
-
-        buyButton.addEventListener(
-            "click",
-            buyNow
-        );
-    }
-
-
-    document
-        .querySelectorAll(
-            'input[name="payment"]'
-        )
-        .forEach(input => {
-
-            input.addEventListener(
-                "change",
-                updatePaymentMethod
+            overlay.classList.add(
+                "active"
             );
-
-        });
-}
-
-
-/* =========================================
-   INITIALIZE
-========================================= */
-
-document.addEventListener(
-    "DOMContentLoaded",
-    async () => {
-
-        setupProductEvents();
-
-        updateCartCount();
-
-
-        const year =
-            document.getElementById(
-                "currentYear"
-            );
-
-
-        if (year) {
-
-            year.textContent =
-                new Date().getFullYear();
         }
 
 
-        await loadProduct();
+        menuToggle.setAttribute(
+            "aria-expanded",
+            "true"
+        );
+
+
+        menuToggle.setAttribute(
+            "aria-label",
+            "Close menu"
+        );
+
+
+        mobileMenu.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+
+        document.body.style.overflow =
+            "hidden";
     }
-);
+
+
+    function closeMenu() {
+
+        mobileMenu.classList.remove(
+            "active"
+        );
+
+
+        if (overlay) {
+
+            overlay.classList.remove(
+                "active"
+            );
+        }
+
+
+        menuToggle.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+
+
+        menuToggle.setAttribute(
+            "aria-label",
+            "Open menu"
+        );
+
+
+        mobileMenu.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+
+        document.body.style.overflow =
+            "";
+    }
+
+
+    menuToggle.onclick =
+        function () {
+
+            if (
+                mobileMenu.classList.contains(
+                    "active"
+                )
+            ) {
+
+                closeMenu();
+
+            } else {
+
+                openMenu();
+            }
+        };
+
+
+    if (closeButton) {
+
+        closeButton.onclick =
+            function () {
+
+                closeMenu();
+            };
+    }
+
+
+    if (overlay) {
+
+        overlay.onclick =
+            function () {
+
+                closeMenu();
+            };
+    }
+
+
+    mobileMenu
+        .querySelectorAll("a")
+        .forEach(
+            function (link) {
+
+                link.addEventListener(
+                    "click",
+                    function () {
+
+                        closeMenu();
+                    }
+                );
+
+            }
+        );
+
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (
+                event.key === "Escape" &&
+                mobileMenu.classList.contains(
+                    "active"
+                )
+            ) {
+
+                closeMenu();
+            }
+
+        }
+    );
+}
+
+
+// =========================================
+// SHOW MESSAGE
+// =========================================
+
+function showProductMessage(
+    message,
+    type = "error"
+) {
+
+    const element =
+        document.getElementById(
+            "productMessage"
+        );
+
+
+    if (!element) {
+        return;
+    }
+
+
+    element.textContent =
+        message;
+
+
+    element.className =
+        `product-message show ${type}`;
+
+
+    clearTimeout(
+        window.productMessageTimer
+    );
+
+
+    window.productMessageTimer =
+        setTimeout(
+            function () {
+
+                clearProductMessage();
+
+            },
+            4000
+        );
+}
+
+
+// =========================================
+// CLEAR MESSAGE
+// =========================================
+
+function clearProductMessage() {
+
+    const element =
+        document.getElementById(
+            "productMessage"
+        );
+
+
+    if (!element) {
+        return;
+    }
+
+
+    element.className =
+        "product-message";
+
+
+    element.textContent =
+        "";
+}
+
+
+// =========================================
+// HIDE LOADING
+// =========================================
+
+function hideLoading() {
+
+    const loading =
+        document.getElementById(
+            "productLoading"
+        );
+
+
+    const content =
+        document.getElementById(
+            "productContent"
+        );
+
+
+    if (loading) {
+
+        loading.hidden =
+            true;
+    }
+
+
+    if (content) {
+
+        content.hidden =
+            false;
+    }
+}
+
+
+// =========================================
+// SHOW ERROR
+// =========================================
+
+function showProductError(message) {
+
+    const loading =
+        document.getElementById(
+            "productLoading"
+        );
+
+
+    const content =
+        document.getElementById(
+            "productContent"
+        );
+
+
+    const error =
+        document.getElementById(
+            "productError"
+        );
+
+
+    const errorMessage =
+        document.getElementById(
+            "productErrorMessage"
+        );
+
+
+    if (loading) {
+
+        loading.hidden =
+            true;
+    }
+
+
+    if (content) {
+
+        content.hidden =
+            true;
+    }
+
+
+    if (errorMessage) {
+
+        errorMessage.textContent =
+            message;
+    }
+
+
+    if (error) {
+
+        error.hidden =
+            false;
+    }
+}
+
+
+// =========================================
+// TEXT HELPER
+// =========================================
+
+function setText(
+    id,
+    value
+) {
+
+    const element =
+        document.getElementById(id);
+
+
+    if (element) {
+
+        element.textContent =
+            value;
+    }
+}
+
+
+// =========================================
+// CURRENCY
+// =========================================
+
+function formatCurrency(amount) {
+
+    return new Intl.NumberFormat(
+        "en-NG",
+        {
+            style: "currency",
+            currency: "NGN",
+            maximumFractionDigits: 0
+        }
+    ).format(
+        Number(amount || 0)
+    );
+}
+
+
+// =========================================
+// DISCOUNT
+// =========================================
+
+function calculateDiscount(
+    oldPrice,
+    newPrice
+) {
+
+    if (
+        !oldPrice ||
+        oldPrice <= newPrice
+    ) {
+
+        return 0;
+    }
+
+
+    return Math.round(
+        (
+            (oldPrice - newPrice)
+            / oldPrice
+        ) * 100
+    );
+}
