@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>My Profile - Ayodeji Fashion Hubs</title>
+
+    <link rel="stylesheet" href="css/profile.css">
+</head>
+
+<body>
+
+    <!-- =========================================
+         HEADER
+    ========================================== -->
+
+    <header class="profile-header">
+
+        <div class="header-inner">
+
+            <a
+                href="index.html"
+                class="brand"
+            >
+                <span class="brand-icon">👞</span>
+
+                <span>
+                    Ayodeji Fashion Hubs
+                </span>
+            </a>
+
+            <a
+                href="index.html"
+                class="back-shop"
+            >
+                ← Shop
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================================
+         MAIN
+    ========================================== -->
+
+    <main class="profile-page">
+
+        <div class="profile-container">
+
+            <!-- Page heading -->
+
+            <div class="page-heading">
+
+                <div class="profile-avatar">
+                    👤
+                </div>
+
+                <div>
+
+                    <h1>
+                        My Profile
+                    </h1>
+
+                    <p>
+                        Manage your account and delivery information.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================
+                 PROFILE CARD
+            ================================== -->
+
+            <section class="profile-card">
+
+                <div class="card-header">
+
+                    <div>
+                        <h2>
+                            Personal Information
+                        </h2>
+
+                        <p>
+                            Keep your information up to date.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <form id="profileForm">
+
+                    <!-- Full name -->
+
+                    <div class="form-group">
+
+                        <label for="profileName">
+                            Full Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="profileName"
+                            placeholder="Enter your full name"
+                            autocomplete="name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- Email -->
+
+                    <div class="form-group">
+
+                        <label for="profileEmail">
+                            Email Address
+                        </label>
+
+                        <input
+                            type="email"
+                            id="profileEmail"
+                            placeholder="Your email address"
+                            readonly
+                        >
+
+                        <small>
+                            Your email address cannot be changed here.
+                        </small>
+
+                    </div>
+
+
+                    <!-- Phone -->
+
+                    <div class="form-group">
+
+                        <label for="profilePhone">
+                            Phone Number
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="profilePhone"
+                            placeholder="e.g. 08012345678"
+                            autocomplete="tel"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- Delivery section -->
+
+                    <div class="section-title">
+
+                        <span>
+                            🚚
+                        </span>
+
+                        <div>
+
+                            <h3>
+                                Delivery Information
+                            </h3>
+
+                            <p>
+                                This information can be used during checkout.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Address -->
+
+                    <div class="form-group">
+
+                        <label for="profileAddress">
+                            Delivery Address
+                        </label>
+
+                        <textarea
+                            id="profileAddress"
+                            rows="3"
+                            placeholder="Enter your delivery address"
+                            autocomplete="street-address"
+                            required
+                        ></textarea>
+
+                    </div>
+
+
+                    <!-- City -->
+
+                    <div class="form-group">
+
+                        <label for="profileCity">
+                            City
+                        </label>
+
+                        <input
+                            type="text"
+                            id="profileCity"
+                            placeholder="Enter your city"
+                            autocomplete="address-level2"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- State -->
+
+                    <div class="form-group">
+
+                        <label for="profileState">
+                            State
+                        </label>
+
+                        <input
+                            type="text"
+                            id="profileState"
+                            placeholder="Enter your state"
+                            autocomplete="address-level1"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- Message -->
+
+                    <div
+                        id="profileMessage"
+                        class="profile-message"
+                        role="alert"
+                        aria-live="polite"
+                    ></div>
+
+
+                    <!-- Save -->
+
+                    <button
+                        type="submit"
+                        id="saveProfileButton"
+                        class="save-button"
+                    >
+                        <span id="saveProfileText">
+                            Save Profile
+                        </span>
+                    </button>
+
+                </form>
+
+            </section>
+
+
+            <!-- =================================
+                 ACCOUNT CARD
+            ================================== -->
+
+            <section class="account-card">
+
+                <div>
+
+                    <h2>
+                        Account
+                    </h2>
+
+                    <p>
+                        Manage your Ayodeji Fashion Hubs account.
+                    </p>
+
+                </div>
+
+                <button
+                    type="button"
+                    id="logoutButton"
+                    class="logout-button"
+                >
+                    🚪 Logout
+                </button>
+
+            </section>
+
+
+            <!-- =================================
+                 QUICK LINKS
+            ================================== -->
+
+            <section class="quick-links">
+
+                <a
+                    href="shop.html"
+                    class="quick-link"
+                >
+                    <span>🛍️</span>
+
+                    <div>
+                        <strong>Shop</strong>
+                        <small>Browse products</small>
+                    </div>
+                </a>
+
+
+                <a
+                    href="cart.html"
+                    class="quick-link"
+                >
+                    <span>🛒</span>
+
+                    <div>
+                        <strong>My Cart</strong>
+                        <small>View your cart</small>
+                    </div>
+                </a>
+
+
+                <a
+                    href="track-order.html"
+                    class="quick-link"
+                >
+                    <span>📦</span>
+
+                    <div>
+                        <strong>Track Order</strong>
+                        <small>Check your order status</small>
+                    </div>
+                </a>
+
+            </section>
+
+        </div>
+
+    </main>
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================== -->
+
+    <footer class="profile-footer">
+
+        <p>
+            © 2026 Ayodeji Fashion Hubs.
+            All rights reserved.
+        </p>
+
+    </footer>
+
+
+    <!-- =========================================
+         SCRIPTS
+    ========================================== -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="js/supabase.js"></script>
+
+    <script src="js/profile.js"></script>
+
+</body>
+</html>

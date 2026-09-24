@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -26,9 +27,12 @@
         rel="stylesheet"
         href="css/checkout.css"
     >
+
 </head>
 
+
 <body>
+
 
     <!-- =====================================
          HEADER
@@ -42,12 +46,17 @@
                 href="index.html"
                 class="logo"
             >
-                <span class="logo-mark">AF</span>
+
+                <span class="logo-mark">
+                    AF
+                </span>
 
                 <span class="logo-text">
                     Ayodeji Fashion Hubs
                 </span>
+
             </a>
+
 
             <a
                 href="cart.html"
@@ -61,6 +70,7 @@
     </header>
 
 
+
     <!-- =====================================
          CHECKOUT PAGE
     ====================================== -->
@@ -69,7 +79,10 @@
 
         <div class="container">
 
-            <!-- Page Heading -->
+
+            <!-- =================================
+                 PAGE HEADING
+            ================================== -->
 
             <div class="checkout-heading">
 
@@ -89,6 +102,7 @@
             </div>
 
 
+
             <!-- =================================
                  CHECKOUT FORM
             ================================== -->
@@ -98,6 +112,7 @@
                 class="checkout-layout"
             >
 
+
                 <!-- =================================
                      LEFT SIDE
                 ================================== -->
@@ -105,9 +120,9 @@
                 <div class="checkout-main">
 
 
-                    <!-- ===============================
+                    <!-- =================================
                          CUSTOMER INFORMATION
-                    ================================ -->
+                    ================================== -->
 
                     <section class="checkout-card">
 
@@ -134,6 +149,9 @@
 
                         <div class="form-grid">
 
+
+                            <!-- FULL NAME -->
+
                             <div class="form-group full-width">
 
                                 <label
@@ -153,6 +171,9 @@
 
                             </div>
 
+
+
+                            <!-- PHONE -->
 
                             <div class="form-group">
 
@@ -178,6 +199,9 @@
 
                             </div>
 
+
+
+                            <!-- EMAIL -->
 
                             <div class="form-group">
 
@@ -205,9 +229,10 @@
                     </section>
 
 
-                    <!-- ===============================
+
+                    <!-- =================================
                          DELIVERY INFORMATION
-                    ================================ -->
+                    ================================== -->
 
                     <section class="checkout-card">
 
@@ -234,6 +259,9 @@
 
                         <div class="form-grid">
 
+
+                            <!-- ADDRESS -->
+
                             <div class="form-group full-width">
 
                                 <label
@@ -254,6 +282,9 @@
                             </div>
 
 
+
+                            <!-- CITY -->
+
                             <div class="form-group">
 
                                 <label
@@ -273,6 +304,9 @@
 
                             </div>
 
+
+
+                            <!-- STATE -->
 
                             <div class="form-group">
 
@@ -298,9 +332,10 @@
                     </section>
 
 
-                    <!-- ===============================
+
+                    <!-- =================================
                          PAYMENT METHOD
-                    ================================ -->
+                    ================================== -->
 
                     <section class="checkout-card">
 
@@ -328,7 +363,9 @@
                         <div class="payment-options">
 
 
-                            <!-- BANK TRANSFER -->
+                            <!-- =================================
+                                 OPAY BANK TRANSFER
+                            ================================== -->
 
                             <label
                                 class="payment-option"
@@ -339,7 +376,7 @@
                                     type="radio"
                                     id="bankTransfer"
                                     name="paymentMethod"
-                                    value="Bank Transfer"
+                                    value="OPay Bank Transfer"
                                     checked
                                 >
 
@@ -366,7 +403,10 @@
                             </label>
 
 
-                            <!-- CASH ON DELIVERY -->
+
+                            <!-- =================================
+                                 CASH ON DELIVERY
+                            ================================== -->
 
                             <label
                                 class="payment-option"
@@ -405,9 +445,10 @@
                         </div>
 
 
-                        <!-- =========================
-                             OPAY DETAILS
-                        ========================== -->
+
+                        <!-- =================================
+                             OPAY PAYMENT DETAILS
+                        ================================== -->
 
                         <div
                             id="paymentDetails"
@@ -435,6 +476,9 @@
                             </div>
 
 
+
+                            <!-- BANK -->
+
                             <div class="bank-detail-row">
 
                                 <span>
@@ -448,6 +492,9 @@
                             </div>
 
 
+
+                            <!-- ACCOUNT NAME -->
+
                             <div class="bank-detail-row">
 
                                 <span>
@@ -460,6 +507,9 @@
 
                             </div>
 
+
+
+                            <!-- ACCOUNT NUMBER -->
 
                             <div class="bank-detail-row">
 
@@ -488,6 +538,7 @@
                             </div>
 
 
+
                             <p class="bank-warning">
 
                                 ⚠️ Please make your transfer only
@@ -501,9 +552,10 @@
                     </section>
 
 
-                    <!-- ===============================
+
+                    <!-- =================================
                          PAYMENT PLAN
-                    ================================ -->
+                    ================================== -->
 
                     <section class="checkout-card">
 
@@ -532,7 +584,9 @@
                         <div class="payment-plans">
 
 
-                            <!-- 60% DEPOSIT -->
+                            <!-- =================================
+                                 60% DEPOSIT
+                            ================================== -->
 
                             <label
                                 class="payment-plan"
@@ -563,7 +617,10 @@
                             </label>
 
 
-                            <!-- FULL PAYMENT -->
+
+                            <!-- =================================
+                                 FULL PAYMENT
+                            ================================== -->
 
                             <label
                                 class="payment-plan"
@@ -596,9 +653,10 @@
                     </section>
 
 
-                    <!-- ===============================
+
+                    <!-- =================================
                          CUSTOMER NOTE
-                    ================================ -->
+                    ================================== -->
 
                     <section class="checkout-card">
 
@@ -646,9 +704,23 @@
                     </section>
 
 
-                    <!-- ===============================
+
+                    <!-- =================================
+                         CHECKOUT MESSAGE
+                    ================================== -->
+
+                    <div
+                        id="checkoutMessage"
+                        class="checkout-message"
+                        role="alert"
+                        aria-live="polite"
+                    ></div>
+
+
+
+                    <!-- =================================
                          MOBILE PLACE ORDER
-                    ================================ -->
+                    ================================== -->
 
                     <div class="mobile-submit">
 
@@ -669,11 +741,17 @@
                 </div>
 
 
+
                 <!-- =================================
-                     RIGHT SIDE - ORDER SUMMARY
+                     RIGHT SIDE
                 ================================== -->
 
                 <aside class="checkout-sidebar">
+
+
+                    <!-- =================================
+                         ORDER SUMMARY
+                    ================================== -->
 
                     <div class="order-summary-card">
 
@@ -701,19 +779,26 @@
                         </div>
 
 
+
                         <!-- ORDER ITEMS -->
 
                         <div
                             id="orderItems"
                             class="order-items"
                         >
-                            <!-- Items inserted by JavaScript -->
+                            <!-- Items inserted by checkout.js -->
                         </div>
 
 
-                        <!-- SUMMARY TOTALS -->
+
+                        <!-- =================================
+                             SUMMARY TOTALS
+                        ================================== -->
 
                         <div class="summary-totals">
+
+
+                            <!-- SUBTOTAL -->
 
                             <div class="summary-row">
 
@@ -730,7 +815,12 @@
                             </div>
 
 
-                            <div class="summary-row total-row">
+
+                            <!-- TOTAL -->
+
+                            <div
+                                class="summary-row total-row"
+                            >
 
                                 <span>
                                     Total
@@ -745,10 +835,16 @@
                             </div>
 
 
+
                             <div class="summary-divider"></div>
 
 
-                            <div class="summary-row pay-now-row">
+
+                            <!-- PAY NOW -->
+
+                            <div
+                                class="summary-row pay-now-row"
+                            >
 
                                 <span>
                                     Pay Now
@@ -763,7 +859,12 @@
                             </div>
 
 
-                            <div class="summary-row balance-row">
+
+                            <!-- BALANCE -->
+
+                            <div
+                                class="summary-row balance-row"
+                            >
 
                                 <span>
                                     Remaining Balance
@@ -780,7 +881,10 @@
                         </div>
 
 
-                        <!-- DESKTOP PLACE ORDER -->
+
+                        <!-- =================================
+                             DESKTOP PLACE ORDER
+                        ================================== -->
 
                         <div class="desktop-submit">
 
@@ -801,9 +905,15 @@
                     </div>
 
 
-                    <!-- TRUST BOX -->
+
+                    <!-- =================================
+                         TRUST BOX
+                    ================================== -->
 
                     <div class="checkout-trust">
+
+
+                        <!-- SECURE CHECKOUT -->
 
                         <div class="trust-item">
 
@@ -827,6 +937,9 @@
                         </div>
 
 
+
+                        <!-- ORDER TRACKING -->
+
                         <div class="trust-item">
 
                             <span>
@@ -848,6 +961,9 @@
 
                         </div>
 
+
+
+                        <!-- SUPPORT -->
 
                         <div class="trust-item">
 
@@ -874,6 +990,7 @@
                 </aside>
 
             </form>
+
 
 
             <!-- =================================
@@ -908,6 +1025,9 @@
                     </p>
 
 
+
+                    <!-- ORDER REFERENCE -->
+
                     <div class="order-reference-box">
 
                         <span>
@@ -923,6 +1043,9 @@
                     </div>
 
 
+
+                    <!-- SUCCESS ACTIONS -->
+
                     <div class="success-actions">
 
                         <a
@@ -930,6 +1053,13 @@
                             class="success-button primary"
                         >
                             Continue Shopping
+                        </a>
+
+                        <a
+                            href="track-order.html"
+                            class="success-button secondary"
+                        >
+                            Track My Order
                         </a>
 
                         <a
@@ -948,6 +1078,7 @@
         </div>
 
     </main>
+
 
 
     <!-- =====================================
@@ -973,6 +1104,7 @@
 
                 </div>
 
+
                 <p>
                     © 2026 Ayodeji Fashion Hubs.
                     All rights reserved.
@@ -985,6 +1117,7 @@
     </footer>
 
 
+
     <!-- =====================================
          SUPABASE
     ====================================== -->
@@ -995,7 +1128,7 @@
 
 
     <!-- =====================================
-         SUPABASE CONFIG
+         SUPABASE CONFIGURATION
     ====================================== -->
 
     <script
@@ -1010,6 +1143,7 @@
     <script
         src="js/checkout.js"
     ></script>
+
 
 </body>
 </html>

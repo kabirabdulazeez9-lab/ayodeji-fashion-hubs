@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Login - Ayodeji Fashion Hubs</title>
+
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+
+<body class="auth-page">
+
+    <main class="auth-container">
+
+        <section class="auth-card">
+
+            <!-- Logo -->
+            <div class="auth-logo">
+                <div class="auth-logo-icon">👞</div>
+
+                <h1>Ayodeji Fashion Hubs</h1>
+
+                <p>Welcome back</p>
+            </div>
+
+            <!-- Login Form -->
+            <form id="loginForm">
+
+                <!-- Email -->
+                <div class="form-group">
+
+                    <label for="loginEmail">
+                        Email Address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="loginEmail"
+                        name="email"
+                        placeholder="Enter your email"
+                        autocomplete="email"
+                        required
+                    >
+
+                </div>
+
+                <!-- Password -->
+                <div class="form-group">
+
+                    <label for="loginPassword">
+                        Password
+                    </label>
+
+                    <div class="password-wrapper">
+
+                        <input
+                            type="password"
+                            id="loginPassword"
+                            name="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            id="toggleLoginPassword"
+                            class="password-toggle"
+                            aria-label="Show password"
+                        >
+                            👁️
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <!-- Message -->
+                <div
+                    id="loginMessage"
+                    class="auth-message"
+                    role="alert"
+                    aria-live="polite"
+                ></div>
+
+                <!-- Login Button -->
+                <button
+                    type="submit"
+                    id="loginButton"
+                    class="auth-button"
+                >
+                    <span id="loginButtonText">
+                        Login
+                    </span>
+                </button>
+
+            </form>
+
+            <!-- Divider -->
+            <div class="auth-divider">
+                <span>OR</span>
+            </div>
+
+            <!-- Register -->
+            <a
+                href="register.html"
+                class="auth-link-button"
+            >
+                Create New Account
+            </a>
+
+            <!-- Home -->
+            <a
+                href="index.html"
+                class="back-home"
+            >
+                ← Back to Shop
+            </a>
+
+        </section>
+
+    </main>
+
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- Supabase Configuration -->
+    <script src="js/supabase.js"></script>
+
+    <!-- Login Logic -->
+    <script src="js/login.js"></script>
+
+</body>
+</html>

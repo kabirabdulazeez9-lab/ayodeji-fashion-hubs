@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Create Account - Ayodeji Fashion Hubs</title>
+
+    <link
+        rel="stylesheet"
+        href="css/auth.css"
+    >
+</head>
+
+<body>
+
+    <main class="auth-page">
+
+        <section class="auth-card">
+
+            <div class="auth-logo">
+                👞
+            </div>
+
+            <h1>
+                Create Account
+            </h1>
+
+            <p class="auth-subtitle">
+                Create your Ayodeji Fashion Hubs account
+            </p>
+
+
+            <!-- REGISTER FORM -->
+
+            <form id="registerForm">
+
+                <div class="form-group">
+
+                    <label for="registerName">
+                        Full Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="registerName"
+                        placeholder="Enter your full name"
+                        autocomplete="name"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="registerEmail">
+                        Email Address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="registerEmail"
+                        placeholder="Enter your email"
+                        autocomplete="email"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="registerPhone">
+                        Phone Number
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="registerPhone"
+                        placeholder="08012345678"
+                        autocomplete="tel"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="registerPassword">
+                        Password
+                    </label>
+
+                    <div class="password-wrapper">
+
+                        <input
+                            type="password"
+                            id="registerPassword"
+                            placeholder="Create a password"
+                            autocomplete="new-password"
+                            minlength="6"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            id="toggleRegisterPassword"
+                            class="password-toggle"
+                        >
+                            👁️
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="registerConfirmPassword">
+                        Confirm Password
+                    </label>
+
+                    <div class="password-wrapper">
+
+                        <input
+                            type="password"
+                            id="registerConfirmPassword"
+                            placeholder="Confirm your password"
+                            autocomplete="new-password"
+                            minlength="6"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            id="toggleConfirmPassword"
+                            class="password-toggle"
+                        >
+                            👁️
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <label class="checkbox-row">
+
+                    <input
+                        type="checkbox"
+                        id="registerTerms"
+                        required
+                    >
+
+                    <span>
+                        I agree to the Ayodeji Fashion Hubs
+                        terms and conditions.
+                    </span>
+
+                </label>
+
+
+                <button
+                    type="submit"
+                    id="registerButton"
+                    class="auth-button"
+                >
+                    <span id="registerButtonText">
+                        Create Account
+                    </span>
+                </button>
+
+
+                <p
+                    id="registerMessage"
+                    class="auth-message"
+                ></p>
+
+            </form>
+
+
+            <div class="auth-divider">
+                Already have an account?
+            </div>
+
+
+            <a
+                href="login.html"
+                class="auth-link-button"
+            >
+                Login
+            </a>
+
+
+            <a
+                href="index.html"
+                class="back-home"
+            >
+                ← Back to Store
+            </a>
+
+        </section>
+
+    </main>
+
+
+    <!-- SUPABASE -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="js/supabase.js"></script>
+
+    <script src="js/register.js"></script>
+
+</body>
+</html>

@@ -23,92 +23,36 @@
 
 <body>
 
-    <!-- =========================================
-         HEADER
-    ========================================== -->
+<!-- =========================================
+     HEADER
+========================================= -->
 
-    <header class="site-header">
+<header class="site-header">
 
-        <div class="header-inner">
+    <div class="header-inner">
 
-            <a
-                href="index.html"
-                class="brand"
-            >
+        <!-- BRAND -->
 
-                <span class="brand-mark">
-                    AF
-                </span>
-
-                <span class="brand-text">
-                    <strong>Ayodeji</strong>
-                    <small>Fashion Hubs</small>
-                </span>
-
-            </a>
-
-
-            <!-- DESKTOP NAV -->
-
-            <nav class="desktop-nav">
-
-                <a href="index.html">
-                    Home
-                </a>
-
-                <a href="shop.html">
-                    Shop
-                </a>
-
-                <a href="#">
-                    My Orders
-                </a>
-
-                <a href="#">
-                    Account
-                </a>
-
-            </nav>
-
-
-            <!-- CART -->
-
-            <a
-                href="cart.html"
-                class="cart-button active-cart"
-                aria-label="Shopping cart"
-            >
-
-                🛒
-
-                <span id="cartCount">
-                    0
-                </span>
-
-            </a>
-
-
-            <!-- MOBILE MENU -->
-
-            <button
-                type="button"
-                class="menu-button"
-                id="menuButton"
-                aria-label="Open menu"
-                aria-expanded="false"
-            >
-                ☰
-            </button>
-
-        </div>
-
-
-        <!-- MOBILE NAV -->
-
-        <nav
-            class="mobile-nav"
-            id="mobileNav"
+        <a
+            href="index.html"
+            class="brand"
         >
+
+            <span class="brand-mark">
+                AF
+            </span>
+
+            <span class="brand-text">
+                <strong>Ayodeji</strong>
+                <small>Fashion Hubs</small>
+            </span>
+
+        </a>
+
+
+        <!-- DESKTOP NAV -->
+
+        <nav class="desktop-nav">
 
             <a href="index.html">
                 Home
@@ -118,505 +62,574 @@
                 Shop
             </a>
 
-            <a href="#">
+            <a href="track-order.html">
                 My Orders
             </a>
 
-            <a href="#">
+            <a href="profile.html">
                 Account
             </a>
 
         </nav>
 
-    </header>
+
+        <!-- CART -->
+
+        <a
+            href="cart.html"
+            class="cart-button active-cart"
+            aria-label="Shopping cart"
+        >
+
+            🛒
+
+            <span id="cartCount">
+                0
+            </span>
+
+        </a>
 
 
-    <!-- =========================================
-         MAIN CART PAGE
-    ========================================== -->
+        <!-- MOBILE MENU BUTTON -->
 
-    <main class="cart-page">
+        <button
+            type="button"
+            class="menu-button"
+            id="menuButton"
+            aria-label="Open menu"
+            aria-expanded="false"
+            aria-controls="mobileNav"
+        >
+            ☰
+        </button>
 
-        <div class="cart-container">
+    </div>
 
 
-            <!-- PAGE HEADING -->
+    <!-- =====================================
+         MOBILE NAV
+    ====================================== -->
 
-            <div class="cart-heading">
+    <nav
+        class="mobile-nav"
+        id="mobileNav"
+        aria-hidden="true"
+    >
 
-                <span class="eyebrow">
-                    YOUR SHOPPING BAG
-                </span>
+        <div class="mobile-nav-header">
 
-                <h1>
-                    Shopping Cart
-                </h1>
+            <strong>
+                Menu
+            </strong>
 
-                <p>
-                    Review your selected products before checkout.
-                </p>
+            <button
+                type="button"
+                id="closeMenuButton"
+                class="close-menu-button"
+                aria-label="Close menu"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <a href="index.html">
+            🏠 Home
+        </a>
+
+        <a href="shop.html">
+            🛍️ Shop
+        </a>
+
+        <a href="track-order.html">
+            📦 My Orders
+        </a>
+
+        <a href="profile.html">
+            👤 Account
+        </a>
+
+        <a
+            href="cart.html"
+            class="mobile-cart-link"
+        >
+
+            🛒 Cart
+
+            <span id="mobileCartCount">
+                0
+            </span>
+
+        </a>
+
+    </nav>
+
+
+    <!-- MOBILE OVERLAY -->
+
+    <div
+        class="menu-overlay"
+        id="menuOverlay"
+        aria-hidden="true"
+    ></div>
+
+</header>
+
+
+<!-- =========================================
+     MAIN
+========================================= -->
+
+<main class="cart-page">
+
+    <div class="cart-container">
+
+
+        <!-- PAGE HEADING -->
+
+        <div class="cart-heading">
+
+            <span class="eyebrow">
+                YOUR SHOPPING BAG
+            </span>
+
+            <h1>
+                Shopping Cart
+            </h1>
+
+            <p>
+                Review your selected products before checkout.
+            </p>
+
+        </div>
+
+
+        <!-- =================================
+             EMPTY CART
+        ================================== -->
+
+        <section
+            class="empty-cart"
+            id="emptyCart"
+            hidden
+        >
+
+            <div class="empty-cart-icon">
+                🛒
+            </div>
+
+            <h2>
+                Your cart is empty
+            </h2>
+
+            <p>
+                You haven't added any products yet.
+            </p>
+
+            <a
+                href="shop.html"
+                class="primary-button"
+            >
+                Continue Shopping
+            </a>
+
+        </section>
+
+
+        <!-- =================================
+             CART CONTENT
+        ================================== -->
+
+        <section
+            class="cart-layout"
+            id="cartContent"
+            hidden
+        >
+
+            <!-- CART ITEMS -->
+
+            <div class="cart-items-section">
+
+                <div class="cart-section-header">
+
+                    <div>
+
+                        <h2>
+                            Your Items
+                        </h2>
+
+                        <span id="itemsLabel">
+                            0 items
+                        </span>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="clear-cart-button"
+                        id="clearCartButton"
+                    >
+                        Clear Cart
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="cart-items"
+                    id="cartItems"
+                ></div>
+
+
+                <a
+                    href="shop.html"
+                    class="continue-shopping"
+                >
+                    ← Continue Shopping
+                </a>
 
             </div>
 
 
             <!-- =================================
-                 EMPTY CART
+                 ORDER SUMMARY
             ================================== -->
 
-            <section
-                class="empty-cart"
-                id="emptyCart"
-                hidden
-            >
-
-                <div class="empty-cart-icon">
-                    🛒
-                </div>
+            <aside class="cart-summary">
 
                 <h2>
-                    Your cart is empty
+                    Order Summary
                 </h2>
 
-                <p>
-                    You haven't added any products yet.
-                </p>
 
-                <a
-                    href="shop.html"
-                    class="primary-button"
-                >
-                    Continue Shopping
-                </a>
+                <div class="summary-row">
 
-            </section>
+                    <span>
+                        Items
+                    </span>
 
-
-            <!-- =================================
-                 CART CONTENT
-            ================================== -->
-
-            <section
-                class="cart-layout"
-                id="cartContent"
-                hidden
-            >
-
-
-                <!-- =================================
-                     CART ITEMS
-                ================================== -->
-
-                <div class="cart-items-section">
-
-                    <div class="cart-section-header">
-
-                        <div>
-
-                            <h2>
-                                Your Items
-                            </h2>
-
-                            <span id="itemsLabel">
-                                0 items
-                            </span>
-
-                        </div>
-
-
-                        <button
-                            type="button"
-                            class="clear-cart-button"
-                            id="clearCartButton"
-                        >
-                            Clear Cart
-                        </button>
-
-                    </div>
-
-
-                    <div
-                        class="cart-items"
-                        id="cartItems"
-                    >
-                    </div>
-
-
-                    <a
-                        href="shop.html"
-                        class="continue-shopping"
-                    >
-                        ← Continue Shopping
-                    </a>
+                    <strong id="summaryItems">
+                        0
+                    </strong>
 
                 </div>
 
 
-                <!-- =================================
-                     ORDER SUMMARY
-                ================================== -->
+                <div class="summary-row">
 
-                <aside class="cart-summary">
+                    <span>
+                        Subtotal
+                    </span>
 
-                    <h2>
-                        Order Summary
-                    </h2>
+                    <strong id="summarySubtotal">
+                        ₦0
+                    </strong>
+
+                </div>
 
 
-                    <!-- ITEM COUNT -->
+                <div class="summary-divider"></div>
 
-                    <div class="summary-row">
 
-                        <span>
-                            Items
-                        </span>
+                <!-- PAYMENT OPTIONS -->
 
-                        <strong id="summaryItems">
-                            0
+                <div class="payment-title">
+                    Payment Option
+                </div>
+
+
+                <label
+                    class="cart-payment-option selected"
+                    id="cartDepositOption"
+                >
+
+                    <input
+                        type="radio"
+                        name="cartPayment"
+                        value="deposit"
+                        checked
+                    >
+
+                    <div>
+
+                        <strong>
+                            Pay 60% Deposit
                         </strong>
+
+                        <small>
+                            Pay the remaining 40% later.
+                        </small>
 
                     </div>
 
+                </label>
 
-                    <!-- SUBTOTAL -->
 
-                    <div class="summary-row">
+                <label
+                    class="cart-payment-option"
+                    id="cartFullOption"
+                >
+
+                    <input
+                        type="radio"
+                        name="cartPayment"
+                        value="full"
+                    >
+
+                    <div>
+
+                        <strong>
+                            Pay 100% in Full
+                        </strong>
+
+                        <small>
+                            Complete your payment now.
+                        </small>
+
+                    </div>
+
+                </label>
+
+
+                <!-- PAYMENT BREAKDOWN -->
+
+                <div class="payment-breakdown">
+
+                    <div class="breakdown-row">
 
                         <span>
-                            Subtotal
+                            Total
                         </span>
 
-                        <strong id="summarySubtotal">
+                        <strong id="paymentTotal">
                             ₦0
                         </strong>
 
                     </div>
 
 
-                    <div class="summary-divider">
-                    </div>
-
-
-                    <!-- =================================
-                         PAYMENT OPTIONS
-                    ================================== -->
-
-                    <div class="payment-title">
-                        Payment Option
-                    </div>
-
-
-                    <!-- 60% DEPOSIT -->
-
-                    <label
-                        class="cart-payment-option selected"
-                        id="cartDepositOption"
-                    >
-
-                        <input
-                            type="radio"
-                            name="cartPayment"
-                            value="deposit"
-                            checked
-                        >
-
-                        <div>
-
-                            <strong>
-                                Pay 60% Deposit
-                            </strong>
-
-                            <small>
-                                Pay the remaining 40% later.
-                            </small>
-
-                        </div>
-
-                    </label>
-
-
-                    <!-- 100% FULL PAYMENT -->
-
-                    <label
-                        class="cart-payment-option"
-                        id="cartFullOption"
-                    >
-
-                        <input
-                            type="radio"
-                            name="cartPayment"
-                            value="full"
-                        >
-
-                        <div>
-
-                            <strong>
-                                Pay 100% in Full
-                            </strong>
-
-                            <small>
-                                Complete your payment now.
-                            </small>
-
-                        </div>
-
-                    </label>
-
-
-                    <!-- =================================
-                         PAYMENT BREAKDOWN
-                    ================================== -->
-
-                    <div class="payment-breakdown">
-
-
-                        <div class="breakdown-row">
-
-                            <span>
-                                Total
-                            </span>
-
-                            <strong id="paymentTotal">
-                                ₦0
-                            </strong>
-
-                        </div>
-
-
-                        <div class="breakdown-row pay-now-row">
-
-                            <span>
-                                Pay Now
-                            </span>
-
-                            <strong id="paymentNow">
-                                ₦0
-                            </strong>
-
-                        </div>
-
-
-                        <div
-                            class="breakdown-row balance-row"
-                            id="balanceRow"
-                        >
-
-                            <span>
-                                Remaining Balance
-                            </span>
-
-                            <strong id="paymentBalance">
-                                ₦0
-                            </strong>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- =================================
-                         CHECKOUT
-                    ================================== -->
-
-                    <button
-                        type="button"
-                        class="checkout-button"
-                        id="checkoutButton"
-                    >
-                        Continue to Checkout
-                    </button>
-
-
-                    <!-- SECURE CHECKOUT -->
-
-                    <div class="secure-note">
+                    <div class="breakdown-row pay-now-row">
 
                         <span>
-                            🔒
+                            Pay Now
                         </span>
 
-                        <div>
-
-                            <strong>
-                                Secure Checkout
-                            </strong>
-
-                            <small>
-                                Your order information is handled securely.
-                            </small>
-
-                        </div>
-
-                    </div>
-
-                </aside>
-
-            </section>
-
-        </div>
-
-    </main>
-
-
-    <!-- =========================================
-         PAYMENT INFO
-    ========================================== -->
-
-    <section class="payment-info">
-
-        <div class="cart-container">
-
-            <div class="payment-info-content">
-
-                <div class="payment-info-icon">
-                    💳
-                </div>
-
-                <div>
-
-                    <h2>
-                        Flexible Payment
-                    </h2>
-
-                    <p>
-                        Choose to pay 60% now and 40% later,
-                        or pay the full amount at checkout.
-                    </p>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- =========================================
-         FOOTER
-    ========================================== -->
-
-    <footer class="site-footer">
-
-        <div class="cart-container">
-
-            <div class="footer-grid">
-
-
-                <!-- BRAND -->
-
-                <div>
-
-                    <div class="footer-brand">
-
-                        <span class="brand-mark">
-                            AF
-                        </span>
-
-                        <strong>
-                            Ayodeji Fashion Hubs
+                        <strong id="paymentNow">
+                            ₦0
                         </strong>
 
                     </div>
 
-                    <p>
-                        Quality shoes and fashion for every style.
-                    </p>
+
+                    <div
+                        class="breakdown-row balance-row"
+                        id="balanceRow"
+                    >
+
+                        <span>
+                            Remaining Balance
+                        </span>
+
+                        <strong id="paymentBalance">
+                            ₦0
+                        </strong>
+
+                    </div>
 
                 </div>
 
 
-                <!-- SHOP -->
+                <!-- CHECKOUT BUTTON -->
 
-                <div>
-
-                    <h3>
-                        Shop
-                    </h3>
-
-                    <a href="shop.html">
-                        All Products
-                    </a>
-
-                    <a href="shop.html?category=sneakers">
-                        Sneakers
-                    </a>
-
-                    <a href="shop.html?category=formal">
-                        Formal
-                    </a>
-
-                    <a href="shop.html?category=casual">
-                        Casual
-                    </a>
-
-                </div>
+                <button
+                    type="button"
+                    class="checkout-button"
+                    id="checkoutButton"
+                >
+                    Continue to Checkout
+                </button>
 
 
-                <!-- HELP -->
+                <!-- SECURE NOTE -->
 
-                <div>
+                <div class="secure-note">
 
-                    <h3>
-                        Help
-                    </h3>
-
-                    <a href="#">
-                        My Orders
-                    </a>
-
-                    <a href="#">
-                        Contact Us
-                    </a>
-
-                    <a href="#">
-                        Delivery
-                    </a>
-
-                </div>
-
-            </div>
-
-
-            <!-- FOOTER BOTTOM -->
-
-            <div class="footer-bottom">
-
-                <span>
-
-                    ©
-
-                    <span id="currentYear">
+                    <span>
+                        🔒
                     </span>
 
-                    Ayodeji Fashion Hubs
+                    <div>
 
-                </span>
+                        <strong>
+                            Secure Checkout
+                        </strong>
 
-                <span>
-                    All rights reserved.
-                </span>
+                        <small>
+                            Your order information is handled securely.
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </aside>
+
+        </section>
+
+    </div>
+
+</main>
+
+
+<!-- =========================================
+     PAYMENT INFO
+========================================= -->
+
+<section class="payment-info">
+
+    <div class="cart-container">
+
+        <div class="payment-info-content">
+
+            <div class="payment-info-icon">
+                💳
+            </div>
+
+            <div>
+
+                <h2>
+                    Flexible Payment
+                </h2>
+
+                <p>
+                    Choose to pay 60% now and 40% later,
+                    or pay the full amount at checkout.
+                </p>
 
             </div>
 
         </div>
 
-    </footer>
+    </div>
+
+</section>
 
 
-    <!-- =========================================
-         SCRIPTS
-    ========================================== -->
+<!-- =========================================
+     FOOTER
+========================================= -->
 
-    <!-- Supabase -->
+<footer class="site-footer">
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <div class="cart-container">
 
-    <script src="js/supabase.js"></script>
+        <div class="footer-grid">
 
-    <script src="js/main.js"></script>
+            <div>
 
-    <script src="js/cart.js"></script>
+                <div class="footer-brand">
+
+                    <span class="brand-mark">
+                        AF
+                    </span>
+
+                    <strong>
+                        Ayodeji Fashion Hubs
+                    </strong>
+
+                </div>
+
+                <p>
+                    Quality shoes and fashion for every style.
+                </p>
+
+            </div>
+
+
+            <div>
+
+                <h3>
+                    Shop
+                </h3>
+
+                <a href="shop.html">
+                    All Products
+                </a>
+
+                <a href="shop.html?category=sneakers">
+                    Sneakers
+                </a>
+
+                <a href="shop.html?category=formal">
+                    Formal
+                </a>
+
+                <a href="shop.html?category=casual">
+                    Casual
+                </a>
+
+            </div>
+
+
+            <div>
+
+                <h3>
+                    Help
+                </h3>
+
+                <a href="track-order.html">
+                    My Orders
+                </a>
+
+                <a href="profile.html">
+                    Contact Us
+                </a>
+
+                <a href="track-order.html">
+                    Track Order
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <span>
+
+                ©
+
+                <span id="currentYear"></span>
+
+                Ayodeji Fashion Hubs
+
+            </span>
+
+            <span>
+                All rights reserved.
+            </span>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+<!-- =========================================
+     SCRIPTS
+========================================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="js/supabase.js"></script>
+
+<script src="js/main.js"></script>
+
+<script src="js/cart.js"></script>
 
 </body>
-
 </html>
