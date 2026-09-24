@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Ayodeji Fashion Hubs Admin Dashboard"
+    >
+
+    <title>
+        Admin Dashboard - Ayodeji Fashion Hubs
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/admin.css"
+    >
+
+</head>
+
+
+<body>
+
+<!-- =========================================
+     ADMIN LOGIN
+========================================= -->
+
+<section
+    id="adminLoginView"
+    class="admin-login-view"
+>
+
+    <div class="admin-login-card">
+
+        <div class="admin-login-logo">
+            👟
+        </div>
+
+        <h1>
+            Ayodeji Fashion Hubs
+        </h1>
+
+        <p class="admin-login-subtitle">
+            Admin Dashboard
+        </p>
+
+
+        <form id="adminLoginForm">
+
+            <div class="admin-form-group">
+
+                <label for="adminEmail">
+                    Email Address
+                </label>
+
+                <input
+                    type="email"
+                    id="adminEmail"
+                    placeholder="Enter admin email"
+                    autocomplete="email"
+                    required
+                >
+
+            </div>
+
+
+            <div class="admin-form-group">
+
+                <label for="adminPassword">
+                    Password
+                </label>
+
+                <div class="password-input-wrapper">
+
+                    <input
+                        type="password"
+                        id="adminPassword"
+                        placeholder="Enter password"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                    <button
+                        type="button"
+                        id="toggleAdminPassword"
+                        class="password-toggle"
+                        aria-label="Show password"
+                    >
+                        👁️
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <p
+                id="adminLoginMessage"
+                class="admin-login-message"
+            ></p>
+
+
+            <button
+                type="submit"
+                id="adminLoginButton"
+                class="admin-primary-button admin-login-button"
+            >
+
+                <span id="adminLoginButtonText">
+                    Login
+                </span>
+
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================
+     ADMIN DASHBOARD
+========================================= -->
+
+<section
+    id="adminDashboardView"
+    class="admin-dashboard-view hidden"
+>
+
+    <!-- =====================================
+         HEADER
+    ====================================== -->
+
+    <header class="admin-header">
+
+        <div class="admin-header-inner">
+
+            <div>
+
+                <div class="admin-brand">
+                    👟 Ayodeji Fashion Hubs
+                </div>
+
+                <div class="admin-header-subtitle">
+                    Administration Dashboard
+                </div>
+
+            </div>
+
+
+            <button
+                type="button"
+                id="adminLogout"
+                class="admin-logout-button"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================
+         MAIN
+    ====================================== -->
+
+    <main class="admin-main">
+
+        <!-- =================================
+             TABS
+        ================================== -->
+
+        <nav class="admin-tabs">
+
+            <button
+                type="button"
+                class="admin-tab active"
+                data-section="ordersSection"
+            >
+                📦 Orders
+            </button>
+
+
+            <button
+                type="button"
+                class="admin-tab"
+                data-section="productsSection"
+            >
+                👟 Products
+            </button>
+
+        </nav>
+
+
+
+        <!-- =================================
+             ORDERS SECTION
+        ================================== -->
+
+        <section
+            id="ordersSection"
+            class="admin-section"
+        >
+
+            <div class="admin-section-header">
+
+                <div>
+
+                    <h2>
+                        Orders
+                    </h2>
+
+                    <p>
+                        Manage customer orders and payments.
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="refreshOrders"
+                    class="admin-secondary-button"
+                >
+                    🔄 Refresh
+                </button>
+
+            </div>
+
+
+
+            <!-- =================================
+                 ORDER STATISTICS
+            ================================== -->
+
+            <div class="admin-stats-grid">
+
+                <div class="admin-stat-card">
+
+                    <span class="admin-stat-icon">
+                        📦
+                    </span>
+
+                    <div>
+
+                        <span>
+                            Total Orders
+                        </span>
+
+                        <strong id="totalOrders">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="admin-stat-card">
+
+                    <span class="admin-stat-icon">
+                        ⏳
+                    </span>
+
+                    <div>
+
+                        <span>
+                            Pending Payment
+                        </span>
+
+                        <strong id="pendingPayment">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="admin-stat-card">
+
+                    <span class="admin-stat-icon">
+                        💳
+                    </span>
+
+                    <div>
+
+                        <span>
+                            Paid Orders
+                        </span>
+
+                        <strong id="paidOrders">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="admin-stat-card">
+
+                    <span class="admin-stat-icon">
+                        ✅
+                    </span>
+
+                    <div>
+
+                        <span>
+                            Delivered
+                        </span>
+
+                        <strong id="deliveredOrders">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================
+                 ORDER FILTERS
+            ================================== -->
+
+            <div class="admin-filters">
+
+                <div class="admin-filter-field">
+
+                    <label for="orderSearch">
+                        Search Orders
+                    </label>
+
+                    <input
+                        type="search"
+                        id="orderSearch"
+                        placeholder="Reference, name, phone or email..."
+                    >
+
+                </div>
+
+
+                <div class="admin-filter-field">
+
+                    <label for="statusFilter">
+                        Status
+                    </label>
+
+                    <select id="statusFilter">
+
+                        <option value="">
+                            All Statuses
+                        </option>
+
+                        <option value="Pending Payment">
+                            Pending Payment
+                        </option>
+
+                        <option value="Deposit Paid">
+                            Deposit Paid
+                        </option>
+
+                        <option value="Balance Pending">
+                            Balance Pending
+                        </option>
+
+                        <option value="Fully Paid">
+                            Fully Paid
+                        </option>
+
+                        <option value="Processing">
+                            Processing
+                        </option>
+
+                        <option value="Shipped">
+                            Shipped
+                        </option>
+
+                        <option value="Delivered">
+                            Delivered
+                        </option>
+
+                        <option value="Cancelled">
+                            Cancelled
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================
+                 DESKTOP ORDERS TABLE
+            ================================== -->
+
+            <div class="admin-orders-table-wrapper">
+
+                <table class="admin-orders-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Order
+                            </th>
+
+                            <th>
+                                Customer
+                            </th>
+
+                            <th>
+                                Total
+                            </th>
+
+                            <th>
+                                Payment
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Date
+                            </th>
+
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="ordersTable">
+
+                        <tr>
+
+                            <td colspan="7">
+                                Loading orders...
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+
+            <!-- =================================
+                 MOBILE ORDERS
+            ================================== -->
+
+            <div
+                id="ordersGrid"
+                class="orders-grid"
+            ></div>
+
+
+            <div
+                id="emptyOrders"
+                class="empty-state hidden"
+            >
+
+                <div class="empty-state-icon">
+                    📦
+                </div>
+
+                <h3>
+                    No orders found
+                </h3>
+
+                <p>
+                    Customer orders will appear here.
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================
+             PRODUCTS SECTION
+        ================================== -->
+
+        <section
+            id="productsSection"
+            class="admin-section hidden"
+        >
+
+            <div class="admin-section-header">
+
+                <div>
+
+                    <h2>
+                        Products
+                    </h2>
+
+                    <p>
+                        Add, edit and manage your products.
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="addProductButton"
+                    class="admin-primary-button"
+                >
+                    + Add Product
+                </button>
+
+            </div>
+
+
+
+            <!-- =================================
+                 PRODUCT FILTERS
+            ================================== -->
+
+            <div class="admin-filters">
+
+                <div class="admin-filter-field">
+
+                    <label for="productSearch">
+                        Search Products
+                    </label>
+
+                    <input
+                        type="search"
+                        id="productSearch"
+                        placeholder="Product name or ID..."
+                    >
+
+                </div>
+
+
+                <div class="admin-filter-field">
+
+                    <label for="productCategoryFilter">
+                        Category
+                    </label>
+
+                    <select id="productCategoryFilter">
+
+                        <option value="">
+                            All Categories
+                        </option>
+
+                        <option value="sneakers">
+                            Sneakers
+                        </option>
+
+                        <option value="formal">
+                            Formal
+                        </option>
+
+                        <option value="casual">
+                            Casual
+                        </option>
+
+                        <option value="slippers">
+                            Slippers
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="admin-filter-field">
+
+                    <label for="productStatusFilter">
+                        Status
+                    </label>
+
+                    <select id="productStatusFilter">
+
+                        <option value="">
+                            All Products
+                        </option>
+
+                        <option value="active">
+                            Active
+                        </option>
+
+                        <option value="inactive">
+                            Inactive
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="products-admin-heading">
+
+                <strong id="productsCount">
+                    0 Products
+                </strong>
+
+            </div>
+
+
+
+            <!-- =================================
+                 PRODUCTS GRID
+            ================================== -->
+
+            <div
+                id="productsAdminGrid"
+                class="products-admin-grid"
+            ></div>
+
+
+            <div
+                id="emptyProducts"
+                class="empty-state hidden"
+            >
+
+                <div class="empty-state-icon">
+                    👟
+                </div>
+
+                <h3>
+                    No products found
+                </h3>
+
+                <p>
+                    Add your first product to the store.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</section>
+
+
+
+<!-- =========================================
+     ORDER MODAL
+========================================= -->
+
+<div
+    id="orderModal"
+    class="admin-modal hidden"
+>
+
+    <div class="admin-modal-card">
+
+        <div class="admin-modal-header">
+
+            <h2>
+                Order Details
+            </h2>
+
+            <button
+                type="button"
+                id="closeOrderModal"
+                class="admin-modal-close"
+            >
+                ✕
+            </button>
+
+        </div>
+
+
+        <div
+            id="orderModalContent"
+            class="admin-modal-content"
+        ></div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================
+     PRODUCT MODAL
+========================================= -->
+
+<div
+    id="productModal"
+    class="admin-modal hidden"
+>
+
+    <div class="admin-modal-card">
+
+        <div class="admin-modal-header">
+
+            <h2 id="productModalTitle">
+                Add Product
+            </h2>
+
+            <button
+                type="button"
+                id="closeProductModal"
+                class="admin-modal-close"
+            >
+                ✕
+            </button>
+
+        </div>
+
+
+        <div class="admin-modal-content">
+
+            <form id="productForm">
+
+                <input
+                    type="hidden"
+                    id="productId"
+                >
+
+
+                <!-- IMAGE -->
+
+                <div class="admin-form-group">
+
+                    <label>
+                        Product Image
+                    </label>
+
+
+                    <div
+                        id="productImagePreview"
+                        class="product-image-preview"
+                    >
+
+                        <span>
+                            👟
+                        </span>
+
+                    </div>
+
+
+                    <label
+                        for="productImage"
+                        class="gallery-upload-button"
+                    >
+                        📷 Choose Image From Gallery
+                    </label>
+
+                    <input
+                        type="file"
+                        id="productImage"
+                        accept="image/*"
+                        hidden
+                    >
+
+                    <small>
+                        Maximum image size: 5MB
+                    </small>
+
+                </div>
+
+
+
+                <!-- NAME -->
+
+                <div class="admin-form-group">
+
+                    <label for="productName">
+                        Product Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="productName"
+                        placeholder="e.g. Classic White Sneakers"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- CATEGORY -->
+
+                <div class="admin-form-group">
+
+                    <label for="productCategory">
+                        Category
+                    </label>
+
+                    <select
+                        id="productCategory"
+                        required
+                    >
+
+                        <option value="">
+                            Select category
+                        </option>
+
+                        <option value="sneakers">
+                            Sneakers
+                        </option>
+
+                        <option value="formal">
+                            Formal
+                        </option>
+
+                        <option value="casual">
+                            Casual
+                        </option>
+
+                        <option value="slippers">
+                            Slippers
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- BADGE -->
+
+                <div class="admin-form-group">
+
+                    <label for="productBadge">
+                        Badge
+                    </label>
+
+                    <input
+                        type="text"
+                        id="productBadge"
+                        placeholder="Popular, Sale, New..."
+                    >
+
+                </div>
+
+
+
+                <!-- PRICE -->
+
+                <div class="admin-form-row">
+
+                    <div class="admin-form-group">
+
+                        <label for="productPrice">
+                            Price (₦)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="productPrice"
+                            min="0"
+                            step="1"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="admin-form-group">
+
+                        <label for="productOldPrice">
+                            Old Price (₦)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="productOldPrice"
+                            min="0"
+                            step="1"
+                        >
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- STOCK -->
+
+                <div class="admin-form-group">
+
+                    <label for="productStock">
+                        Stock Quantity
+                    </label>
+
+                    <input
+                        type="number"
+                        id="productStock"
+                        min="0"
+                        step="1"
+                        value="0"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- ICON -->
+
+                <div class="admin-form-group">
+
+                    <label for="productIcon">
+                        Product Icon
+                    </label>
+
+                    <input
+                        type="text"
+                        id="productIcon"
+                        value="👟"
+                        maxlength="10"
+                    >
+
+                </div>
+
+
+
+                <!-- SIZES -->
+
+                <div class="admin-form-group">
+
+                    <label for="productSizes">
+                        Sizes
+                    </label>
+
+                    <input
+                        type="text"
+                        id="productSizes"
+                        placeholder="39,40,41,42,43,44"
+                    >
+
+                    <small>
+                        Separate sizes with commas.
+                    </small>
+
+                </div>
+
+
+
+                <!-- DESCRIPTION -->
+
+                <div class="admin-form-group">
+
+                    <label for="productDescription">
+                        Description
+                    </label>
+
+                    <textarea
+                        id="productDescription"
+                        rows="5"
+                        placeholder="Describe the product..."
+                    ></textarea>
+
+                </div>
+
+
+
+                <!-- ACTIVE -->
+
+                <div class="admin-checkbox-group">
+
+                    <input
+                        type="checkbox"
+                        id="productActive"
+                        checked
+                    >
+
+                    <label for="productActive">
+                        Product is active
+                    </label>
+
+                </div>
+
+
+
+                <p
+                    id="productFormMessage"
+                    class="product-form-message"
+                ></p>
+
+
+
+                <!-- BUTTONS -->
+
+                <div class="admin-modal-actions">
+
+                    <button
+                        type="button"
+                        id="cancelProductButton"
+                        class="admin-secondary-button"
+                    >
+                        Cancel
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        id="saveProductButton"
+                        class="admin-primary-button"
+                    >
+                        Save Product
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================
+     SCRIPTS
+========================================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="js/supabase.js"></script>
+
+<script src="js/admin.js"></script>
+
+
+</body>
+
+</html>

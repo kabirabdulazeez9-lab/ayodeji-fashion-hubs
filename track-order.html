@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Track your Ayodeji Fashion Hubs order"
+    >
+
+    <title>Track Order - Ayodeji Fashion Hubs</title>
+
+    <!-- Main Styles -->
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+    <!-- Track Order Styles -->
+    <link
+        rel="stylesheet"
+        href="css/track-order.css"
+    >
+</head>
+
+<body>
+
+    <!-- =========================================
+         HEADER
+    ========================================== -->
+
+    <header class="site-header">
+
+        <div class="header-container">
+
+            <a
+                href="index.html"
+                class="logo"
+            >
+                <span class="logo-mark">AFH</span>
+
+                <span class="logo-text">
+                    Ayodeji Fashion Hubs
+                </span>
+            </a>
+
+
+            <!-- Desktop Navigation -->
+
+            <nav
+                class="desktop-nav"
+                aria-label="Main navigation"
+            >
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a href="shop.html">
+                    Shop
+                </a>
+
+                <a
+                    href="track-order.html"
+                    class="active"
+                >
+                    Track Order
+                </a>
+
+                <a
+                    href="cart.html"
+                    class="cart-link"
+                >
+                    Cart
+                    <span
+                        id="cartCount"
+                        class="cart-count"
+                    >
+                        0
+                    </span>
+                </a>
+
+            </nav>
+
+
+            <!-- Mobile Header Actions -->
+
+            <div class="header-actions">
+
+                <a
+                    href="cart.html"
+                    class="mobile-cart"
+                    aria-label="Shopping cart"
+                >
+                    🛒
+
+                    <span
+                        id="mobileCartCount"
+                        class="cart-count"
+                    >
+                        0
+                    </span>
+                </a>
+
+
+                <button
+                    type="button"
+                    id="menuButton"
+                    class="menu-button"
+                    aria-label="Open menu"
+                    aria-expanded="false"
+                >
+                    ☰
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- Mobile Navigation -->
+
+        <nav
+            id="mobileNav"
+            class="mobile-nav"
+            aria-label="Mobile navigation"
+        >
+
+            <a href="index.html">
+                🏠 Home
+            </a>
+
+            <a href="shop.html">
+                🛍️ Shop
+            </a>
+
+            <a
+                href="track-order.html"
+                class="active"
+            >
+                📦 Track Order
+            </a>
+
+            <a href="cart.html">
+                🛒 Cart
+            </a>
+
+        </nav>
+
+    </header>
+
+
+
+    <!-- =========================================
+         MAIN
+    ========================================== -->
+
+    <main>
+
+
+        <!-- =====================================
+             HERO
+        ====================================== -->
+
+        <section class="track-hero">
+
+            <div class="track-hero-content">
+
+                <span class="hero-label">
+                    ORDER TRACKING
+                </span>
+
+                <h1>
+                    Track Your Order
+                </h1>
+
+                <p>
+                    Enter your order reference and
+                    the phone number used during
+                    checkout to securely view your
+                    order status.
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================
+             TRACKING SEARCH
+        ====================================== -->
+
+        <section class="track-section">
+
+            <div class="track-container">
+
+                <div class="track-search-card">
+
+                    <div class="track-card-header">
+
+                        <span class="track-card-icon">
+                            🔎
+                        </span>
+
+                        <div>
+
+                            <h2>
+                                Find Your Order
+                            </h2>
+
+                            <p>
+                                Enter both details to
+                                securely access your order.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Tracking Form -->
+
+                    <form
+                        id="trackOrderForm"
+                        class="track-form"
+                        novalidate
+                    >
+
+                        <!-- Order Reference -->
+
+                        <div class="form-group">
+
+                            <label
+                                for="orderReference"
+                            >
+                                Order Reference
+                            </label>
+
+                            <input
+                                type="text"
+                                id="orderReference"
+                                name="orderReference"
+                                placeholder="e.g. AFH-123456"
+                                autocomplete="off"
+                                autocapitalize="characters"
+                                spellcheck="false"
+                                required
+                            >
+
+                            <small>
+                                Enter the order reference
+                                you received after checkout.
+                            </small>
+
+                        </div>
+
+
+                        <!-- Customer Phone -->
+
+                        <div class="form-group">
+
+                            <label
+                                for="customerPhone"
+                            >
+                                Phone Number
+                            </label>
+
+                            <input
+                                type="tel"
+                                id="customerPhone"
+                                name="customerPhone"
+                                placeholder="Phone number used for your order"
+                                autocomplete="tel"
+                                inputmode="tel"
+                                required
+                            >
+
+                            <small>
+                                Use the same phone number
+                                entered during checkout.
+                            </small>
+
+                        </div>
+
+
+                        <!-- Submit -->
+
+                        <button
+                            type="submit"
+                            id="trackOrderButton"
+                            class="primary-button track-button"
+                        >
+
+                            <span
+                                id="trackButtonText"
+                            >
+                                Track Order
+                            </span>
+
+                        </button>
+
+                    </form>
+
+
+                    <!-- Message -->
+
+                    <div
+                        id="trackOrderMessage"
+                        class="track-message"
+                        hidden
+                        role="alert"
+                    ></div>
+
+
+                    <!-- Security Notice -->
+
+                    <div class="tracking-security-note">
+
+                        <span>
+                            🔐
+                        </span>
+
+                        <p>
+                            Your order is protected.
+                            We verify your order reference
+                            together with your phone number
+                            before showing order information.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================
+             ORDER RESULT
+        ====================================== -->
+
+        <section
+            id="orderResult"
+            class="order-result-section"
+            hidden
+        >
+
+            <div class="track-container">
+
+
+                <!-- =================================
+                     ORDER STATUS CARD
+                ================================== -->
+
+                <article class="tracked-order-card">
+
+                    <div class="tracked-order-header">
+
+                        <div>
+
+                            <span class="section-label">
+                                ORDER REFERENCE
+                            </span>
+
+                            <h2
+                                id="resultOrderReference"
+                            >
+                                —
+                            </h2>
+
+                        </div>
+
+
+                        <span
+                            id="resultOrderStatus"
+                            class="status-badge"
+                        >
+                            —
+                        </span>
+
+                    </div>
+
+
+                    <!-- Status Summary -->
+
+                    <div class="status-summary">
+
+                        <div
+                            id="resultStatusIcon"
+                            class="status-icon"
+                        >
+                            📦
+                        </div>
+
+                        <div class="status-summary-content">
+
+                            <h3
+                                id="resultStatusTitle"
+                            >
+                                Order Status
+                            </h3>
+
+                            <p
+                                id="resultStatusMessage"
+                            >
+                                —
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- =================================
+                         ORDER TIMELINE
+                    ================================== -->
+
+                    <div class="order-timeline-section">
+
+                        <div class="section-heading">
+
+                            <span class="section-label">
+                                PROGRESS
+                            </span>
+
+                            <h3>
+                                Order Timeline
+                            </h3>
+
+                        </div>
+
+
+                        <div class="order-timeline">
+
+
+                            <!-- Step 1 -->
+
+                            <div
+                                class="timeline-step"
+                                data-step="1"
+                            >
+
+                                <div class="timeline-marker">
+                                    <span>1</span>
+                                </div>
+
+                                <div class="timeline-content">
+
+                                    <h4>
+                                        Order Placed
+                                    </h4>
+
+                                    <p>
+                                        Your order has
+                                        been received.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Step 2 -->
+
+                            <div
+                                class="timeline-step"
+                                data-step="2"
+                            >
+
+                                <div class="timeline-marker">
+                                    <span>2</span>
+                                </div>
+
+                                <div class="timeline-content">
+
+                                    <h4>
+                                        Payment
+                                    </h4>
+
+                                    <p>
+                                        Payment is being
+                                        confirmed.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Step 3 -->
+
+                            <div
+                                class="timeline-step"
+                                data-step="3"
+                            >
+
+                                <div class="timeline-marker">
+                                    <span>3</span>
+                                </div>
+
+                                <div class="timeline-content">
+
+                                    <h4>
+                                        Processing
+                                    </h4>
+
+                                    <p>
+                                        Your order is
+                                        being prepared.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Step 4 -->
+
+                            <div
+                                class="timeline-step"
+                                data-step="4"
+                            >
+
+                                <div class="timeline-marker">
+                                    <span>4</span>
+                                </div>
+
+                                <div class="timeline-content">
+
+                                    <h4>
+                                        Shipped
+                                    </h4>
+
+                                    <p>
+                                        Your order is
+                                        on the way.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Step 5 -->
+
+                            <div
+                                class="timeline-step"
+                                data-step="5"
+                            >
+
+                                <div class="timeline-marker">
+                                    <span>5</span>
+                                </div>
+
+                                <div class="timeline-content">
+
+                                    <h4>
+                                        Delivered
+                                    </h4>
+
+                                    <p>
+                                        Your order has
+                                        been delivered.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- =================================
+                         CUSTOMER & DELIVERY
+                    ================================== -->
+
+                    <div class="order-details-grid">
+
+
+                        <!-- Customer -->
+
+                        <div class="order-detail-card">
+
+                            <div class="detail-card-heading">
+
+                                <span>
+                                    👤
+                                </span>
+
+                                <h3>
+                                    Customer
+                                </h3>
+
+                            </div>
+
+                            <div class="detail-row">
+
+                                <span>
+                                    Name
+                                </span>
+
+                                <strong
+                                    id="resultCustomerName"
+                                >
+                                    —
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Delivery -->
+
+                        <div class="order-detail-card">
+
+                            <div class="detail-card-heading">
+
+                                <span>
+                                    📍
+                                </span>
+
+                                <h3>
+                                    Delivery
+                                </h3>
+
+                            </div>
+
+                            <div class="detail-row">
+
+                                <span>
+                                    Address
+                                </span>
+
+                                <strong
+                                    id="resultDeliveryAddress"
+                                >
+                                    —
+                                </strong>
+
+                            </div>
+
+                            <div class="detail-row">
+
+                                <span>
+                                    Location
+                                </span>
+
+                                <strong
+                                    id="resultDeliveryLocation"
+                                >
+                                    —
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Payment -->
+
+                        <div class="order-detail-card">
+
+                            <div class="detail-card-heading">
+
+                                <span>
+                                    💳
+                                </span>
+
+                                <h3>
+                                    Payment
+                                </h3>
+
+                            </div>
+
+                            <div class="detail-row">
+
+                                <span>
+                                    Method
+                                </span>
+
+                                <strong
+                                    id="resultPaymentMethod"
+                                >
+                                    —
+                                </strong>
+
+                            </div>
+
+                            <div class="detail-row">
+
+                                <span>
+                                    Plan
+                                </span>
+
+                                <strong
+                                    id="resultPaymentPlan"
+                                >
+                                    —
+                                </strong>
+
+                            </div>
+
+                            <div class="detail-row">
+
+                                <span>
+                                    Status
+                                </span>
+
+                                <strong
+                                    id="resultPaymentStatus"
+                                >
+                                    —
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Order Date -->
+
+                        <div class="order-detail-card">
+
+                            <div class="detail-card-heading">
+
+                                <span>
+                                    🗓️
+                                </span>
+
+                                <h3>
+                                    Order Date
+                                </h3>
+
+                            </div>
+
+                            <div class="detail-row">
+
+                                <span>
+                                    Placed
+                                </span>
+
+                                <strong
+                                    id="resultOrderDate"
+                                >
+                                    —
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- =================================
+                         PAYMENT SUMMARY
+                    ================================== -->
+
+                    <div class="payment-summary-card">
+
+                        <div class="section-heading">
+
+                            <span class="section-label">
+                                PAYMENT SUMMARY
+                            </span>
+
+                            <h3>
+                                Order Payment
+                            </h3>
+
+                        </div>
+
+
+                        <div class="payment-summary-row">
+
+                            <span>
+                                Subtotal
+                            </span>
+
+                            <strong
+                                id="resultSubtotal"
+                            >
+                                ₦0
+                            </strong>
+
+                        </div>
+
+
+                        <div class="payment-summary-row total-row">
+
+                            <span>
+                                Total
+                            </span>
+
+                            <strong
+                                id="resultTotal"
+                            >
+                                ₦0
+                            </strong>
+
+                        </div>
+
+
+                        <div class="payment-summary-row">
+
+                            <span>
+                                Paid / Pay Now
+                            </span>
+
+                            <strong
+                                id="resultPayNow"
+                            >
+                                ₦0
+                            </strong>
+
+                        </div>
+
+
+                        <div
+                            class="payment-summary-row"
+                            id="resultBalanceRow"
+                        >
+
+                            <span>
+                                Balance
+                            </span>
+
+                            <strong
+                                id="resultBalance"
+                            >
+                                ₦0
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- =================================
+                         ORDER ITEMS
+                    ================================== -->
+
+                    <div class="order-items-section">
+
+                        <div class="section-heading">
+
+                            <span class="section-label">
+                                ORDER ITEMS
+                            </span>
+
+                            <h3>
+                                Items in Your Order
+                            </h3>
+
+                        </div>
+
+
+                        <div
+                            id="resultOrderItems"
+                            class="result-order-items"
+                        >
+
+                            <!-- Items inserted by JavaScript -->
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- =================================
+                         CUSTOMER NOTE
+                    ================================== -->
+
+                    <div
+                        id="resultNoteSection"
+                        class="customer-note-section"
+                        hidden
+                    >
+
+                        <div class="note-heading">
+
+                            <span>
+                                📝
+                            </span>
+
+                            <h3>
+                                Your Note
+                            </h3>
+
+                        </div>
+
+                        <p
+                            id="resultCustomerNote"
+                        ></p>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- =================================
+                     NOTIFICATIONS
+                ================================== -->
+
+                <section
+                    id="notificationSection"
+                    class="notification-section"
+                    hidden
+                >
+
+                    <div class="notification-header">
+
+                        <div>
+
+                            <span class="section-label">
+                                UPDATES
+                            </span>
+
+                            <h2>
+                                Order Notifications
+                            </h2>
+
+                            <p>
+                                Updates about your order
+                                will appear here.
+                            </p>
+
+                        </div>
+
+
+                        <span
+                            id="notificationCount"
+                            class="notification-count"
+                        >
+                            0
+                        </span>
+
+                    </div>
+
+
+                    <div
+                        id="notificationList"
+                        class="notification-list"
+                    >
+
+                        <!-- Notifications inserted by JavaScript -->
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- =================================
+                     TRACKING HELP
+                ================================== -->
+
+                <div
+                    id="trackingHelp"
+                    class="tracking-help"
+                >
+
+                    <div class="help-icon">
+                        💬
+                    </div>
+
+                    <div class="help-content">
+
+                        <h3>
+                            Need Help?
+                        </h3>
+
+                        <p>
+                            If you have any questions
+                            about your order, please
+                            contact Ayodeji Fashion Hubs.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================== -->
+
+    <footer class="site-footer">
+
+        <div class="footer-container">
+
+            <div class="footer-brand">
+
+                <div class="footer-logo">
+                    AFH
+                </div>
+
+                <h3>
+                    Ayodeji Fashion Hubs
+                </h3>
+
+                <p>
+                    Quality footwear and fashion
+                    for every occasion.
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <h4>
+                    Quick Links
+                </h4>
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a href="shop.html">
+                    Shop
+                </a>
+
+                <a href="track-order.html">
+                    Track Order
+                </a>
+
+                <a href="cart.html">
+                    Cart
+                </a>
+
+            </div>
+
+
+            <div class="footer-payment">
+
+                <h4>
+                    Payment
+                </h4>
+
+                <p>
+                    OPay Bank Transfer
+                </p>
+
+                <p>
+                    Cash on Delivery
+                </p>
+
+                <p>
+                    60% Deposit / 100% Full Payment
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <p>
+                ©
+                <span id="currentYear"></span>
+                Ayodeji Fashion Hubs.
+                All rights reserved.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+
+    <!-- =========================================
+         SCRIPTS
+    ========================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
+
+    <script src="js/supabase.js"></script>
+
+    <script src="js/main.js"></script>
+
+    <script src="js/track-order.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Shopping Cart | Ayodeji Fashion Hubs</title>
+
+    <meta
+        name="description"
+        content="Review your shopping cart and payment options at Ayodeji Fashion Hubs."
+    >
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/cart.css">
+
+</head>
+
+<body>
+
+    <!-- =========================================
+         HEADER
+    ========================================== -->
+
+    <header class="site-header">
+
+        <div class="header-inner">
+
+            <a
+                href="index.html"
+                class="brand"
+            >
+
+                <span class="brand-mark">
+                    AF
+                </span>
+
+                <span class="brand-text">
+                    <strong>Ayodeji</strong>
+                    <small>Fashion Hubs</small>
+                </span>
+
+            </a>
+
+
+            <!-- DESKTOP NAV -->
+
+            <nav class="desktop-nav">
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a href="shop.html">
+                    Shop
+                </a>
+
+                <a href="#">
+                    My Orders
+                </a>
+
+                <a href="#">
+                    Account
+                </a>
+
+            </nav>
+
+
+            <!-- CART -->
+
+            <a
+                href="cart.html"
+                class="cart-button active-cart"
+                aria-label="Shopping cart"
+            >
+
+                🛒
+
+                <span id="cartCount">
+                    0
+                </span>
+
+            </a>
+
+
+            <!-- MOBILE MENU -->
+
+            <button
+                type="button"
+                class="menu-button"
+                id="menuButton"
+                aria-label="Open menu"
+                aria-expanded="false"
+            >
+                ☰
+            </button>
+
+        </div>
+
+
+        <!-- MOBILE NAV -->
+
+        <nav
+            class="mobile-nav"
+            id="mobileNav"
+        >
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="shop.html">
+                Shop
+            </a>
+
+            <a href="#">
+                My Orders
+            </a>
+
+            <a href="#">
+                Account
+            </a>
+
+        </nav>
+
+    </header>
+
+
+    <!-- =========================================
+         MAIN CART PAGE
+    ========================================== -->
+
+    <main class="cart-page">
+
+        <div class="cart-container">
+
+
+            <!-- PAGE HEADING -->
+
+            <div class="cart-heading">
+
+                <span class="eyebrow">
+                    YOUR SHOPPING BAG
+                </span>
+
+                <h1>
+                    Shopping Cart
+                </h1>
+
+                <p>
+                    Review your selected products before checkout.
+                </p>
+
+            </div>
+
+
+            <!-- =================================
+                 EMPTY CART
+            ================================== -->
+
+            <section
+                class="empty-cart"
+                id="emptyCart"
+                hidden
+            >
+
+                <div class="empty-cart-icon">
+                    🛒
+                </div>
+
+                <h2>
+                    Your cart is empty
+                </h2>
+
+                <p>
+                    You haven't added any products yet.
+                </p>
+
+                <a
+                    href="shop.html"
+                    class="primary-button"
+                >
+                    Continue Shopping
+                </a>
+
+            </section>
+
+
+            <!-- =================================
+                 CART CONTENT
+            ================================== -->
+
+            <section
+                class="cart-layout"
+                id="cartContent"
+                hidden
+            >
+
+
+                <!-- =================================
+                     CART ITEMS
+                ================================== -->
+
+                <div class="cart-items-section">
+
+                    <div class="cart-section-header">
+
+                        <div>
+
+                            <h2>
+                                Your Items
+                            </h2>
+
+                            <span id="itemsLabel">
+                                0 items
+                            </span>
+
+                        </div>
+
+
+                        <button
+                            type="button"
+                            class="clear-cart-button"
+                            id="clearCartButton"
+                        >
+                            Clear Cart
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        class="cart-items"
+                        id="cartItems"
+                    >
+                    </div>
+
+
+                    <a
+                        href="shop.html"
+                        class="continue-shopping"
+                    >
+                        ← Continue Shopping
+                    </a>
+
+                </div>
+
+
+                <!-- =================================
+                     ORDER SUMMARY
+                ================================== -->
+
+                <aside class="cart-summary">
+
+                    <h2>
+                        Order Summary
+                    </h2>
+
+
+                    <!-- ITEM COUNT -->
+
+                    <div class="summary-row">
+
+                        <span>
+                            Items
+                        </span>
+
+                        <strong id="summaryItems">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <!-- SUBTOTAL -->
+
+                    <div class="summary-row">
+
+                        <span>
+                            Subtotal
+                        </span>
+
+                        <strong id="summarySubtotal">
+                            ₦0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="summary-divider">
+                    </div>
+
+
+                    <!-- =================================
+                         PAYMENT OPTIONS
+                    ================================== -->
+
+                    <div class="payment-title">
+                        Payment Option
+                    </div>
+
+
+                    <!-- 60% DEPOSIT -->
+
+                    <label
+                        class="cart-payment-option selected"
+                        id="cartDepositOption"
+                    >
+
+                        <input
+                            type="radio"
+                            name="cartPayment"
+                            value="deposit"
+                            checked
+                        >
+
+                        <div>
+
+                            <strong>
+                                Pay 60% Deposit
+                            </strong>
+
+                            <small>
+                                Pay the remaining 40% later.
+                            </small>
+
+                        </div>
+
+                    </label>
+
+
+                    <!-- 100% FULL PAYMENT -->
+
+                    <label
+                        class="cart-payment-option"
+                        id="cartFullOption"
+                    >
+
+                        <input
+                            type="radio"
+                            name="cartPayment"
+                            value="full"
+                        >
+
+                        <div>
+
+                            <strong>
+                                Pay 100% in Full
+                            </strong>
+
+                            <small>
+                                Complete your payment now.
+                            </small>
+
+                        </div>
+
+                    </label>
+
+
+                    <!-- =================================
+                         PAYMENT BREAKDOWN
+                    ================================== -->
+
+                    <div class="payment-breakdown">
+
+
+                        <div class="breakdown-row">
+
+                            <span>
+                                Total
+                            </span>
+
+                            <strong id="paymentTotal">
+                                ₦0
+                            </strong>
+
+                        </div>
+
+
+                        <div class="breakdown-row pay-now-row">
+
+                            <span>
+                                Pay Now
+                            </span>
+
+                            <strong id="paymentNow">
+                                ₦0
+                            </strong>
+
+                        </div>
+
+
+                        <div
+                            class="breakdown-row balance-row"
+                            id="balanceRow"
+                        >
+
+                            <span>
+                                Remaining Balance
+                            </span>
+
+                            <strong id="paymentBalance">
+                                ₦0
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================
+                         CHECKOUT
+                    ================================== -->
+
+                    <button
+                        type="button"
+                        class="checkout-button"
+                        id="checkoutButton"
+                    >
+                        Continue to Checkout
+                    </button>
+
+
+                    <!-- SECURE CHECKOUT -->
+
+                    <div class="secure-note">
+
+                        <span>
+                            🔒
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                Secure Checkout
+                            </strong>
+
+                            <small>
+                                Your order information is handled securely.
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </aside>
+
+            </section>
+
+        </div>
+
+    </main>
+
+
+    <!-- =========================================
+         PAYMENT INFO
+    ========================================== -->
+
+    <section class="payment-info">
+
+        <div class="cart-container">
+
+            <div class="payment-info-content">
+
+                <div class="payment-info-icon">
+                    💳
+                </div>
+
+                <div>
+
+                    <h2>
+                        Flexible Payment
+                    </h2>
+
+                    <p>
+                        Choose to pay 60% now and 40% later,
+                        or pay the full amount at checkout.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================== -->
+
+    <footer class="site-footer">
+
+        <div class="cart-container">
+
+            <div class="footer-grid">
+
+
+                <!-- BRAND -->
+
+                <div>
+
+                    <div class="footer-brand">
+
+                        <span class="brand-mark">
+                            AF
+                        </span>
+
+                        <strong>
+                            Ayodeji Fashion Hubs
+                        </strong>
+
+                    </div>
+
+                    <p>
+                        Quality shoes and fashion for every style.
+                    </p>
+
+                </div>
+
+
+                <!-- SHOP -->
+
+                <div>
+
+                    <h3>
+                        Shop
+                    </h3>
+
+                    <a href="shop.html">
+                        All Products
+                    </a>
+
+                    <a href="shop.html?category=sneakers">
+                        Sneakers
+                    </a>
+
+                    <a href="shop.html?category=formal">
+                        Formal
+                    </a>
+
+                    <a href="shop.html?category=casual">
+                        Casual
+                    </a>
+
+                </div>
+
+
+                <!-- HELP -->
+
+                <div>
+
+                    <h3>
+                        Help
+                    </h3>
+
+                    <a href="#">
+                        My Orders
+                    </a>
+
+                    <a href="#">
+                        Contact Us
+                    </a>
+
+                    <a href="#">
+                        Delivery
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- FOOTER BOTTOM -->
+
+            <div class="footer-bottom">
+
+                <span>
+
+                    ©
+
+                    <span id="currentYear">
+                    </span>
+
+                    Ayodeji Fashion Hubs
+
+                </span>
+
+                <span>
+                    All rights reserved.
+                </span>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <!-- =========================================
+         SCRIPTS
+    ========================================== -->
+
+    <!-- Supabase -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="js/supabase.js"></script>
+
+    <script src="js/main.js"></script>
+
+    <script src="js/cart.js"></script>
+
+</body>
+
+</html>

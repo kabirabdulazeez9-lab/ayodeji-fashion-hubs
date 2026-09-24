@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Shop | Ayodeji Fashion Hubs</title>
+
+    <meta
+        name="description"
+        content="Shop quality shoes and fashion products from Ayodeji Fashion Hubs."
+    >
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/shop.css">
+</head>
+
+<body>
+
+    <!-- =========================================
+         HEADER
+    ========================================== -->
+
+    <header class="site-header">
+
+        <div class="container header-inner">
+
+            <a
+                href="index.html"
+                class="brand"
+            >
+
+                <span class="brand-mark">
+                    AF
+                </span>
+
+                <span class="brand-text">
+
+                    <strong>
+                        Ayodeji
+                    </strong>
+
+                    <small>
+                        Fashion Hubs
+                    </small>
+
+                </span>
+
+            </a>
+
+
+            <!-- Desktop Navigation -->
+
+            <nav class="desktop-nav">
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a
+                    href="shop.html"
+                    class="active"
+                >
+                    Shop
+                </a>
+
+                <a href="orders.html">
+                    My Orders
+                </a>
+
+                <a href="account.html">
+                    Account
+                </a>
+
+            </nav>
+
+
+            <!-- Header Actions -->
+
+            <div class="header-actions">
+
+                <a
+                    href="cart.html"
+                    class="cart-button"
+                    aria-label="Shopping cart"
+                >
+
+                    🛒
+
+                    <span id="cartCount">
+                        0
+                    </span>
+
+                </a>
+
+
+                <button
+                    type="button"
+                    class="menu-button"
+                    id="menuButton"
+                    aria-label="Open menu"
+                    aria-expanded="false"
+                >
+                    ☰
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- Mobile Navigation -->
+
+        <nav
+            class="mobile-nav"
+            id="mobileNav"
+        >
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a
+                href="shop.html"
+                class="active"
+            >
+                Shop
+            </a>
+
+            <a href="orders.html">
+                My Orders
+            </a>
+
+            <a href="account.html">
+                Account
+            </a>
+
+            <a href="cart.html">
+                🛒 Cart
+            </a>
+
+        </nav>
+
+    </header>
+
+
+    <!-- =========================================
+         MAIN
+    ========================================== -->
+
+    <main>
+
+        <!-- =====================================
+             HERO
+        ====================================== -->
+
+        <section class="shop-hero">
+
+            <div class="container">
+
+                <div class="shop-hero-content">
+
+                    <span class="eyebrow">
+                        AYODEJI FASHION HUBS
+                    </span>
+
+                    <h1>
+                        Find Your Perfect Pair
+                    </h1>
+
+                    <p>
+                        Explore our collection of quality
+                        shoes and fashion products.
+                    </p>
+
+                    <div class="hero-payment-note">
+
+                        <span>💳</span>
+
+                        <span>
+                            Pay 60% deposit or 100% in full
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================
+             SHOP
+        ====================================== -->
+
+        <section class="shop-section">
+
+            <div class="container">
+
+                <!-- Controls -->
+
+                <div class="shop-controls">
+
+                    <!-- Search -->
+
+                    <div class="search-box">
+
+                        <span
+                            class="search-icon"
+                            aria-hidden="true"
+                        >
+                            🔍
+                        </span>
+
+                        <input
+                            type="search"
+                            id="searchInput"
+                            placeholder="Search shoes..."
+                            autocomplete="off"
+                            aria-label="Search products"
+                        >
+
+                    </div>
+
+
+                    <!-- Category -->
+
+                    <div class="category-filter">
+
+                        <label for="categorySelect">
+                            Category
+                        </label>
+
+                        <select id="categorySelect">
+
+                            <option value="all">
+                                All Categories
+                            </option>
+
+                            <option value="sneakers">
+                                Sneakers
+                            </option>
+
+                            <option value="formal">
+                                Formal Shoes
+                            </option>
+
+                            <option value="casual">
+                                Casual Shoes
+                            </option>
+
+                            <option value="slippers">
+                                Slippers
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Quick Categories -->
+
+                <div
+                    class="category-buttons"
+                    id="categoryButtons"
+                >
+
+                    <button
+                        type="button"
+                        class="category-button active"
+                        data-category="all"
+                    >
+                        All
+                    </button>
+
+                    <button
+                        type="button"
+                        class="category-button"
+                        data-category="sneakers"
+                    >
+                        Sneakers
+                    </button>
+
+                    <button
+                        type="button"
+                        class="category-button"
+                        data-category="formal"
+                    >
+                        Formal
+                    </button>
+
+                    <button
+                        type="button"
+                        class="category-button"
+                        data-category="casual"
+                    >
+                        Casual
+                    </button>
+
+                    <button
+                        type="button"
+                        class="category-button"
+                        data-category="slippers"
+                    >
+                        Slippers
+                    </button>
+
+                </div>
+
+
+                <!-- Results Bar -->
+
+                <div class="shop-results-bar">
+
+                    <div class="results-count">
+
+                        <strong id="productCount">
+                            0
+                        </strong>
+
+                        <span>
+                            products
+                        </span>
+
+                    </div>
+
+
+                    <select
+                        id="sortSelect"
+                        class="sort-select"
+                        aria-label="Sort products"
+                    >
+
+                        <option value="default">
+                            Sort by
+                        </option>
+
+                        <option value="price-low">
+                            Price: Low to High
+                        </option>
+
+                        <option value="price-high">
+                            Price: High to Low
+                        </option>
+
+                        <option value="name">
+                            Name: A-Z
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- =================================
+                     PRODUCTS GRID
+                ================================== -->
+
+                <div
+                    class="products-grid"
+                    id="productsGrid"
+                >
+
+                    <!-- Products loaded by shop.js -->
+
+                </div>
+
+
+                <!-- =================================
+                     NO PRODUCTS
+                ================================== -->
+
+                <div
+                    class="no-products"
+                    id="noProducts"
+                    hidden
+                >
+
+                    <div class="no-products-icon">
+                        🔍
+                    </div>
+
+                    <h2>
+                        No products found
+                    </h2>
+
+                    <p>
+                        Try another search or category.
+                    </p>
+
+                    <button
+                        type="button"
+                        id="clearFiltersButton"
+                        class="primary-button"
+                    >
+                        Clear Filters
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================
+             PAYMENT INFORMATION
+        ====================================== -->
+
+        <section class="payment-info-section">
+
+            <div class="container">
+
+                <div class="payment-info">
+
+                    <div class="payment-info-icon">
+                        💳
+                    </div>
+
+                    <div class="payment-info-content">
+
+                        <span class="payment-label">
+                            FLEXIBLE PAYMENT
+                        </span>
+
+                        <h2>
+                            Pay 60% Now
+                        </h2>
+
+                        <p>
+                            Don't want to pay everything
+                            at once? Choose our 60% deposit
+                            option and pay the remaining
+                            40% later.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================== -->
+
+    <footer class="site-footer">
+
+        <div class="container footer-grid">
+
+            <div class="footer-brand">
+
+                <a
+                    href="index.html"
+                    class="brand"
+                >
+
+                    <span class="brand-mark">
+                        AF
+                    </span>
+
+                    <span class="brand-text">
+
+                        <strong>
+                            Ayodeji
+                        </strong>
+
+                        <small>
+                            Fashion Hubs
+                        </small>
+
+                    </span>
+
+                </a>
+
+
+                <p>
+                    Quality shoes and fashion for
+                    every step.
+                </p>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h3>
+                    Shop
+                </h3>
+
+                <a href="shop.html">
+                    All Products
+                </a>
+
+                <a href="shop.html?category=sneakers">
+                    Sneakers
+                </a>
+
+                <a href="shop.html?category=formal">
+                    Formal Shoes
+                </a>
+
+                <a href="shop.html?category=casual">
+                    Casual Shoes
+                </a>
+
+                <a href="shop.html?category=slippers">
+                    Slippers
+                </a>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h3>
+                    Customer
+                </h3>
+
+                <a href="orders.html">
+                    My Orders
+                </a>
+
+                <a href="account.html">
+                    Account
+                </a>
+
+                <a href="cart.html">
+                    Cart
+                </a>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h3>
+                    Support
+                </h3>
+
+                <a href="#">
+                    Contact Us
+                </a>
+
+                <a href="#">
+                    Delivery
+                </a>
+
+                <a href="#">
+                    Payment
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- Footer Bottom -->
+
+        <div class="footer-bottom">
+
+            <div class="container">
+
+                <p>
+
+                    ©
+                    <span id="currentYear"></span>
+
+                    Ayodeji Fashion Hubs.
+
+                    All rights reserved.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <!-- =========================================
+         SCRIPTS
+    ========================================== -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="js/supabase.js"></script>
+
+    <script src="js/main.js"></script>
+
+    <script src="js/shop.js"></script>
+
+</body>
+</html>
