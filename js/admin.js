@@ -36,8 +36,9 @@ const EMAILJS_SERVICE_ID =
 const EMAILJS_TEMPLATE_ID =
     "template_vo44x4z";
 
+// CURRENT GITHUB PAGES URL
 const TRACKING_URL =
-    "https://kabir015az.github.io/ayodeji-fashion-hubs/track-order.html";
+    "https://kabirabdulazeez9-lab.github.io/ayodeji-fashion-hubs/track-order.html";
 
 
 // =========================================
@@ -76,7 +77,6 @@ async function initializeAdmin() {
     supabaseClient =
         window.supabaseClient;
 
-
     if (!supabaseClient) {
 
         console.error(
@@ -86,9 +86,7 @@ async function initializeAdmin() {
         return;
     }
 
-
     initializeEmailJS();
-
 
     setupPasswordToggle();
     setupLogin();
@@ -98,7 +96,6 @@ async function initializeAdmin() {
     setupOrderActions();
     setupProductModal();
     setupImagePicker();
-
 
     await checkAdminSession();
 }
@@ -121,7 +118,6 @@ function initializeEmailJS() {
         return false;
     }
 
-
     try {
 
         emailjs.init({
@@ -129,11 +125,9 @@ function initializeEmailJS() {
                 EMAILJS_PUBLIC_KEY
         });
 
-
         console.log(
             "EmailJS initialized successfully."
         );
-
 
         return true;
 
@@ -143,7 +137,6 @@ function initializeEmailJS() {
             "EmailJS initialization error:",
             error
         );
-
 
         return false;
     }
@@ -168,19 +161,16 @@ async function sendOrderEmail(
         };
     }
 
-
     const customerEmail =
         String(
             order.customer_email || ""
         ).trim();
-
 
     if (!customerEmail) {
 
         console.log(
             "No customer email provided. Email skipped."
         );
-
 
         return {
             success: false,
@@ -189,7 +179,6 @@ async function sendOrderEmail(
                 "Customer did not provide an email address."
         };
     }
-
 
     if (
         typeof emailjs === "undefined"
@@ -203,37 +192,70 @@ async function sendOrderEmail(
         };
     }
 
-
     const statusMessage =
         getEmailStatusMessage(
             newStatus
         );
 
-
     const templateParams = {
 
+        name:
+            order.customer_name ||
+            "Customer",
+
         customer_name:
-            order.customer_name || "Customer",
+            order.customer_name ||
+            "Customer",
+
+        customer_email:
+            customerEmail,
+
+        to_email:
+            customerEmail,
 
         order_reference:
-            order.order_reference || "",
+            order.order_reference ||
+            "",
 
         order_status:
-            newStatus || order.status || "",
+            newStatus ||
+            order.status ||
+            "",
 
         payment_status:
-            order.payment_status || "Pending",
+            order.payment_status ||
+            "Pending",
 
         order_total:
-            formatMoney(order.total),
+            formatMoney(
+                order.total
+            ),
 
         status_message:
             statusMessage,
 
         tracking_link:
-            TRACKING_URL
-    };
+            TRACKING_URL,
 
+        old_status:
+            order.status ||
+            "",
+
+        time:
+            new Date().toLocaleString(
+                "en-NG",
+                {
+                    dateStyle:
+                        "medium",
+
+                    timeStyle:
+                        "short"
+                }
+            ),
+
+        message:
+            statusMessage
+    };
 
     try {
 
@@ -242,7 +264,6 @@ async function sendOrderEmail(
             templateParams
         );
 
-
         const response =
             await emailjs.send(
                 EMAILJS_SERVICE_ID,
@@ -250,12 +271,10 @@ async function sendOrderEmail(
                 templateParams
             );
 
-
         console.log(
             "Order email sent successfully:",
             response
         );
-
 
         return {
             success: true,
@@ -264,14 +283,12 @@ async function sendOrderEmail(
                 "Customer email sent successfully."
         };
 
-
     } catch (error) {
 
         console.error(
             "EmailJS send error:",
             error
         );
-
 
         return {
             success: false,
@@ -299,13 +316,11 @@ function getEmailStatusMessage(status) {
                 "Your order has been received and is waiting for payment."
             );
 
-
         case "Deposit Paid":
 
             return (
                 "Your 60% deposit has been received. We will continue processing your order."
             );
-
 
         case "Balance Pending":
 
@@ -313,13 +328,11 @@ function getEmailStatusMessage(status) {
                 "Your order is waiting for the remaining balance payment."
             );
 
-
         case "Fully Paid":
 
             return (
                 "Your payment has been completed successfully. Thank you for your payment."
             );
-
 
         case "Processing":
 
@@ -327,13 +340,11 @@ function getEmailStatusMessage(status) {
                 "Your order is now being prepared by Ayodeji Fashion Hubs."
             );
 
-
         case "Shipped":
 
             return (
                 "Your order has been shipped and is now on the way to you."
             );
-
 
         case "Delivered":
 
@@ -341,13 +352,11 @@ function getEmailStatusMessage(status) {
                 "Your order has been delivered. Thank you for shopping with Ayodeji Fashion Hubs!"
             );
 
-
         case "Cancelled":
 
             return (
                 "Your order has been cancelled. Please contact Ayodeji Fashion Hubs if you need more information."
             );
-
 
         default:
 
@@ -401,9 +410,7 @@ function setupLogin() {
     const form =
         getElement("adminLoginForm");
 
-
     if (!form) return;
-
 
     form.addEventListener(
         "submit",
@@ -411,29 +418,23 @@ function setupLogin() {
 
             event.preventDefault();
 
-
             const email =
                 getElement("adminEmail")
                     ?.value
                     .trim();
 
-
             const password =
                 getElement("adminPassword")
                     ?.value;
 
-
             const button =
                 getElement("adminLoginButton");
-
 
             const buttonText =
                 getElement("adminLoginButtonText");
 
-
             const message =
                 getElement("adminLoginMessage");
-
 
             if (!email || !password) {
 
@@ -442,26 +443,21 @@ function setupLogin() {
                     true
                 );
 
-
                 return;
             }
-
 
             if (button) {
                 button.disabled = true;
             }
-
 
             if (buttonText) {
                 buttonText.textContent =
                     "Logging in...";
             }
 
-
             if (message) {
                 message.textContent = "";
             }
-
 
             try {
 
@@ -471,35 +467,28 @@ function setupLogin() {
                         password
                     });
 
-
                 if (error) {
                     throw error;
                 }
 
-
                 currentUser =
                     data.user;
-
 
                 const isAdmin =
                     await checkAdminUser(
                         currentUser.id
                     );
 
-
                 if (!isAdmin) {
 
                     await supabaseClient.auth.signOut();
-
 
                     throw new Error(
                         "This account is not registered as an admin."
                     );
                 }
 
-
                 showDashboard();
-
 
             } catch (error) {
 
@@ -508,20 +497,17 @@ function setupLogin() {
                     error
                 );
 
-
                 showLoginMessage(
                     error.message ||
                     "Login failed.",
                     true
                 );
 
-
             } finally {
 
                 if (button) {
                     button.disabled = false;
                 }
-
 
                 if (buttonText) {
 
@@ -543,15 +529,12 @@ function setupPasswordToggle() {
     const toggle =
         getElement("toggleAdminPassword");
 
-
     const password =
         getElement("adminPassword");
-
 
     if (!toggle || !password) {
         return;
     }
-
 
     toggle.addEventListener(
         "click",
@@ -592,13 +575,10 @@ function showLoginMessage(
     const element =
         getElement("adminLoginMessage");
 
-
     if (!element) return;
-
 
     element.textContent =
         message;
-
 
     element.style.color =
         error
@@ -618,11 +598,9 @@ async function checkAdminSession() {
         const { data, error } =
             await supabaseClient.auth.getSession();
 
-
         if (error) {
             throw error;
         }
-
 
         if (!data.session) {
 
@@ -631,16 +609,13 @@ async function checkAdminSession() {
             return;
         }
 
-
         currentUser =
             data.session.user;
-
 
         const isAdmin =
             await checkAdminUser(
                 currentUser.id
             );
-
 
         if (!isAdmin) {
 
@@ -648,19 +623,15 @@ async function checkAdminSession() {
 
             showLogin();
 
-
             showLoginMessage(
                 "This account is not registered as an admin.",
                 true
             );
 
-
             return;
         }
 
-
         showDashboard();
-
 
     } catch (error) {
 
@@ -668,7 +639,6 @@ async function checkAdminSession() {
             "Session check error:",
             error
         );
-
 
         showLogin();
     }
@@ -684,10 +654,14 @@ async function checkAdminUser(userId) {
     const { data, error } =
         await supabaseClient
             .from("admin_users")
-            .select("user_id,email")
-            .eq("user_id", userId)
+            .select(
+                "user_id,email"
+            )
+            .eq(
+                "user_id",
+                userId
+            )
             .maybeSingle();
-
 
     if (error) {
 
@@ -696,10 +670,8 @@ async function checkAdminUser(userId) {
             error
         );
 
-
         return false;
     }
-
 
     return !!data;
 }
@@ -714,10 +686,8 @@ function showLogin() {
     const loginView =
         getElement("adminLoginView");
 
-
     const dashboardView =
         getElement("adminDashboardView");
-
 
     showElement(loginView);
 
@@ -734,20 +704,16 @@ async function showDashboard() {
     const loginView =
         getElement("adminLoginView");
 
-
     const dashboardView =
         getElement("adminDashboardView");
-
 
     hideElement(loginView);
 
     showElement(dashboardView);
 
-
     switchSection(
         "ordersSection"
     );
-
 
     await loadOrders();
 
@@ -764,9 +730,7 @@ function setupLogout() {
     const logoutButton =
         getElement("adminLogout");
 
-
     if (!logoutButton) return;
-
 
     logoutButton.addEventListener(
         "click",
@@ -776,15 +740,12 @@ function setupLogout() {
 
                 await supabaseClient.auth.signOut();
 
-
                 currentUser = null;
 
                 products = [];
                 orders = [];
 
-
                 showLogin();
-
 
             } catch (error) {
 
@@ -809,7 +770,6 @@ function setupTabs() {
             ".admin-tab"
         );
 
-
     tabs.forEach(tab => {
 
         tab.addEventListener(
@@ -818,10 +778,8 @@ function setupTabs() {
 
                 event.preventDefault();
 
-
                 const sectionId =
                     tab.dataset.section;
-
 
                 tabs.forEach(item => {
 
@@ -831,11 +789,9 @@ function setupTabs() {
 
                 });
 
-
                 tab.classList.add(
                     "active"
                 );
-
 
                 switchSection(
                     sectionId
@@ -853,24 +809,19 @@ function switchSection(
     const ordersSection =
         getElement("ordersSection");
 
-
     const productsSection =
         getElement("productsSection");
-
 
     hideElement(
         ordersSection
     );
 
-
     hideElement(
         productsSection
     );
 
-
     const selectedSection =
         getElement(sectionId);
-
 
     if (selectedSection) {
 
@@ -890,7 +841,6 @@ function setupProductActions() {
     const addButton =
         getElement("addProductButton");
 
-
     if (addButton) {
 
         addButton.addEventListener(
@@ -899,12 +849,10 @@ function setupProductActions() {
         );
     }
 
-
     const productsGrid =
         getElement(
             "productsAdminGrid"
         );
-
 
     if (productsGrid) {
 
@@ -914,10 +862,8 @@ function setupProductActions() {
         );
     }
 
-
     const search =
         getElement("productSearch");
-
 
     if (search) {
 
@@ -927,12 +873,10 @@ function setupProductActions() {
         );
     }
 
-
     const category =
         getElement(
             "productCategoryFilter"
         );
-
 
     if (category) {
 
@@ -942,12 +886,10 @@ function setupProductActions() {
         );
     }
 
-
     const status =
         getElement(
             "productStatusFilter"
         );
-
 
     if (status) {
 
@@ -970,19 +912,14 @@ function handleProductClick(event) {
             "button"
         );
 
-
     if (!button) return;
 
-
     event.preventDefault();
-
 
     const id =
         button.dataset.productId;
 
-
     if (!id) return;
-
 
     if (
         button.classList.contains(
@@ -995,7 +932,6 @@ function handleProductClick(event) {
         return;
     }
 
-
     if (
         button.classList.contains(
             "toggle-product-btn"
@@ -1006,7 +942,6 @@ function handleProductClick(event) {
 
         return;
     }
-
 
     if (
         button.classList.contains(
@@ -1032,7 +967,6 @@ async function loadProducts() {
             "productsAdminGrid"
         );
 
-
     if (grid) {
 
         grid.innerHTML =
@@ -1040,7 +974,6 @@ async function loadProducts() {
                 Loading products...
             </div>`;
     }
-
 
     const { data, error } =
         await supabaseClient
@@ -1053,14 +986,12 @@ async function loadProducts() {
                 }
             );
 
-
     if (error) {
 
         console.error(
             "Load products error:",
             error
         );
-
 
         if (grid) {
 
@@ -1075,18 +1006,14 @@ async function loadProducts() {
                             error.message
                         )}
                     </p>
-
                 </div>`;
         }
-
 
         return;
     }
 
-
     products =
         data || [];
-
 
     renderProducts(
         products
@@ -1105,21 +1032,17 @@ function renderProducts(list) {
             "productsAdminGrid"
         );
 
-
     const empty =
         getElement(
             "emptyProducts"
         );
-
 
     const count =
         getElement(
             "productsCount"
         );
 
-
     if (!grid) return;
-
 
     if (count) {
 
@@ -1131,25 +1054,20 @@ function renderProducts(list) {
             }`;
     }
 
-
     if (!list.length) {
 
         grid.innerHTML = "";
-
 
         if (empty) {
             showElement(empty);
         }
 
-
         return;
     }
-
 
     if (empty) {
         hideElement(empty);
     }
-
 
     grid.innerHTML =
         list
@@ -1191,7 +1109,6 @@ function createProductCard(
                 </span>
             `;
 
-
     const oldPrice =
         product.old_price
             ? `
@@ -1203,12 +1120,10 @@ function createProductCard(
             `
             : "";
 
-
     const stockClass =
         Number(product.stock) <= 3
             ? "low"
             : "";
-
 
     return `
         <article class="product-admin-card">
@@ -1216,7 +1131,6 @@ function createProductCard(
             <div class="product-admin-image">
                 ${image}
             </div>
-
 
             <div class="product-admin-content">
 
@@ -1226,14 +1140,12 @@ function createProductCard(
                     )}
                 </h3>
 
-
                 <div class="product-admin-category">
                     ${escapeHtml(
                         product.category ||
                         "Uncategorized"
                     )}
                 </div>
-
 
                 <div class="product-admin-price">
 
@@ -1246,7 +1158,6 @@ function createProductCard(
                     ${oldPrice}
 
                 </div>
-
 
                 <div
                     class="product-admin-stock ${stockClass}"
@@ -1262,7 +1173,6 @@ function createProductCard(
                     </strong>
 
                 </div>
-
 
                 <div>
 
@@ -1282,7 +1192,6 @@ function createProductCard(
 
                 </div>
 
-
                 <div class="product-admin-actions">
 
                     <button
@@ -1294,7 +1203,6 @@ function createProductCard(
                     >
                         ✏️ Edit
                     </button>
-
 
                     <button
                         type="button"
@@ -1311,7 +1219,6 @@ function createProductCard(
                         }
 
                     </button>
-
 
                     <button
                         type="button"
@@ -1346,20 +1253,17 @@ function filterProducts() {
             .trim()
             .toLowerCase() || "";
 
-
     const category =
         getElement(
             "productCategoryFilter"
         )
             ?.value || "";
 
-
     const status =
         getElement(
             "productStatusFilter"
         )
             ?.value || "";
-
 
     const filtered =
         products.filter(
@@ -1380,12 +1284,10 @@ function filterProducts() {
                         .toLowerCase()
                         .includes(search);
 
-
                 const matchesCategory =
                     !category ||
                     product.category ===
                     category;
-
 
                 const matchesStatus =
                     !status ||
@@ -1400,7 +1302,6 @@ function filterProducts() {
                         !product.is_active
                     );
 
-
                 return (
                     matchesSearch &&
                     matchesCategory &&
@@ -1408,7 +1309,6 @@ function filterProducts() {
                 );
             }
         );
-
 
     renderProducts(
         filtered
@@ -1427,9 +1327,7 @@ function setupImagePicker() {
             "productImage"
         );
 
-
     if (!imageInput) return;
-
 
     imageInput.addEventListener(
         "change",
@@ -1449,9 +1347,7 @@ function handleImageSelection(
     const file =
         event.target.files?.[0];
 
-
     if (!file) return;
-
 
     if (
         !file.type.startsWith(
@@ -1464,13 +1360,10 @@ function handleImageSelection(
             true
         );
 
-
         event.target.value = "";
-
 
         return;
     }
-
 
     if (
         file.size >
@@ -1482,32 +1375,25 @@ function handleImageSelection(
             true
         );
 
-
         event.target.value = "";
-
 
         return;
     }
 
-
     selectedImageFile =
         file;
-
 
     const preview =
         getElement(
             "productImagePreview"
         );
 
-
     if (!preview) return;
-
 
     const imageUrl =
         URL.createObjectURL(
             file
         );
-
 
     preview.innerHTML = `
         <img
@@ -1529,18 +1415,15 @@ function setupProductModal() {
             "closeProductModal"
         );
 
-
     const cancelButton =
         getElement(
             "cancelProductButton"
         );
 
-
     const form =
         getElement(
             "productForm"
         );
-
 
     if (closeButton) {
 
@@ -1550,7 +1433,6 @@ function setupProductModal() {
         );
     }
 
-
     if (cancelButton) {
 
         cancelButton.addEventListener(
@@ -1558,7 +1440,6 @@ function setupProductModal() {
             closeProductModal
         );
     }
-
 
     if (form) {
 
@@ -1568,12 +1449,10 @@ function setupProductModal() {
         );
     }
 
-
     const modal =
         getElement(
             "productModal"
         );
-
 
     if (modal) {
 
@@ -1605,53 +1484,43 @@ function openProductModal(
     selectedProduct =
         product;
 
-
     selectedImageFile =
         null;
-
 
     const modal =
         getElement(
             "productModal"
         );
 
-
     const title =
         getElement(
             "productModalTitle"
         );
-
 
     const form =
         getElement(
             "productForm"
         );
 
-
     const imageInput =
         getElement(
             "productImage"
         );
-
 
     const preview =
         getElement(
             "productImagePreview"
         );
 
-
     if (!modal || !form) {
         return;
     }
 
-
     form.reset();
-
 
     if (imageInput) {
         imageInput.value = "";
     }
-
 
     if (title) {
 
@@ -1661,7 +1530,6 @@ function openProductModal(
                 : "Add Product";
     }
 
-
     if (product) {
 
         getElement(
@@ -1669,48 +1537,40 @@ function openProductModal(
         ).value =
             product.id || "";
 
-
         getElement(
             "productName"
         ).value =
             product.name || "";
-
 
         getElement(
             "productCategory"
         ).value =
             product.category || "";
 
-
         getElement(
             "productBadge"
         ).value =
             product.badge || "";
-
 
         getElement(
             "productPrice"
         ).value =
             product.price ?? "";
 
-
         getElement(
             "productOldPrice"
         ).value =
             product.old_price ?? "";
-
 
         getElement(
             "productStock"
         ).value =
             product.stock ?? 0;
 
-
         getElement(
             "productIcon"
         ).value =
             product.icon || "👟";
-
 
         getElement(
             "productSizes"
@@ -1721,20 +1581,17 @@ function openProductModal(
                 ? product.sizes.join(",")
                 : "";
 
-
         getElement(
             "productDescription"
         ).value =
             product.description ||
             "";
 
-
         getElement(
             "productActive"
         ).checked =
             product.is_active !==
             false;
-
 
         if (preview) {
 
@@ -1770,18 +1627,15 @@ function openProductModal(
             "productId"
         ).value = "";
 
-
         getElement(
             "productIcon"
         ).value =
             "👟";
 
-
         getElement(
             "productActive"
         ).checked =
             true;
-
 
         if (preview) {
 
@@ -1793,12 +1647,10 @@ function openProductModal(
         }
     }
 
-
     showProductMessage(
         "",
         false
     );
-
 
     showElement(modal);
 
@@ -1818,16 +1670,12 @@ function closeProductModal() {
             "productModal"
         );
 
-
     if (!modal) return;
-
 
     hideElement(modal);
 
-
     selectedProduct =
         null;
-
 
     selectedImageFile =
         null;
@@ -1844,23 +1692,19 @@ async function saveProduct(
 
     event.preventDefault();
 
-
     const saveButton =
         getElement(
             "saveProductButton"
         );
-
 
     if (saveButton) {
 
         saveButton.disabled =
             true;
 
-
         saveButton.textContent =
             "Saving...";
     }
-
 
     try {
 
@@ -1871,7 +1715,6 @@ async function saveProduct(
                 ?.value
                 .trim();
 
-
         const name =
             getElement(
                 "productName"
@@ -1879,13 +1722,11 @@ async function saveProduct(
                 ?.value
                 .trim();
 
-
         const category =
             getElement(
                 "productCategory"
             )
                 ?.value;
-
 
         const badge =
             getElement(
@@ -1893,7 +1734,6 @@ async function saveProduct(
             )
                 ?.value
                 .trim();
-
 
         const price =
             Number(
@@ -1903,13 +1743,11 @@ async function saveProduct(
                     ?.value
             );
 
-
         const oldPriceValue =
             getElement(
                 "productOldPrice"
             )
                 ?.value;
-
 
         const oldPrice =
             oldPriceValue === ""
@@ -1917,7 +1755,6 @@ async function saveProduct(
                 : Number(
                     oldPriceValue
                 );
-
 
         const stock =
             Number(
@@ -1927,7 +1764,6 @@ async function saveProduct(
                     ?.value
             );
 
-
         const icon =
             getElement(
                 "productIcon"
@@ -1936,7 +1772,6 @@ async function saveProduct(
                 .trim()
             || "👟";
 
-
         const sizesText =
             getElement(
                 "productSizes"
@@ -1944,7 +1779,6 @@ async function saveProduct(
                 ?.value
                 .trim()
             || "";
-
 
         const sizes =
             sizesText
@@ -1955,7 +1789,6 @@ async function saveProduct(
                 )
                 .filter(Boolean);
 
-
         const description =
             getElement(
                 "productDescription"
@@ -1964,14 +1797,12 @@ async function saveProduct(
                 .trim()
             || "";
 
-
         const isActive =
             getElement(
                 "productActive"
             )
                 ?.checked
             ?? true;
-
 
         if (!name) {
 
@@ -1980,14 +1811,12 @@ async function saveProduct(
             );
         }
 
-
         if (!category) {
 
             throw new Error(
                 "Select a product category."
             );
         }
-
 
         if (
             !Number.isFinite(
@@ -2001,7 +1830,6 @@ async function saveProduct(
             );
         }
 
-
         if (
             !Number.isInteger(
                 stock
@@ -2013,7 +1841,6 @@ async function saveProduct(
                 "Enter a valid stock quantity."
             );
         }
-
 
         if (
             oldPrice !== null &&
@@ -2030,16 +1857,13 @@ async function saveProduct(
             );
         }
 
-
         let imageUrl =
             selectedProduct?.image ||
             null;
 
-
         const productId =
             id ||
             generateProductId();
-
 
         if (selectedImageFile) {
 
@@ -2050,10 +1874,10 @@ async function saveProduct(
                 );
         }
 
-
         const productData = {
 
-            id: productId,
+            id:
+                productId,
 
             name,
 
@@ -2085,9 +1909,7 @@ async function saveProduct(
                     .toISOString()
         };
 
-
         let result;
-
 
         if (selectedProduct) {
 
@@ -2116,20 +1938,16 @@ async function saveProduct(
                     .single();
         }
 
-
         if (result.error) {
             throw result.error;
         }
-
 
         showProductMessage(
             "Product saved successfully.",
             false
         );
 
-
         await loadProducts();
-
 
         setTimeout(
             () => {
@@ -2138,7 +1956,6 @@ async function saveProduct(
             500
         );
 
-
     } catch (error) {
 
         console.error(
@@ -2146,13 +1963,11 @@ async function saveProduct(
             error
         );
 
-
         showProductMessage(
             error.message ||
             "Unable to save product.",
             true
         );
-
 
     } finally {
 
@@ -2160,7 +1975,6 @@ async function saveProduct(
 
             saveButton.disabled =
                 false;
-
 
             saveButton.textContent =
                 "Save Product";
@@ -2182,31 +1996,25 @@ async function uploadProductImage(
         return null;
     }
 
-
     const extension =
         getFileExtension(
             file.name
         );
 
-
     const safeExtension =
         extension ||
         "jpg";
 
-
     const fileName =
         `${productId}-${Date.now()}.${safeExtension}`;
 
-
     const filePath =
         `products/${fileName}`;
-
 
     showProductMessage(
         "Uploading image...",
         false
     );
-
 
     const { error } =
         await supabaseClient
@@ -2229,7 +2037,6 @@ async function uploadProductImage(
                 }
             );
 
-
     if (error) {
 
         console.error(
@@ -2237,13 +2044,11 @@ async function uploadProductImage(
             error
         );
 
-
         throw new Error(
             "Image upload failed: " +
             error.message
         );
     }
-
 
     const { data } =
         supabaseClient
@@ -2255,14 +2060,12 @@ async function uploadProductImage(
                 filePath
             );
 
-
     if (!data?.publicUrl) {
 
         throw new Error(
             "Could not create image URL."
         );
     }
-
 
     return data.publicUrl;
 }
@@ -2287,7 +2090,6 @@ function generateProductId() {
                             /^shoe-(\d+)$/
                         );
 
-
                 return match
                     ? Number(
                         match[1]
@@ -2296,14 +2098,12 @@ function generateProductId() {
             }
         );
 
-
     const highest =
         numbers.length
             ? Math.max(
                 ...numbers
             )
             : 0;
-
 
     return (
         "shoe-" +
@@ -2329,17 +2129,14 @@ function editProduct(id) {
                 item.id === id
         );
 
-
     if (!product) {
 
         alert(
             "Product could not be found."
         );
 
-
         return;
     }
-
 
     openProductModal(
         product
@@ -2361,28 +2158,22 @@ async function toggleProduct(
                 item.id === id
         );
 
-
     if (!product) return;
-
 
     const newStatus =
         !product.is_active;
-
 
     const action =
         newStatus
             ? "enable"
             : "disable";
 
-
     const confirmed =
         confirm(
             `Are you sure you want to ${action} "${product.name}"?`
         );
 
-
     if (!confirmed) return;
-
 
     const { error } =
         await supabaseClient
@@ -2402,7 +2193,6 @@ async function toggleProduct(
                 id
             );
 
-
     if (error) {
 
         console.error(
@@ -2410,16 +2200,13 @@ async function toggleProduct(
             error
         );
 
-
         alert(
             "Unable to update product: " +
             error.message
         );
 
-
         return;
     }
-
 
     await loadProducts();
 }
@@ -2439,18 +2226,14 @@ async function deleteProduct(
                 item.id === id
         );
 
-
     if (!product) return;
-
 
     const confirmed =
         confirm(
             `Delete "${product.name}" permanently?`
         );
 
-
     if (!confirmed) return;
-
 
     const { error } =
         await supabaseClient
@@ -2461,7 +2244,6 @@ async function deleteProduct(
                 id
             );
 
-
     if (error) {
 
         console.error(
@@ -2469,16 +2251,13 @@ async function deleteProduct(
             error
         );
 
-
         alert(
             "Unable to delete product: " +
             error.message
         );
 
-
         return;
     }
-
 
     await loadProducts();
 }
@@ -2498,13 +2277,10 @@ function showProductMessage(
             "productFormMessage"
         );
 
-
     if (!element) return;
-
 
     element.textContent =
         message;
-
 
     element.style.color =
         error
@@ -2524,7 +2300,6 @@ function setupOrderActions() {
             "refreshOrders"
         );
 
-
     if (refresh) {
 
         refresh.addEventListener(
@@ -2533,12 +2308,10 @@ function setupOrderActions() {
         );
     }
 
-
     const search =
         getElement(
             "orderSearch"
         );
-
 
     if (search) {
 
@@ -2548,12 +2321,10 @@ function setupOrderActions() {
         );
     }
 
-
     const status =
         getElement(
             "statusFilter"
         );
-
 
     if (status) {
 
@@ -2563,12 +2334,10 @@ function setupOrderActions() {
         );
     }
 
-
     const table =
         getElement(
             "ordersTable"
         );
-
 
     if (table) {
 
@@ -2578,12 +2347,10 @@ function setupOrderActions() {
         );
     }
 
-
     const grid =
         getElement(
             "ordersGrid"
         );
-
 
     if (grid) {
 
@@ -2593,12 +2360,10 @@ function setupOrderActions() {
         );
     }
 
-
     const close =
         getElement(
             "closeOrderModal"
         );
-
 
     if (close) {
 
@@ -2608,12 +2373,10 @@ function setupOrderActions() {
         );
     }
 
-
     const modal =
         getElement(
             "orderModal"
         );
-
 
     if (modal) {
 
@@ -2645,12 +2408,10 @@ async function loadOrders() {
             "ordersTable"
         );
 
-
     const grid =
         getElement(
             "ordersGrid"
         );
-
 
     if (table) {
 
@@ -2662,7 +2423,6 @@ async function loadOrders() {
             </tr>`;
     }
 
-
     if (grid) {
 
         grid.innerHTML =
@@ -2670,7 +2430,6 @@ async function loadOrders() {
                 Loading orders...
             </div>`;
     }
-
 
     const { data, error } =
         await supabaseClient
@@ -2696,14 +2455,12 @@ async function loadOrders() {
                 }
             );
 
-
     if (error) {
 
         console.error(
             "Load orders error:",
             error
         );
-
 
         if (table) {
 
@@ -2714,7 +2471,6 @@ async function loadOrders() {
                     </td>
                 </tr>`;
         }
-
 
         if (grid) {
 
@@ -2734,14 +2490,11 @@ async function loadOrders() {
                 </div>`;
         }
 
-
         return;
     }
 
-
     orders =
         data || [];
-
 
     updateOrderStats();
 
@@ -2760,14 +2513,12 @@ function updateOrderStats() {
     const total =
         orders.length;
 
-
     const pending =
         orders.filter(
             order =>
                 order.status ===
                 "Pending Payment"
         ).length;
-
 
     const paid =
         orders.filter(
@@ -2778,7 +2529,6 @@ function updateOrderStats() {
                     "Fully Paid"
         ).length;
 
-
     const delivered =
         orders.filter(
             order =>
@@ -2786,24 +2536,20 @@ function updateOrderStats() {
                 "Delivered"
         ).length;
 
-
     setText(
         "totalOrders",
         total
     );
-
 
     setText(
         "pendingPayment",
         pending
     );
 
-
     setText(
         "paidOrders",
         paid
     );
-
 
     setText(
         "deliveredOrders",
@@ -2825,18 +2571,15 @@ function renderOrders(
             "ordersTable"
         );
 
-
     const grid =
         getElement(
             "ordersGrid"
         );
 
-
     const empty =
         getElement(
             "emptyOrders"
         );
-
 
     if (!list.length) {
 
@@ -2844,25 +2587,20 @@ function renderOrders(
             table.innerHTML = "";
         }
 
-
         if (grid) {
             grid.innerHTML = "";
         }
-
 
         if (empty) {
             showElement(empty);
         }
 
-
         return;
     }
-
 
     if (empty) {
         hideElement(empty);
     }
-
 
     if (table) {
 
@@ -2876,7 +2614,6 @@ function renderOrders(
                 )
                 .join("");
     }
-
 
     if (grid) {
 
@@ -2912,7 +2649,6 @@ function createOrderRow(
                 </strong>
             </td>
 
-
             <td>
 
                 ${escapeHtml(
@@ -2929,13 +2665,11 @@ function createOrderRow(
 
             </td>
 
-
             <td>
                 ${formatMoney(
                     order.total
                 )}
             </td>
-
 
             <td>
                 ${escapeHtml(
@@ -2944,20 +2678,17 @@ function createOrderRow(
                 )}
             </td>
 
-
             <td>
                 ${createStatusBadge(
                     order.status
                 )}
             </td>
 
-
             <td>
                 ${formatDate(
                     order.created_at
                 )}
             </td>
-
 
             <td>
 
@@ -3005,7 +2736,6 @@ function createOrderCard(
 
             </div>
 
-
             <div class="order-card-info">
 
                 <div>
@@ -3018,7 +2748,6 @@ function createOrderCard(
                     )}
                 </div>
 
-
                 <div>
                     <span>
                         Phone:
@@ -3029,7 +2758,6 @@ function createOrderCard(
                     )}
                 </div>
 
-
                 <div>
                     <span>
                         Total:
@@ -3039,7 +2767,6 @@ function createOrderCard(
                         order.total
                     )}
                 </div>
-
 
                 <div>
                     <span>
@@ -3052,7 +2779,6 @@ function createOrderCard(
                     )}
                 </div>
 
-
                 <div>
                     <span>
                         Date:
@@ -3064,7 +2790,6 @@ function createOrderCard(
                 </div>
 
             </div>
-
 
             <div class="order-card-actions">
 
@@ -3098,16 +2823,12 @@ function handleOrderClick(
             ".view-order-button"
         );
 
-
     if (!button) return;
-
 
     const id =
         button.dataset.orderId;
 
-
     if (!id) return;
-
 
     viewOrder(id);
 }
@@ -3127,13 +2848,11 @@ function filterOrders() {
             .trim()
             .toLowerCase() || "";
 
-
     const status =
         getElement(
             "statusFilter"
         )
             ?.value || "";
-
 
     const filtered =
         orders.filter(
@@ -3150,19 +2869,16 @@ function filterOrders() {
                         .join(" ")
                         .toLowerCase();
 
-
                 const matchesSearch =
                     !search ||
                     searchable.includes(
                         search
                     );
 
-
                 const matchesStatus =
                     !status ||
                     order.status ===
                     status;
-
 
                 return (
                     matchesSearch &&
@@ -3170,7 +2886,6 @@ function filterOrders() {
                 );
             }
         );
-
 
     renderOrders(
         filtered
@@ -3190,30 +2905,24 @@ function viewOrder(id) {
                 item.id === id
         );
 
-
     if (!order) return;
-
 
     selectedOrder =
         order;
-
 
     const modal =
         getElement(
             "orderModal"
         );
 
-
     const content =
         getElement(
             "orderModalContent"
         );
 
-
     if (!modal || !content) {
         return;
     }
-
 
     const items =
         Array.isArray(
@@ -3221,7 +2930,6 @@ function viewOrder(id) {
         )
             ? order.order_items
             : [];
-
 
     const itemsHtml =
         items.length
@@ -3250,14 +2958,12 @@ function viewOrder(id) {
                                     </span>
                                 `;
 
-
                         return `
                             <div class="order-item">
 
                                 <div class="order-item-image">
                                     ${image}
                                 </div>
-
 
                                 <div class="order-item-info">
 
@@ -3266,7 +2972,6 @@ function viewOrder(id) {
                                             item.product_name
                                         )}
                                     </strong>
-
 
                                     <span>
 
@@ -3288,7 +2993,6 @@ function viewOrder(id) {
 
                                 </div>
 
-
                                 <strong>
                                     ${formatMoney(
                                         Number(
@@ -3309,7 +3013,6 @@ function viewOrder(id) {
                 )
                 .join("")
             : "<p>No order items found.</p>";
-
 
     const statusOptions =
         ORDER_STATUSES
@@ -3334,7 +3037,6 @@ function viewOrder(id) {
             )
             .join("");
 
-
     const paymentOptions =
         PAYMENT_STATUSES
             .map(
@@ -3358,7 +3060,6 @@ function viewOrder(id) {
             )
             .join("");
 
-
     content.innerHTML = `
 
         <div class="order-detail-grid">
@@ -3377,7 +3078,6 @@ function viewOrder(id) {
 
             </div>
 
-
             <div class="order-detail-box">
 
                 <small>
@@ -3389,7 +3089,6 @@ function viewOrder(id) {
                 )}
 
             </div>
-
 
             <div class="order-detail-box">
 
@@ -3405,7 +3104,6 @@ function viewOrder(id) {
 
             </div>
 
-
             <div class="order-detail-box">
 
                 <small>
@@ -3419,7 +3117,6 @@ function viewOrder(id) {
                 </strong>
 
             </div>
-
 
             <div class="order-detail-box">
 
@@ -3436,7 +3133,6 @@ function viewOrder(id) {
 
             </div>
 
-
             <div class="order-detail-box">
 
                 <small>
@@ -3450,7 +3146,6 @@ function viewOrder(id) {
                 </strong>
 
             </div>
-
 
             <div class="order-detail-box">
 
@@ -3466,7 +3161,6 @@ function viewOrder(id) {
 
             </div>
 
-
             <div class="order-detail-box">
 
                 <small>
@@ -3481,7 +3175,6 @@ function viewOrder(id) {
                 </strong>
 
             </div>
-
 
             <div class="order-detail-box full">
 
@@ -3509,7 +3202,6 @@ function viewOrder(id) {
 
             </div>
 
-
             <div class="order-detail-box">
 
                 <small>
@@ -3523,7 +3215,6 @@ function viewOrder(id) {
                 </strong>
 
             </div>
-
 
             <div class="order-detail-box">
 
@@ -3539,7 +3230,6 @@ function viewOrder(id) {
 
             </div>
 
-
             <div class="order-detail-box">
 
                 <small>
@@ -3554,7 +3244,6 @@ function viewOrder(id) {
 
             </div>
 
-
             <div class="order-detail-box">
 
                 <small>
@@ -3568,7 +3257,6 @@ function viewOrder(id) {
                 </strong>
 
             </div>
-
 
             ${
                 order.customer_note
@@ -3593,7 +3281,6 @@ function viewOrder(id) {
         </div>
 
 
-
         <!-- =================================
              ORDER MANAGEMENT
         ================================== -->
@@ -3603,7 +3290,6 @@ function viewOrder(id) {
             <h3>
                 ⚙️ Manage Order
             </h3>
-
 
             <div class="order-management-grid">
 
@@ -3621,7 +3307,6 @@ function viewOrder(id) {
 
                 </div>
 
-
                 <div class="order-management-field">
 
                     <label for="adminPaymentStatus">
@@ -3638,7 +3323,6 @@ function viewOrder(id) {
 
             </div>
 
-
             <button
                 type="button"
                 id="saveOrderChanges"
@@ -3647,14 +3331,12 @@ function viewOrder(id) {
                 💾 Save Order Changes
             </button>
 
-
             <p
                 id="orderUpdateMessage"
                 class="order-update-message"
             ></p>
 
         </div>
-
 
 
         <!-- =================================
@@ -3670,7 +3352,6 @@ function viewOrder(id) {
             Order Items
         </h3>
 
-
         <div class="order-items-list">
 
             ${itemsHtml}
@@ -3678,12 +3359,10 @@ function viewOrder(id) {
         </div>
     `;
 
-
     const saveButton =
         getElement(
             "saveOrderChanges"
         );
-
 
     if (saveButton) {
 
@@ -3692,7 +3371,6 @@ function viewOrder(id) {
             saveOrderChanges
         );
     }
-
 
     showElement(modal);
 
@@ -3711,18 +3389,15 @@ async function saveOrderChanges() {
         return;
     }
 
-
     const saveButton =
         getElement(
             "saveOrderChanges"
         );
 
-
     const message =
         getElement(
             "orderUpdateMessage"
         );
-
 
     const status =
         getElement(
@@ -3730,13 +3405,11 @@ async function saveOrderChanges() {
         )
             ?.value;
 
-
     const paymentStatus =
         getElement(
             "adminPaymentStatus"
         )
             ?.value;
-
 
     if (
         !status ||
@@ -3748,10 +3421,8 @@ async function saveOrderChanges() {
             true
         );
 
-
         return;
     }
-
 
     // =====================================
     // REMEMBER OLD VALUES
@@ -3761,20 +3432,16 @@ async function saveOrderChanges() {
         selectedOrder.status ||
         "Pending Payment";
 
-
     const oldPaymentStatus =
         selectedOrder.payment_status ||
         "Pending";
 
-
     const statusChanged =
         oldStatus !== status;
-
 
     const paymentStatusChanged =
         oldPaymentStatus !==
         paymentStatus;
-
 
     if (
         !statusChanged &&
@@ -3786,28 +3453,23 @@ async function saveOrderChanges() {
             false
         );
 
-
         return;
     }
-
 
     if (saveButton) {
 
         saveButton.disabled =
             true;
 
-
         saveButton.textContent =
             "Saving...";
     }
-
 
     if (message) {
 
         message.textContent =
             "";
     }
-
 
     try {
 
@@ -3827,7 +3489,6 @@ async function saveOrderChanges() {
                     .toISOString()
         };
 
-
         const { data, error } =
             await supabaseClient
                 .from("orders")
@@ -3841,11 +3502,9 @@ async function saveOrderChanges() {
                 .select()
                 .single();
 
-
         if (error) {
             throw error;
         }
-
 
         // =================================
         // UPDATE LOCAL ORDER
@@ -3858,7 +3517,6 @@ async function saveOrderChanges() {
                     selectedOrder.id
             );
 
-
         if (index !== -1) {
 
             orders[index] = {
@@ -3869,23 +3527,19 @@ async function saveOrderChanges() {
 
             };
 
-
             selectedOrder =
                 orders[index];
         }
 
-
         updateOrderStats();
 
         filterOrders();
-
 
         // =================================
         // SEND EMAIL
         // =================================
 
         let emailResult = null;
-
 
         if (
             statusChanged
@@ -3896,14 +3550,12 @@ async function saveOrderChanges() {
                 false
             );
 
-
             emailResult =
                 await sendOrderEmail(
                     selectedOrder,
                     status
                 );
         }
-
 
         // =================================
         // RESULT MESSAGE
@@ -3949,7 +3601,6 @@ async function saveOrderChanges() {
             );
         }
 
-
         // =================================
         // REFRESH MODAL
         // =================================
@@ -3968,7 +3619,6 @@ async function saveOrderChanges() {
             1200
         );
 
-
     } catch (error) {
 
         console.error(
@@ -3976,13 +3626,11 @@ async function saveOrderChanges() {
             error
         );
 
-
         showOrderUpdateMessage(
             error.message ||
             "Unable to update order.",
             true
         );
-
 
     } finally {
 
@@ -3990,7 +3638,6 @@ async function saveOrderChanges() {
 
             saveButton.disabled =
                 false;
-
 
             saveButton.textContent =
                 "💾 Save Order Changes";
@@ -4013,13 +3660,10 @@ function showOrderUpdateMessage(
             "orderUpdateMessage"
         );
 
-
     if (!element) return;
-
 
     element.textContent =
         message;
-
 
     element.style.color =
         error
@@ -4039,12 +3683,9 @@ function closeOrderModal() {
             "orderModal"
         );
 
-
     if (!modal) return;
 
-
     hideElement(modal);
-
 
     selectedOrder =
         null;
@@ -4065,10 +3706,8 @@ function createStatusBadge(
             "Pending Payment"
         );
 
-
     let className =
         "status-pending";
-
 
     if (
         value ===
@@ -4113,7 +3752,6 @@ function createStatusBadge(
             "status-cancelled";
     }
 
-
     return `
         <span
             class="status-badge ${className}"
@@ -4138,7 +3776,6 @@ function formatMoney(
         Number(
             value || 0
         );
-
 
     return new Intl.NumberFormat(
         "en-NG",
@@ -4170,12 +3807,10 @@ function formatDate(
         return "-";
     }
 
-
     const date =
         new Date(
             value
         );
-
 
     if (
         Number.isNaN(
@@ -4185,7 +3820,6 @@ function formatDate(
 
         return "-";
     }
-
 
     return date.toLocaleString(
         "en-NG",
@@ -4212,7 +3846,6 @@ function setText(
     const element =
         getElement(id);
 
-
     if (element) {
 
         element.textContent =
@@ -4235,14 +3868,12 @@ function getFileExtension(
         )
             .split(".");
 
-
     if (
         parts.length < 2
     ) {
 
         return "";
     }
-
 
     return parts
         .pop()
