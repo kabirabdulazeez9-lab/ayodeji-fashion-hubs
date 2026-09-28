@@ -206,6 +206,15 @@
                 👟 Products
             </button>
 
+
+            <button
+                type="button"
+                class="admin-tab"
+                data-section="categoriesSection"
+            >
+                🏷️ Categories
+            </button>
+
         </nav>
 
 
@@ -246,9 +255,7 @@
 
 
 
-            <!-- =================================
-                 ORDER STATISTICS
-            ================================== -->
+            <!-- ORDER STATISTICS -->
 
             <div class="admin-stats-grid">
 
@@ -339,9 +346,7 @@
 
 
 
-            <!-- =================================
-                 ORDER FILTERS
-            ================================== -->
+            <!-- ORDER FILTERS -->
 
             <div class="admin-filters">
 
@@ -412,9 +417,7 @@
 
 
 
-            <!-- =================================
-                 DESKTOP ORDERS TABLE
-            ================================== -->
+            <!-- DESKTOP ORDERS TABLE -->
 
             <div class="admin-orders-table-wrapper">
 
@@ -424,33 +427,13 @@
 
                         <tr>
 
-                            <th>
-                                Order
-                            </th>
-
-                            <th>
-                                Customer
-                            </th>
-
-                            <th>
-                                Total
-                            </th>
-
-                            <th>
-                                Payment
-                            </th>
-
-                            <th>
-                                Status
-                            </th>
-
-                            <th>
-                                Date
-                            </th>
-
-                            <th>
-                                Action
-                            </th>
+                            <th>Order</th>
+                            <th>Customer</th>
+                            <th>Total</th>
+                            <th>Payment</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Action</th>
 
                         </tr>
 
@@ -475,9 +458,7 @@
 
 
 
-            <!-- =================================
-                 MOBILE ORDERS
-            ================================== -->
+            <!-- MOBILE ORDERS -->
 
             <div
                 id="ordersGrid"
@@ -544,9 +525,7 @@
 
 
 
-            <!-- =================================
-                 PRODUCT FILTERS
-            ================================== -->
+            <!-- PRODUCT FILTERS -->
 
             <div class="admin-filters">
 
@@ -577,21 +556,7 @@
                             All Categories
                         </option>
 
-                        <option value="sneakers">
-                            Sneakers
-                        </option>
-
-                        <option value="formal">
-                            Formal
-                        </option>
-
-                        <option value="casual">
-                            Casual
-                        </option>
-
-                        <option value="slippers">
-                            Slippers
-                        </option>
+                        <!-- Categories are loaded from Supabase -->
 
                     </select>
 
@@ -636,9 +601,7 @@
 
 
 
-            <!-- =================================
-                 PRODUCTS GRID
-            ================================== -->
+            <!-- PRODUCTS GRID -->
 
             <div
                 id="productsAdminGrid"
@@ -661,6 +624,130 @@
 
                 <p>
                     Add your first product to the store.
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================
+             CATEGORIES SECTION
+        ================================== -->
+
+        <section
+            id="categoriesSection"
+            class="admin-section hidden"
+        >
+
+            <div class="admin-section-header">
+
+                <div>
+
+                    <h2>
+                        Categories
+                    </h2>
+
+                    <p>
+                        Create and manage the categories used by your products.
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="addCategoryButton"
+                    class="admin-primary-button"
+                >
+                    + Add Category
+                </button>
+
+            </div>
+
+
+
+            <!-- CATEGORY SEARCH -->
+
+            <div class="admin-filters">
+
+                <div class="admin-filter-field">
+
+                    <label for="categorySearch">
+                        Search Categories
+                    </label>
+
+                    <input
+                        type="search"
+                        id="categorySearch"
+                        placeholder="Search by category name..."
+                    >
+
+                </div>
+
+
+                <div class="admin-filter-field">
+
+                    <label for="categoryStatusFilter">
+                        Status
+                    </label>
+
+                    <select id="categoryStatusFilter">
+
+                        <option value="">
+                            All Categories
+                        </option>
+
+                        <option value="active">
+                            Active
+                        </option>
+
+                        <option value="inactive">
+                            Inactive
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="products-admin-heading">
+
+                <strong id="categoriesCount">
+                    0 Categories
+                </strong>
+
+            </div>
+
+
+
+            <!-- CATEGORIES GRID -->
+
+            <div
+                id="categoriesAdminGrid"
+                class="products-admin-grid"
+            ></div>
+
+
+            <div
+                id="emptyCategories"
+                class="empty-state hidden"
+            >
+
+                <div class="empty-state-icon">
+                    🏷️
+                </div>
+
+                <h3>
+                    No categories found
+                </h3>
+
+                <p>
+                    Add your first product category.
                 </p>
 
             </div>
@@ -829,21 +916,7 @@
                             Select category
                         </option>
 
-                        <option value="sneakers">
-                            Sneakers
-                        </option>
-
-                        <option value="formal">
-                            Formal
-                        </option>
-
-                        <option value="casual">
-                            Casual
-                        </option>
-
-                        <option value="slippers">
-                            Slippers
-                        </option>
+                        <!-- Categories are loaded from Supabase -->
 
                     </select>
 
@@ -1033,6 +1106,149 @@
                         class="admin-primary-button"
                     >
                         Save Product
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================
+     CATEGORY MODAL
+========================================= -->
+
+<div
+    id="categoryModal"
+    class="admin-modal hidden"
+>
+
+    <div class="admin-modal-card">
+
+        <div class="admin-modal-header">
+
+            <h2 id="categoryModalTitle">
+                Add Category
+            </h2>
+
+            <button
+                type="button"
+                id="closeCategoryModal"
+                class="admin-modal-close"
+            >
+                ✕
+            </button>
+
+        </div>
+
+
+        <div class="admin-modal-content">
+
+            <form id="categoryForm">
+
+                <input
+                    type="hidden"
+                    id="categoryId"
+                >
+
+
+                <div class="admin-form-group">
+
+                    <label for="categoryName">
+                        Category Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="categoryName"
+                        placeholder="e.g. Boots"
+                        maxlength="80"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="admin-form-group">
+
+                    <label for="categorySlug">
+                        Category Slug
+                    </label>
+
+                    <input
+                        type="text"
+                        id="categorySlug"
+                        placeholder="e.g. boots"
+                        maxlength="80"
+                        required
+                    >
+
+                    <small>
+                        Use lowercase letters, numbers and hyphens.
+                    </small>
+
+                </div>
+
+
+                <div class="admin-form-group">
+
+                    <label for="categoryDescription">
+                        Description
+                    </label>
+
+                    <textarea
+                        id="categoryDescription"
+                        rows="4"
+                        placeholder="Describe this category..."
+                    ></textarea>
+
+                </div>
+
+
+                <div class="admin-checkbox-group">
+
+                    <input
+                        type="checkbox"
+                        id="categoryActive"
+                        checked
+                    >
+
+                    <label for="categoryActive">
+                        Category is active
+                    </label>
+
+                </div>
+
+
+                <p
+                    id="categoryFormMessage"
+                    class="product-form-message"
+                ></p>
+
+
+                <div class="admin-modal-actions">
+
+                    <button
+                        type="button"
+                        id="cancelCategoryButton"
+                        class="admin-secondary-button"
+                    >
+                        Cancel
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        id="saveCategoryButton"
+                        class="admin-primary-button"
+                    >
+                        Save Category
                     </button>
 
                 </div>
