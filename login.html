@@ -23,46 +23,77 @@
 
 <body>
 
-    <!-- Background decoration -->
+    <!-- =========================================
+         BACKGROUND
+    ========================================== -->
+
     <div class="background-glow glow-one"></div>
     <div class="background-glow glow-two"></div>
     <div class="background-grid"></div>
 
 
+    <!-- =========================================
+         AUTH PAGE
+    ========================================== -->
+
     <main class="auth-page">
 
         <section class="login-card">
 
-            <!-- Left branding panel -->
+
+            <!-- =================================
+                 BRANDING PANEL
+            ================================== -->
+
             <div class="login-brand-panel">
 
                 <div class="brand-light"></div>
+
 
                 <a
                     href="index.html"
                     class="brand-logo"
                 >
-                    <span class="brand-shoe">👟</span>
+
+                    <span class="brand-shoe">
+                        👟
+                    </span>
 
                     <span class="brand-name">
                         Ayodeji
                         <strong>Fashion Hubs</strong>
                     </span>
+
                 </a>
 
 
                 <div class="brand-visual">
 
-                    <div class="visual-circle circle-one"></div>
-                    <div class="visual-circle circle-two"></div>
+                    <div
+                        class="visual-circle circle-one"
+                    ></div>
+
+                    <div
+                        class="visual-circle circle-two"
+                    ></div>
+
 
                     <div class="floating-shoe">
                         👟
                     </div>
 
-                    <div class="floating-line line-one"></div>
-                    <div class="floating-line line-two"></div>
-                    <div class="floating-line line-three"></div>
+
+                    <div
+                        class="floating-line line-one"
+                    ></div>
+
+                    <div
+                        class="floating-line line-two"
+                    ></div>
+
+                    <div
+                        class="floating-line line-three"
+                    ></div>
 
                 </div>
 
@@ -89,18 +120,30 @@
             </div>
 
 
-            <!-- Login form panel -->
+            <!-- =================================
+                 LOGIN FORM PANEL
+            ================================== -->
+
             <div class="login-form-panel">
 
+
+                <!-- Mobile branding -->
+
                 <div class="mobile-brand">
-                    <span class="mobile-brand-icon">👟</span>
+
+                    <span class="mobile-brand-icon">
+                        👟
+                    </span>
 
                     <span>
                         Ayodeji
                         <strong>Fashion Hubs</strong>
                     </span>
+
                 </div>
 
+
+                <!-- Heading -->
 
                 <div class="login-heading">
 
@@ -114,11 +157,16 @@
                     </h1>
 
                     <p>
-                        Sign in to continue shopping with us.
+                        Sign in to continue shopping
+                        with us.
                     </p>
 
                 </div>
 
+
+                <!-- =================================
+                     ACCOUNT / CHECKOUT MESSAGE
+                ================================== -->
 
                 <div
                     id="loginMessage"
@@ -128,12 +176,18 @@
                 ></div>
 
 
+                <!-- =================================
+                     LOGIN FORM
+                ================================== -->
+
                 <form
                     id="loginForm"
                     novalidate
                 >
 
+
                     <!-- Email -->
+
                     <div class="input-group">
 
                         <label for="email">
@@ -152,6 +206,7 @@
                                 name="email"
                                 placeholder="Enter your email"
                                 autocomplete="email"
+                                inputmode="email"
                                 required
                             >
 
@@ -161,6 +216,7 @@
 
 
                     <!-- Password -->
+
                     <div class="input-group">
 
                         <div class="password-label-row">
@@ -195,6 +251,7 @@
                                 required
                             >
 
+
                             <button
                                 type="button"
                                 id="togglePassword"
@@ -210,7 +267,8 @@
                     </div>
 
 
-                    <!-- Remember -->
+                    <!-- Remember me -->
+
                     <label class="remember-option">
 
                         <input
@@ -228,6 +286,7 @@
 
 
                     <!-- Login button -->
+
                     <button
                         type="submit"
                         id="loginButton"
@@ -253,19 +312,27 @@
                 </form>
 
 
+                <!-- Divider -->
+
                 <div class="divider">
 
-                    <span>OR</span>
+                    <span>
+                        OR
+                    </span>
 
                 </div>
 
+
+                <!-- Create account -->
 
                 <div class="alternative-actions">
 
                     <a
                         href="register.html"
+                        id="createAccountButton"
                         class="secondary-auth-button"
                     >
+
                         <span class="secondary-icon">
                             ✨
                         </span>
@@ -277,10 +344,31 @@
                         <span>
                             →
                         </span>
+
                     </a>
 
                 </div>
 
+
+                <!-- Checkout information -->
+
+                <div class="checkout-login-note">
+
+                    <span>
+                        🛒
+                    </span>
+
+                    <p>
+                        You need an account to place
+                        an order. Your cart will remain
+                        saved while you sign in or
+                        create your account.
+                    </p>
+
+                </div>
+
+
+                <!-- Back home -->
 
                 <div class="back-home">
 
@@ -297,10 +385,15 @@
     </main>
 
 
+    <!-- =========================================
+         FOOTER
+    ========================================== -->
+
     <footer class="auth-footer">
 
         <p>
-            © <span id="currentYear"></span>
+            ©
+            <span id="currentYear"></span>
             Ayodeji Fashion Hubs.
             All rights reserved.
         </p>
@@ -308,7 +401,10 @@
     </footer>
 
 
-    <!-- Supabase -->
+    <!-- =========================================
+         SUPABASE
+    ========================================== -->
+
     <script
         src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
     ></script>

@@ -3,32 +3,24 @@
 // CUSTOMER LOGIN
 // =========================================
 
+document.addEventListener("DOMContentLoaded", initializeLogin);
 
-document.addEventListener(
-    "DOMContentLoaded",
-    initializeLogin
-);
 
+// =========================================
+// INITIALIZE LOGIN
+// =========================================
 
 async function initializeLogin() {
 
-    console.log(
-        "Ayodeji Fashion Hubs login starting..."
-    );
-
+    console.log("Ayodeji Fashion Hubs login starting...");
 
     updateYear();
 
-
-    const supabaseClient =
-        window.supabaseClient;
-
+    const supabaseClient = window.supabaseClient;
 
     if (!supabaseClient) {
 
-        console.error(
-            "Supabase client was not loaded."
-        );
+        console.error("Supabase client was not loaded.");
 
         showMessage(
             "The login system could not connect. Please refresh the page.",
@@ -39,26 +31,26 @@ async function initializeLogin() {
     }
 
 
+    // Set up the page
     setupPasswordToggle();
-
     setupLoginForm();
-
     setupForgotPassword();
 
 
-    /*
-        Check whether the customer is
-        already signed in.
-    */
+    // -------------------------------------------------
+    // IMPORTANT:
+    // DO NOT automatically redirect an existing session.
+    //
+    // This allows the customer to open login.html
+    // and enter another account.
+    // -------------------------------------------------
 
     try {
 
         const {
             data,
             error
-        } =
-            await supabaseClient.auth.getSession();
-
+        } = await supabaseClient.auth.getSession();
 
         if (error) {
 
@@ -70,14 +62,19 @@ async function initializeLogin() {
             return;
         }
 
-
-        if (data && data.session) {
+        if (data?.session) {
 
             console.log(
-                "Customer already signed in."
+                "An existing customer session was found:",
+                data.session.user?.email
             );
 
-            redirectAfterLogin();
+            /*
+             * We intentionally DO NOT redirect here.
+             *
+             * The customer may have opened login.html
+             * because they want to sign into another account.
+             */
 
         }
 
@@ -87,9 +84,7 @@ async function initializeLogin() {
             "Unable to check session:",
             error
         );
-
     }
-
 }
 
 
@@ -102,7 +97,6 @@ function setupLoginForm() {
     const form =
         document.getElementById("loginForm");
 
-
     if (!form) {
 
         console.error(
@@ -112,12 +106,10 @@ function setupLoginForm() {
         return;
     }
 
-
     form.addEventListener(
         "submit",
         handleLogin
     );
-
 }
 
 
@@ -129,10 +121,8 @@ async function handleLogin(event) {
 
     event.preventDefault();
 
-
     const supabaseClient =
         window.supabaseClient;
-
 
     if (!supabaseClient) {
 
@@ -153,12 +143,18 @@ async function handleLogin(event) {
 
 
     if (!emailInput || !passwordInput) {
+
+        showMessage(
+            "Login form is not available. Please refresh the page.",
+            "error"
+        );
+
         return;
     }
 
 
     const email =
-        emailInput.value.trim();
+        emailInput.value.trim().toLowerCase();
 
     const password =
         passwordInput.value;
@@ -167,9 +163,9 @@ async function handleLogin(event) {
     clearMessage();
 
 
-    // =====================================
+    // =========================================
     // VALIDATION
-    // =====================================
+    // =========================================
 
     if (!email) {
 
@@ -229,9 +225,37 @@ async function handleLogin(event) {
     try {
 
         console.log(
-            "Signing in customer..."
+            "Signing in:",
+            email
         );
 
+
+        // =========================================
+        // SIGN OUT OLD SESSION FIRST
+        // =========================================
+        //
+        // This is important if another customer is
+        // already signed in on this browser.
+        //
+
+        const {
+            data: currentSessionData
+        } = await supabaseClient.auth.getSession();
+
+
+        if (currentSessionData?.session) {
+
+            console.log(
+                "Existing session found. Replacing it with the new login."
+            );
+
+            await supabaseClient.auth.signOut();
+        }
+
+
+        // =========================================
+        // SUPABASE LOGIN
+        // =========================================
 
         const {
             data,
@@ -243,13 +267,16 @@ async function handleLogin(event) {
             });
 
 
+        // =========================================
+        // LOGIN ERROR
+        // =========================================
+
         if (error) {
 
             console.error(
-                "Login error:",
+                "Supabase login error:",
                 error
             );
-
 
             handleLoginError(error);
 
@@ -257,7 +284,15 @@ async function handleLogin(event) {
         }
 
 
-        if (!data || !data.user) {
+        // =========================================
+        // VERIFY USER
+        // =========================================
+
+        if (!data?.user) {
+
+            console.error(
+                "Supabase returned no user."
+            );
 
             showMessage(
                 "Login could not be completed. Please try again.",
@@ -272,6 +307,55 @@ async function handleLogin(event) {
             "Customer login successful."
         );
 
+        console.log(
+            "User ID:",
+            data.user.id
+        );
+
+        console.log(
+            "User email:",
+            data.user.email
+        );
+
+
+        // =========================================
+        // VERIFY SESSION
+        // =========================================
+
+        const {
+            data: verifySession,
+            error: verifyError
+        } =
+            await supabaseClient.auth.getSession();
+
+
+        if (
+            verifyError ||
+            !verifySession?.session
+        ) {
+
+            console.error(
+                "Login succeeded but session was not found.",
+                verifyError
+            );
+
+            showMessage(
+                "Login was completed, but your session could not be saved. Please try again.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        console.log(
+            "Session verified successfully."
+        );
+
+
+        // =========================================
+        // SUCCESS MESSAGE
+        // =========================================
 
         showMessage(
             "Login successful. Welcome back!",
@@ -279,15 +363,17 @@ async function handleLogin(event) {
         );
 
 
-        /*
-            Small delay allows the success
-            message to be visible before
-            redirecting.
-        */
+        // =========================================
+        // REDIRECT
+        // =========================================
 
         setTimeout(
-            redirectAfterLogin,
-            700
+            () => {
+
+                redirectAfterLogin();
+
+            },
+            500
         );
 
 
@@ -298,7 +384,6 @@ async function handleLogin(event) {
             error
         );
 
-
         showMessage(
             "Something went wrong while signing in. Please try again.",
             "error"
@@ -307,9 +392,7 @@ async function handleLogin(event) {
     } finally {
 
         setLoginLoading(false);
-
     }
-
 }
 
 
@@ -321,13 +404,16 @@ function handleLoginError(error) {
 
     const message =
         String(
-            error.message || ""
+            error?.message || ""
         ).toLowerCase();
 
 
     if (
         message.includes(
             "invalid login credentials"
+        ) ||
+        message.includes(
+            "invalid credentials"
         )
     ) {
 
@@ -370,12 +456,26 @@ function handleLoginError(error) {
     }
 
 
+    if (
+        message.includes(
+            "network"
+        )
+    ) {
+
+        showMessage(
+            "Network error. Please check your internet connection and try again.",
+            "error"
+        );
+
+        return;
+    }
+
+
     showMessage(
-        error.message ||
+        error?.message ||
         "Unable to sign in. Please try again.",
         "error"
     );
-
 }
 
 
@@ -444,12 +544,9 @@ function setupPasswordToggle() {
                     "aria-pressed",
                     "true"
                 );
-
             }
-
         }
     );
-
 }
 
 
@@ -489,7 +586,9 @@ function setupForgotPassword() {
 
 
             const email =
-                emailInput.value.trim();
+                emailInput.value
+                    .trim()
+                    .toLowerCase();
 
 
             if (!email) {
@@ -543,10 +642,9 @@ function setupForgotPassword() {
             try {
 
                 /*
-                    Supabase redirects the customer
-                    back to the login page after
-                    the reset link is opened.
-                */
+                 * Return to the login page after
+                 * requesting a password reset.
+                 */
 
                 const redirectUrl =
                     window.location.origin +
@@ -601,6 +699,7 @@ function setupForgotPassword() {
                     "error"
                 );
 
+
             } finally {
 
                 button.style.pointerEvents =
@@ -608,31 +707,27 @@ function setupForgotPassword() {
 
                 button.textContent =
                     "Forgot password?";
-
             }
-
         }
     );
-
 }
 
 
 // =========================================
-// REDIRECT
+// REDIRECT AFTER LOGIN
 // =========================================
 
 function redirectAfterLogin() {
-
-    /*
-        If another page sent the customer
-        to login, return them there.
-    */
 
     const params =
         new URLSearchParams(
             window.location.search
         );
 
+
+    // =========================================
+    // 1. EXPLICIT REDIRECT
+    // =========================================
 
     const requestedPage =
         params.get("redirect");
@@ -643,6 +738,11 @@ function redirectAfterLogin() {
         isSafeRedirect(requestedPage)
     ) {
 
+        console.log(
+            "Returning to requested page:",
+            requestedPage
+        );
+
         window.location.href =
             requestedPage;
 
@@ -650,13 +750,50 @@ function redirectAfterLogin() {
     }
 
 
-    /*
-        Default destination after login.
-    */
+    // =========================================
+    // 2. SAVED CHECKOUT REDIRECT
+    // =========================================
+
+    const savedCheckout =
+        localStorage.getItem(
+            "ayodejiCheckoutReturn"
+        );
+
+
+    if (
+        savedCheckout &&
+        isSafeRedirect(savedCheckout)
+    ) {
+
+        console.log(
+            "Returning to checkout:",
+            savedCheckout
+        );
+
+
+        localStorage.removeItem(
+            "ayodejiCheckoutReturn"
+        );
+
+
+        window.location.href =
+            savedCheckout;
+
+        return;
+    }
+
+
+    // =========================================
+    // 3. DEFAULT
+    // =========================================
+
+    console.log(
+        "No return page specified. Opening homepage."
+    );
+
 
     window.location.href =
         "index.html";
-
 }
 
 
@@ -671,11 +808,6 @@ function isSafeRedirect(url) {
     }
 
 
-    /*
-        Only allow local pages.
-        Prevents external redirect URLs.
-    */
-
     if (
         url.startsWith("http://") ||
         url.startsWith("https://") ||
@@ -686,8 +818,17 @@ function isSafeRedirect(url) {
     }
 
 
-    return true;
+    if (
+        url
+            .toLowerCase()
+            .startsWith("javascript:")
+    ) {
 
+        return false;
+    }
+
+
+    return true;
 }
 
 
@@ -728,7 +869,6 @@ function setLoginLoading(isLoading) {
             isLoading
                 ? "SIGNING IN..."
                 : "SIGN IN";
-
     }
 
 
@@ -736,14 +876,12 @@ function setLoginLoading(isLoading) {
 
         spinner.hidden =
             !isLoading;
-
     }
-
 }
 
 
 // =========================================
-// MESSAGE
+// SHOW MESSAGE
 // =========================================
 
 function showMessage(
@@ -773,9 +911,12 @@ function showMessage(
                 ? "success"
                 : "error"
         );
-
 }
 
+
+// =========================================
+// CLEAR MESSAGE
+// =========================================
 
 function clearMessage() {
 
@@ -795,7 +936,6 @@ function clearMessage() {
 
     element.className =
         "auth-message";
-
 }
 
 
@@ -807,7 +947,6 @@ function isValidEmail(email) {
 
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/
         .test(email);
-
 }
 
 
@@ -827,7 +966,5 @@ function updateYear() {
 
         year.textContent =
             new Date().getFullYear();
-
     }
-
 }
