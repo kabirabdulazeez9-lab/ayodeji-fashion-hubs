@@ -1226,80 +1226,78 @@ async function handleCheckoutSubmit(
         // -------------------------------------
 
         const orderItems =
-            checkoutCart.map(
-                item => {
+    checkoutCart.map(
+        item => {
 
-                    const price =
-                        Number(
-                            item.price
-                        ) || 0;
+            const price =
+                Number(item.price) || 0;
 
-
-                    const quantity =
-                        Math.max(
-                            1,
-                            Number(
-                                item.quantity
-                            ) || 1
-                        );
-
-
-                    return {
-
-                        order_id:
-                            order.id,
-
-                        product_id:
-                            item.product_id ||
-                            item.productId ||
-                            item.id ||
-                            null,
-
-                        product_name:
-                            item.name ||
-                            item.product_name ||
-                            "Product",
-
-                        product_price:
-                            price,
-
-                        quantity:
-                            quantity,
-
-                        size:
-                            item.size ||
-                            null,
-
-                        subtotal:
-                            price *
-                            quantity
-
-                    };
-
-                }
-            );
-
-
-        const {
-            error: itemsError
-        } =
-            await supabaseClient
-                .from("order_items")
-                .insert(
-                    orderItems
+            const quantity =
+                Math.max(
+                    1,
+                    Number(item.quantity) || 1
                 );
 
+            return {
 
-        if (itemsError) {
+                order_id:
+                    order.id,
 
-            console.error(
-                "Order items error:",
-                itemsError
-            );
+                product_id:
+                    item.product_id ||
+                    item.productId ||
+                    item.id ||
+                    null,
 
-            throw itemsError;
+                product_name:
+                    item.name ||
+                    item.product_name ||
+                    "Product",
 
+                price:
+                    price,
+
+                quantity:
+                    quantity,
+
+                size:
+                    item.size ||
+                    null,
+
+                category:
+                    item.category ||
+                    null,
+
+                image:
+                    item.image ||
+                    null,
+
+                icon:
+                    item.icon ||
+                    null
+            };
         }
+    );
+
+
+const {
+    error: itemsError
+} =
+    await supabaseClient
+        .from("order_items")
+        .insert(orderItems);
+
+
+if (itemsError) {
+
+    console.error(
+        "Order items error:",
+        itemsError
+    );
+
+    throw itemsError;
+
+}
 
 
         // -------------------------------------
@@ -1831,22 +1829,25 @@ function focusElement(
 // PHONE VALIDATION
 // =========================================
 
-function isValidPhone(
-    phone
-) {
+function isValidPhone(phone) {
+    if (!phone) return false;
 
-    const cleaned =
-        phone.replace(
-            /[\s\-()]/g,
-            ""
-        );
+    const cleaned = phone
+        .trim()
+        .replace(/[\s\-()]/g, "");
 
+    // Nigerian local format
+    // Examples: 08012345678, 08123456789, 09012345678
+    const localFormat = /^0[789][01]\d{8}$/;
+
+    // Nigerian international format
+    // Examples: +2348012345678
+    const internationalFormat = /^\+234[789][01]\d{8}$/;
 
     return (
-        /^(?:\+234|234|0)8[0-9]{9}$/
-            .test(cleaned)
+        localFormat.test(cleaned) ||
+        internationalFormat.test(cleaned)
     );
-
 }
 
 
