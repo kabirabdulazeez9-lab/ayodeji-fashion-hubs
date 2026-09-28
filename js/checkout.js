@@ -3,39 +3,37 @@
 // CHECKOUT
 // =========================================
 
-document.addEventListener("DOMContentLoaded", () => {
-    initializeCheckout();
-});
-
-
-// =========================================
-// GLOBAL STATE
-// =========================================
-
 let checkoutCart = [];
-
 let checkoutUser = null;
-
 let checkoutProfile = null;
-
 let checkoutTotal = 0;
-
 let checkoutSubmitting = false;
 
 
 // =========================================
-// INITIALIZE CHECKOUT
+// INITIALIZE
 // =========================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    initializeCheckout
+);
+
 
 async function initializeCheckout() {
 
     const supabaseClient =
         window.supabaseClient;
 
+
     if (!supabaseClient) {
 
+        console.error(
+            "Supabase client was not loaded."
+        );
+
         showCheckoutMessage(
-            "Unable to connect to the checkout service. Please refresh the page.",
+            "Checkout service could not be loaded. Please refresh the page.",
             "error"
         );
 
@@ -43,101 +41,113 @@ async function initializeCheckout() {
     }
 
 
-    // -----------------------------------------
-    // GET CURRENT SESSION
-    // -----------------------------------------
+    try {
 
-    const {
-        data,
-        error
-    } =
-        await supabaseClient.auth.getSession();
+        // -------------------------------------
+        // CHECK LOGIN
+        // -------------------------------------
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .auth
+                .getSession();
 
 
-    if (error) {
+        if (error) {
+            throw error;
+        }
+
+
+        checkoutUser =
+            data?.session?.user || null;
+
+
+        if (!checkoutUser) {
+
+            localStorage.setItem(
+                "ayodejiCheckoutReturn",
+                "checkout.html"
+            );
+
+
+            showLoginRequired();
+
+            return;
+        }
+
+
+        // -------------------------------------
+        // LOAD CART
+        // -------------------------------------
+
+        checkoutCart =
+            loadCart();
+
+
+        if (
+            !checkoutCart.length
+        ) {
+
+            showCheckoutMessage(
+                "Your cart is empty. Please add products before checking out.",
+                "error"
+            );
+
+            disableCheckoutForm();
+
+            return;
+        }
+
+
+        // -------------------------------------
+        // LOAD CUSTOMER PROFILE
+        // -------------------------------------
+
+        await loadCustomerProfile();
+
+
+        // -------------------------------------
+        // FILL CUSTOMER INFORMATION
+        // -------------------------------------
+
+        populateCustomerInformation();
+
+
+        // -------------------------------------
+        // SETUP
+        // -------------------------------------
+
+        setupPaymentMethods();
+
+        setupPaymentPlans();
+
+        setupCopyButton();
+
+        setupCheckoutForm();
+
+
+        // -------------------------------------
+        // RENDER SUMMARY
+        // -------------------------------------
+
+        renderOrderSummary();
+
+    } catch (error) {
 
         console.error(
-            "Session error:",
+            "Checkout initialization error:",
             error
         );
 
         showCheckoutMessage(
-            "Unable to verify your account. Please try again.",
+            getCheckoutErrorMessage(error),
             "error"
         );
 
-        return;
     }
-
-
-    // -----------------------------------------
-    // ACCOUNT REQUIRED
-    // -----------------------------------------
-
-    if (!data?.session) {
-
-        showLoginRequired();
-
-        return;
-    }
-
-
-    checkoutUser =
-        data.session.user;
-
-
-    // -----------------------------------------
-    // LOAD CART
-    // -----------------------------------------
-
-    loadCart();
-
-
-    if (!checkoutCart.length) {
-
-        showCheckoutMessage(
-            "Your cart is empty. Please add a product before checking out.",
-            "error"
-        );
-
-        disableCheckoutForm();
-
-        return;
-    }
-
-
-    // -----------------------------------------
-    // LOAD CUSTOMER PROFILE
-    // -----------------------------------------
-
-    await loadCustomerProfile();
-
-
-    // -----------------------------------------
-    // DISPLAY USER INFORMATION
-    // -----------------------------------------
-
-    populateCustomerInformation();
-
-
-    // -----------------------------------------
-    // SETUP CHECKOUT
-    // -----------------------------------------
-
-    setupPaymentMethods();
-
-    setupPaymentPlans();
-
-    setupCopyAccountNumber();
-
-    setupCheckoutForm();
-
-
-    // -----------------------------------------
-    // CALCULATE TOTAL
-    // -----------------------------------------
-
-    renderOrderSummary();
 
 }
 
@@ -157,56 +167,39 @@ function loadCart() {
 
 
         if (!savedCart) {
-
-            checkoutCart = [];
-
-            return;
+            return [];
         }
 
 
-        const parsedCart =
+        const cart =
             JSON.parse(savedCart);
 
 
-        if (!Array.isArray(parsedCart)) {
-
-            checkoutCart = [];
-
-            return;
+        if (!Array.isArray(cart)) {
+            return [];
         }
 
 
-        checkoutCart =
-            parsedCart
-                .filter(item => item)
-                .map(item => ({
+        return cart
+            .filter(item => item)
+            .map(item => ({
 
-                    id:
-                        item.id,
+                ...item,
 
-                    name:
-                        item.name || "Product",
+                quantity:
+                    Math.max(
+                        1,
+                        Number(
+                            item.quantity
+                        ) || 1
+                    ),
 
-                    price:
-                        Number(item.price) || 0,
+                price:
+                    Number(
+                        item.price
+                    ) || 0
 
-                    quantity:
-                        Math.max(
-                            1,
-                            Number(item.quantity) || 1
-                        ),
-
-                    image:
-                        item.image || "",
-
-                    icon:
-                        item.icon || "👟",
-
-                    size:
-                        item.size || ""
-
-                }));
-
+            }));
 
     } catch (error) {
 
@@ -215,7 +208,7 @@ function loadCart() {
             error
         );
 
-        checkoutCart = [];
+        return [];
 
     }
 
@@ -228,7 +221,9 @@ function loadCart() {
 
 async function loadCustomerProfile() {
 
-    if (!checkoutUser) {
+    if (
+        !checkoutUser
+    ) {
         return;
     }
 
@@ -244,7 +239,9 @@ async function loadCustomerProfile() {
             error
         } =
             await supabaseClient
-                .from("customer_profiles")
+                .from(
+                    "customer_profiles"
+                )
                 .select(
                     `
                     user_id,
@@ -264,10 +261,12 @@ async function loadCustomerProfile() {
 
         if (error) {
 
-            console.error(
-                "Profile loading error:",
+            console.warn(
+                "Customer profile could not be loaded:",
                 error
             );
+
+            checkoutProfile = null;
 
             return;
         }
@@ -276,13 +275,14 @@ async function loadCustomerProfile() {
         checkoutProfile =
             data || null;
 
-
     } catch (error) {
 
-        console.error(
-            "Profile loading exception:",
+        console.warn(
+            "Customer profile error:",
             error
         );
+
+        checkoutProfile = null;
 
     }
 
@@ -295,47 +295,16 @@ async function loadCustomerProfile() {
 
 function populateCustomerInformation() {
 
-    const nameInput =
-        document.getElementById(
-            "customerName"
-        );
-
-
-    const phoneInput =
-        document.getElementById(
-            "customerPhone"
-        );
-
-
-    const emailInput =
-        document.getElementById(
-            "customerEmail"
-        );
-
-
-    const addressInput =
-        document.getElementById(
-            "deliveryAddress"
-        );
-
-
-    const cityInput =
-        document.getElementById(
-            "deliveryCity"
-        );
-
-
-    const stateInput =
-        document.getElementById(
-            "deliveryState"
-        );
+    if (!checkoutUser) {
+        return;
+    }
 
 
     const metadata =
-        checkoutUser?.user_metadata || {};
+        checkoutUser.user_metadata || {};
 
 
-    const name =
+    const fullName =
         checkoutProfile?.full_name ||
         metadata.full_name ||
         metadata.name ||
@@ -348,66 +317,45 @@ function populateCustomerInformation() {
         "";
 
 
-    const address =
-        checkoutProfile?.delivery_address ||
-        "";
-
-
-    const city =
-        checkoutProfile?.delivery_city ||
-        "";
-
-
-    const state =
-        checkoutProfile?.delivery_state ||
-        "";
-
-
     const email =
-        checkoutUser?.email ||
+        checkoutUser.email ||
         "";
 
 
-    if (nameInput) {
-
-        nameInput.value = name;
-
-    }
-
-
-    if (phoneInput) {
-
-        phoneInput.value = phone;
-
-    }
+    setValue(
+        "customerName",
+        fullName
+    );
 
 
-    if (emailInput) {
-
-        emailInput.value = email;
-
-    }
-
-
-    if (addressInput) {
-
-        addressInput.value = address;
-
-    }
+    setValue(
+        "customerPhone",
+        phone
+    );
 
 
-    if (cityInput) {
+    setValue(
+        "customerEmail",
+        email
+    );
 
-        cityInput.value = city;
 
-    }
+    setValue(
+        "deliveryAddress",
+        checkoutProfile?.delivery_address || ""
+    );
 
 
-    if (stateInput) {
+    setValue(
+        "deliveryCity",
+        checkoutProfile?.delivery_city || ""
+    );
 
-        stateInput.value = state;
 
-    }
+    setValue(
+        "deliveryState",
+        checkoutProfile?.delivery_state || ""
+    );
 
 }
 
@@ -418,7 +366,7 @@ function populateCustomerInformation() {
 
 function setupPaymentMethods() {
 
-    const paymentInputs =
+    const paymentMethods =
         document.querySelectorAll(
             'input[name="paymentMethod"]'
         );
@@ -430,12 +378,12 @@ function setupPaymentMethods() {
         );
 
 
-    if (!paymentInputs.length) {
+    if (!paymentMethods.length) {
         return;
     }
 
 
-    function updatePaymentMethod() {
+    function updatePaymentDetails() {
 
         const selected =
             document.querySelector(
@@ -466,17 +414,19 @@ function setupPaymentMethods() {
     }
 
 
-    paymentInputs.forEach(input => {
+    paymentMethods.forEach(
+        radio => {
 
-        input.addEventListener(
-            "change",
-            updatePaymentMethod
-        );
+            radio.addEventListener(
+                "change",
+                updatePaymentDetails
+            );
 
-    });
+        }
+    );
 
 
-    updatePaymentMethod();
+    updatePaymentDetails();
 
 }
 
@@ -487,254 +437,31 @@ function setupPaymentMethods() {
 
 function setupPaymentPlans() {
 
-    const planInputs =
+    const plans =
         document.querySelectorAll(
             'input[name="paymentPlan"]'
         );
 
 
-    planInputs.forEach(input => {
+    plans.forEach(
+        plan => {
 
-        input.addEventListener(
-            "change",
-            renderPaymentAmounts
-        );
-
-    });
-
-
-    renderPaymentAmounts();
-
-}
-
-
-// =========================================
-// RENDER ORDER SUMMARY
-// =========================================
-
-function renderOrderSummary() {
-
-    const itemsContainer =
-        document.getElementById(
-            "orderItems"
-        );
-
-
-    if (!itemsContainer) {
-        return;
-    }
-
-
-    itemsContainer.innerHTML = "";
-
-
-    checkoutTotal = 0;
-
-
-    checkoutCart.forEach(item => {
-
-        const itemTotal =
-            item.price *
-            item.quantity;
-
-
-        checkoutTotal +=
-            itemTotal;
-
-
-        const itemElement =
-            document.createElement("div");
-
-
-        itemElement.className =
-            "order-item";
-
-
-        const imageHTML =
-            item.image
-                ? `
-                    <img
-                        src="${escapeHTML(item.image)}"
-                        alt="${escapeHTML(item.name)}"
-                        class="order-item-image"
-                    >
-                `
-                : `
-                    <div class="order-item-image order-item-placeholder">
-                        ${escapeHTML(item.icon || "👟")}
-                    </div>
-                `;
-
-
-        const sizeHTML =
-            item.size
-                ? `
-                    <small>
-                        Size: ${escapeHTML(item.size)}
-                    </small>
-                `
-                : "";
-
-
-        itemElement.innerHTML = `
-
-            ${imageHTML}
-
-            <div class="order-item-info">
-
-                <strong>
-                    ${escapeHTML(item.name)}
-                </strong>
-
-                <small>
-                    ${formatCurrency(item.price)}
-                    × ${item.quantity}
-                </small>
-
-                ${sizeHTML}
-
-            </div>
-
-            <strong class="order-item-total">
-                ${formatCurrency(itemTotal)}
-            </strong>
-
-        `;
-
-
-        itemsContainer.appendChild(
-            itemElement
-        );
-
-    });
-
-
-    const subtotalElement =
-        document.getElementById(
-            "checkoutSubtotal"
-        );
-
-
-    const totalElement =
-        document.getElementById(
-            "checkoutTotal"
-        );
-
-
-    if (subtotalElement) {
-
-        subtotalElement.textContent =
-            formatCurrency(
-                checkoutTotal
+            plan.addEventListener(
+                "change",
+                renderOrderSummary
             );
 
-    }
-
-
-    if (totalElement) {
-
-        totalElement.textContent =
-            formatCurrency(
-                checkoutTotal
-            );
-
-    }
-
-
-    renderPaymentAmounts();
-
-}
-
-
-// =========================================
-// PAYMENT AMOUNTS
-// =========================================
-
-function renderPaymentAmounts() {
-
-    const payNowElement =
-        document.getElementById(
-            "payNowAmount"
-        );
-
-
-    const balanceElement =
-        document.getElementById(
-            "balanceAmount"
-        );
-
-
-    if (!checkoutTotal) {
-
-        if (payNowElement) {
-            payNowElement.textContent =
-                formatCurrency(0);
         }
-
-        if (balanceElement) {
-            balanceElement.textContent =
-                formatCurrency(0);
-        }
-
-        return;
-    }
-
-
-    const selectedPlan =
-        document.querySelector(
-            'input[name="paymentPlan"]:checked'
-        );
-
-
-    let payNow =
-        checkoutTotal;
-
-
-    if (
-        selectedPlan?.value ===
-        "deposit"
-    ) {
-
-        payNow =
-            Math.round(
-                checkoutTotal * 0.60
-            );
-
-    }
-
-
-    const balance =
-        checkoutTotal -
-        payNow;
-
-
-    if (payNowElement) {
-
-        payNowElement.textContent =
-            formatCurrency(
-                payNow
-            );
-
-    }
-
-
-    if (balanceElement) {
-
-        balanceElement.textContent =
-            formatCurrency(
-                balance
-            );
-
-    }
+    );
 
 }
 
 
 // =========================================
-// COPY OPAY ACCOUNT NUMBER
+// COPY ACCOUNT NUMBER
 // =========================================
 
-function setupCopyAccountNumber() {
+function setupCopyButton() {
 
     const button =
         document.getElementById(
@@ -752,7 +479,6 @@ function setupCopyAccountNumber() {
         !button ||
         !accountNumber
     ) {
-
         return;
     }
 
@@ -773,21 +499,19 @@ function setupCopyAccountNumber() {
                 );
 
 
-                const original =
-                    button.textContent;
-
-
                 button.textContent =
                     "Copied!";
 
 
-                setTimeout(() => {
+                setTimeout(
+                    () => {
 
-                    button.textContent =
-                        original;
+                        button.textContent =
+                            "Copy";
 
-                }, 1500);
-
+                    },
+                    1500
+                );
 
             } catch (error) {
 
@@ -796,10 +520,9 @@ function setupCopyAccountNumber() {
                     error
                 );
 
-
                 showCheckoutMessage(
-                    `Copy failed. Account number: ${number}`,
-                    "info"
+                    "Could not copy the account number. Please copy it manually.",
+                    "error"
                 );
 
             }
@@ -836,7 +559,268 @@ function setupCheckoutForm() {
 
 
 // =========================================
-// SUBMIT ORDER
+// RENDER ORDER SUMMARY
+// =========================================
+
+function renderOrderSummary() {
+
+    const itemsContainer =
+        document.getElementById(
+            "orderItems"
+        );
+
+
+    if (!itemsContainer) {
+        return;
+    }
+
+
+    if (!checkoutCart.length) {
+
+        itemsContainer.innerHTML =
+            `
+            <div class="empty-checkout-cart">
+                Your cart is empty.
+            </div>
+            `;
+
+        checkoutTotal = 0;
+
+        updatePaymentAmounts();
+
+        return;
+    }
+
+
+    let html = "";
+
+
+    checkoutCart.forEach(
+        item => {
+
+            const quantity =
+                Math.max(
+                    1,
+                    Number(
+                        item.quantity
+                    ) || 1
+                );
+
+
+            const price =
+                Number(
+                    item.price
+                ) || 0;
+
+
+            const subtotal =
+                price * quantity;
+
+
+            const productName =
+                escapeHTML(
+                    item.name ||
+                    item.product_name ||
+                    "Product"
+                );
+
+
+            const size =
+                item.size
+                    ? `
+                        <span class="checkout-item-size">
+                            Size: ${escapeHTML(
+                                String(item.size)
+                            )}
+                        </span>
+                      `
+                    : "";
+
+
+            const image =
+                item.image ||
+                item.product_image ||
+                "";
+
+
+            html += `
+                <div class="checkout-item">
+
+                    <div class="checkout-item-image">
+
+                        ${
+                            image
+                                ? `
+                                    <img
+                                        src="${escapeHTML(image)}"
+                                        alt="${productName}"
+                                    >
+                                  `
+                                : `
+                                    <span>
+                                        👟
+                                    </span>
+                                  `
+                        }
+
+                    </div>
+
+
+                    <div class="checkout-item-info">
+
+                        <strong>
+                            ${productName}
+                        </strong>
+
+                        ${size}
+
+                        <span>
+                            Qty: ${quantity}
+                        </span>
+
+                    </div>
+
+
+                    <strong class="checkout-item-price">
+                        ${formatCurrency(subtotal)}
+                    </strong>
+
+                </div>
+            `;
+
+        }
+    );
+
+
+    itemsContainer.innerHTML =
+        html;
+
+
+    checkoutTotal =
+        calculateCartTotal();
+
+
+    updatePaymentAmounts();
+
+}
+
+
+// =========================================
+// CALCULATE CART TOTAL
+// =========================================
+
+function calculateCartTotal() {
+
+    return checkoutCart.reduce(
+        (
+            total,
+            item
+        ) => {
+
+            const price =
+                Number(
+                    item.price
+                ) || 0;
+
+
+            const quantity =
+                Math.max(
+                    1,
+                    Number(
+                        item.quantity
+                    ) || 1
+                );
+
+
+            return (
+                total +
+                (
+                    price *
+                    quantity
+                )
+            );
+
+        },
+        0
+    );
+
+}
+
+
+// =========================================
+// UPDATE PAYMENT AMOUNTS
+// =========================================
+
+function updatePaymentAmounts() {
+
+    const subtotal =
+        checkoutTotal;
+
+
+    const paymentPlan =
+        document.querySelector(
+            'input[name="paymentPlan"]:checked'
+        )?.value ||
+        "deposit";
+
+
+    let payNow =
+        0;
+
+
+    if (
+        paymentPlan ===
+        "full"
+    ) {
+
+        payNow =
+            subtotal;
+
+    } else {
+
+        payNow =
+            Math.round(
+                subtotal * 0.60
+            );
+
+    }
+
+
+    const balance =
+        Math.max(
+            0,
+            subtotal - payNow
+        );
+
+
+    setText(
+        "checkoutSubtotal",
+        formatCurrency(subtotal)
+    );
+
+
+    setText(
+        "checkoutTotal",
+        formatCurrency(subtotal)
+    );
+
+
+    setText(
+        "payNowAmount",
+        formatCurrency(payNow)
+    );
+
+
+    setText(
+        "balanceAmount",
+        formatCurrency(balance)
+    );
+
+}
+
+
+// =========================================
+// HANDLE CHECKOUT
 // =========================================
 
 async function handleCheckoutSubmit(
@@ -855,43 +839,10 @@ async function handleCheckoutSubmit(
         window.supabaseClient;
 
 
-    // -----------------------------------------
-    // VERIFY AUTH AGAIN
-    // -----------------------------------------
-
-    const {
-        data: sessionData,
-        error: sessionError
-    } =
-        await supabaseClient.auth.getSession();
-
-
-    if (
-        sessionError ||
-        !sessionData?.session
-    ) {
-
-        showLoginRequired();
-
-        return;
-    }
-
-
-    checkoutUser =
-        sessionData.session.user;
-
-
-    // -----------------------------------------
-    // VERIFY CART
-    // -----------------------------------------
-
-    loadCart();
-
-
-    if (!checkoutCart.length) {
+    if (!supabaseClient) {
 
         showCheckoutMessage(
-            "Your cart is empty.",
+            "Checkout service is unavailable. Please refresh the page.",
             "error"
         );
 
@@ -899,305 +850,291 @@ async function handleCheckoutSubmit(
     }
 
 
-    // -----------------------------------------
-    // GET FORM VALUES
-    // -----------------------------------------
+    checkoutSubmitting =
+        true;
 
-    const customerName =
-        getValue("customerName");
-
-
-    const customerPhone =
-        getValue("customerPhone");
-
-
-    const customerEmail =
-        getValue("customerEmail");
-
-
-    const deliveryAddress =
-        getValue("deliveryAddress");
-
-
-    const deliveryCity =
-        getValue("deliveryCity");
-
-
-    const deliveryState =
-        getValue("deliveryState");
-
-
-    const orderNote =
-        getValue("orderNote");
-
-
-    const paymentMethod =
-        document.querySelector(
-            'input[name="paymentMethod"]:checked'
-        )?.value || "";
-
-
-    const paymentPlan =
-        document.querySelector(
-            'input[name="paymentPlan"]:checked'
-        )?.value || "deposit";
-
-
-    // -----------------------------------------
-    // VALIDATION
-    // -----------------------------------------
-
-    if (!customerName) {
-
-        showCheckoutMessage(
-            "Please enter your full name.",
-            "error"
-        );
-
-        focusElement(
-            "customerName"
-        );
-
-        return;
-    }
-
-
-    if (
-        !customerPhone ||
-        !isValidPhone(customerPhone)
-    ) {
-
-        showCheckoutMessage(
-            "Please enter a valid Nigerian phone number.",
-            "error"
-        );
-
-        focusElement(
-            "customerPhone"
-        );
-
-        return;
-    }
-
-
-    if (!customerEmail) {
-
-        showCheckoutMessage(
-            "Your account email could not be found. Please log in again.",
-            "error"
-        );
-
-        return;
-    }
-
-
-    if (!deliveryAddress) {
-
-        showCheckoutMessage(
-            "Please enter your delivery address.",
-            "error"
-        );
-
-        focusElement(
-            "deliveryAddress"
-        );
-
-        return;
-    }
-
-
-    if (!deliveryCity) {
-
-        showCheckoutMessage(
-            "Please enter your delivery city.",
-            "error"
-        );
-
-        focusElement(
-            "deliveryCity"
-        );
-
-        return;
-    }
-
-
-    if (!deliveryState) {
-
-        showCheckoutMessage(
-            "Please enter your delivery state.",
-            "error"
-        );
-
-        focusElement(
-            "deliveryState"
-        );
-
-        return;
-    }
-
-
-    if (!paymentMethod) {
-
-        showCheckoutMessage(
-            "Please select a payment method.",
-            "error"
-        );
-
-        return;
-    }
-
-
-    // -----------------------------------------
-    // CALCULATE TOTAL
-    // -----------------------------------------
-
-    const subtotal =
-        calculateCartTotal();
-
-
-    if (subtotal <= 0) {
-
-        showCheckoutMessage(
-            "Your cart total is invalid.",
-            "error"
-        );
-
-        return;
-    }
-
-
-    let payNow =
-        subtotal;
-
-
-    if (
-        paymentPlan ===
-        "deposit"
-    ) {
-
-        payNow =
-            Math.round(
-                subtotal * 0.60
-            );
-
-    }
-
-
-    const balance =
-        subtotal -
-        payNow;
-
-
-    // -----------------------------------------
-    // START SUBMITTING
-    // -----------------------------------------
-
-    checkoutSubmitting = true;
 
     setSubmitLoading(true);
+
+    clearCheckoutMessage();
 
 
     try {
 
-        // -----------------------------------------
-        // CREATE ORDER REFERENCE
-        // -----------------------------------------
+        // -------------------------------------
+        // CHECK SESSION AGAIN
+        // -------------------------------------
+
+        const {
+            data: sessionData,
+            error: sessionError
+        } =
+            await supabaseClient
+                .auth
+                .getSession();
+
+
+        if (
+            sessionError
+        ) {
+
+            throw sessionError;
+        }
+
+
+        const session =
+            sessionData?.session;
+
+
+        if (!session?.user) {
+
+            localStorage.setItem(
+                "ayodejiCheckoutReturn",
+                "checkout.html"
+            );
+
+
+            showLoginRequired();
+
+            return;
+
+        }
+
+
+        checkoutUser =
+            session.user;
+
+
+        // -------------------------------------
+        // CHECK CART
+        // -------------------------------------
+
+        checkoutCart =
+            loadCart();
+
+
+        if (!checkoutCart.length) {
+
+            throw new Error(
+                "Your cart is empty."
+            );
+
+        }
+
+
+        // -------------------------------------
+        // GET FORM VALUES
+        // -------------------------------------
+
+        const customerName =
+            getValue(
+                "customerName"
+            );
+
+
+        const customerPhone =
+            getValue(
+                "customerPhone"
+            );
+
+
+        const customerEmail =
+            getValue(
+                "customerEmail"
+            );
+
+
+        const deliveryAddress =
+            getValue(
+                "deliveryAddress"
+            );
+
+
+        const deliveryCity =
+            getValue(
+                "deliveryCity"
+            );
+
+
+        const deliveryState =
+            getValue(
+                "deliveryState"
+            );
+
+
+        const paymentMethod =
+            document.querySelector(
+                'input[name="paymentMethod"]:checked'
+            )?.value ||
+            "";
+
+
+        const paymentPlan =
+            document.querySelector(
+                'input[name="paymentPlan"]:checked'
+            )?.value ||
+            "deposit";
+
+
+        const orderNote =
+            getValue(
+                "orderNote"
+            );
+
+
+        // -------------------------------------
+        // VALIDATION
+        // -------------------------------------
+
+        if (!customerName) {
+
+            focusElement(
+                "customerName"
+            );
+
+            throw new Error(
+                "Please enter your full name."
+            );
+
+        }
+
+
+        if (
+            !customerPhone ||
+            !isValidPhone(customerPhone)
+        ) {
+
+            focusElement(
+                "customerPhone"
+            );
+
+            throw new Error(
+                "Please enter a valid Nigerian phone number."
+            );
+
+        }
+
+
+        if (!customerEmail) {
+
+            throw new Error(
+                "Your account email could not be found. Please log in again."
+            );
+
+        }
+
+
+        if (!deliveryAddress) {
+
+            focusElement(
+                "deliveryAddress"
+            );
+
+            throw new Error(
+                "Please enter your delivery address."
+            );
+
+        }
+
+
+        if (!deliveryCity) {
+
+            focusElement(
+                "deliveryCity"
+            );
+
+            throw new Error(
+                "Please enter your delivery city."
+            );
+
+        }
+
+
+        if (!deliveryState) {
+
+            focusElement(
+                "deliveryState"
+            );
+
+            throw new Error(
+                "Please enter your delivery state."
+            );
+
+        }
+
+
+        if (!paymentMethod) {
+
+            throw new Error(
+                "Please select a payment method."
+            );
+
+        }
+
+
+        // -------------------------------------
+        // CALCULATE TOTAL
+        // -------------------------------------
+
+        const subtotal =
+            calculateCartTotal();
+
+
+        if (
+            subtotal <= 0
+        ) {
+
+            throw new Error(
+                "Your order total is invalid."
+            );
+
+        }
+
+
+        const payNow =
+            paymentPlan === "full"
+                ? subtotal
+                : Math.round(
+                    subtotal * 0.60
+                );
+
+
+        const balance =
+            Math.max(
+                0,
+                subtotal - payNow
+            );
+
+
+        // -------------------------------------
+        // ORDER REFERENCE
+        // -------------------------------------
 
         const orderReference =
             generateOrderReference();
 
 
-        // -----------------------------------------
-        // DETERMINE INITIAL STATUS
-        // -----------------------------------------
+        // -------------------------------------
+        // ORDER STATUS
+        // -------------------------------------
 
-        let orderStatus =
-            "Pending Payment";
-
-
-        let paymentStatus =
-            "Pending";
-
-
-        if (
+        const orderStatus =
             paymentMethod ===
             "Cash on Delivery"
-        ) {
-
-            orderStatus =
-                "Processing";
-
-            paymentStatus =
-                "Cash on Delivery";
-
-        }
+                ? "Processing"
+                : "Pending Payment";
 
 
-        // -----------------------------------------
-        // INSERT ORDER
-        // -----------------------------------------
-
-        const orderPayload = {
-
-            order_reference:
-                orderReference,
-
-            user_id:
-                checkoutUser.id,
-
-            customer_name:
-                customerName,
-
-            customer_phone:
-                customerPhone,
-
-            customer_email:
-                customerEmail,
-
-            delivery_address:
-                deliveryAddress,
-
-            delivery_city:
-                deliveryCity,
-
-            delivery_state:
-                deliveryState,
-
-            payment_method:
-                paymentMethod,
-
-            payment_plan:
-                paymentPlan,
-
-            subtotal:
-                subtotal,
-
-            total:
-                subtotal,
-
-            pay_now:
-                payNow,
-
-            balance:
-                balance,
-
-            status:
-                orderStatus,
-
-            payment_status:
-                paymentStatus,
-
-            notes:
-                orderNote || null
-
-        };
+        const paymentStatus =
+            paymentMethod ===
+            "Cash on Delivery"
+                ? "Cash on Delivery"
+                : "Pending";
 
 
-        console.log(
-            "Creating order:",
-            orderPayload
-        );
-
+        // -------------------------------------
+        // CREATE ORDER
+        // -------------------------------------
 
         const {
             data: order,
@@ -1205,9 +1142,60 @@ async function handleCheckoutSubmit(
         } =
             await supabaseClient
                 .from("orders")
-                .insert(
-                    orderPayload
-                )
+                .insert({
+
+                    order_reference:
+                        orderReference,
+
+                    user_id:
+                        checkoutUser.id,
+
+                    customer_name:
+                        customerName,
+
+                    customer_phone:
+                        customerPhone,
+
+                    customer_email:
+                        customerEmail,
+
+                    delivery_address:
+                        deliveryAddress,
+
+                    delivery_city:
+                        deliveryCity,
+
+                    delivery_state:
+                        deliveryState,
+
+                    payment_method:
+                        paymentMethod,
+
+                    payment_plan:
+                        paymentPlan,
+
+                    subtotal:
+                        subtotal,
+
+                    total:
+                        subtotal,
+
+                    pay_now:
+                        payNow,
+
+                    balance:
+                        balance,
+
+                    status:
+                        orderStatus,
+
+                    payment_status:
+                        paymentStatus,
+
+                    notes:
+                        orderNote || null
+
+                })
                 .select()
                 .single();
 
@@ -1220,48 +1208,76 @@ async function handleCheckoutSubmit(
             );
 
             throw orderError;
+
         }
 
 
         if (!order?.id) {
 
             throw new Error(
-                "The order was created but its ID could not be found."
+                "The order could not be created."
             );
 
         }
 
 
-        // -----------------------------------------
+        // -------------------------------------
         // CREATE ORDER ITEMS
-        // -----------------------------------------
+        // -------------------------------------
 
         const orderItems =
-            checkoutCart.map(item => ({
+            checkoutCart.map(
+                item => {
 
-                order_id:
-                    order.id,
+                    const price =
+                        Number(
+                            item.price
+                        ) || 0;
 
-                product_id:
-                    item.id,
 
-                product_name:
-                    item.name,
+                    const quantity =
+                        Math.max(
+                            1,
+                            Number(
+                                item.quantity
+                            ) || 1
+                        );
 
-                product_price:
-                    item.price,
 
-                quantity:
-                    item.quantity,
+                    return {
 
-                size:
-                    item.size || null,
+                        order_id:
+                            order.id,
 
-                subtotal:
-                    item.price *
-                    item.quantity
+                        product_id:
+                            item.product_id ||
+                            item.productId ||
+                            item.id ||
+                            null,
 
-            }));
+                        product_name:
+                            item.name ||
+                            item.product_name ||
+                            "Product",
+
+                        product_price:
+                            price,
+
+                        quantity:
+                            quantity,
+
+                        size:
+                            item.size ||
+                            null,
+
+                        subtotal:
+                            price *
+                            quantity
+
+                    };
+
+                }
+            );
 
 
         const {
@@ -1281,84 +1297,88 @@ async function handleCheckoutSubmit(
                 itemsError
             );
 
-
-            // Try to remove the incomplete order.
-            try {
-
-                await supabaseClient
-                    .from("orders")
-                    .delete()
-                    .eq(
-                        "id",
-                        order.id
-                    );
-
-            } catch (deleteError) {
-
-                console.error(
-                    "Could not remove incomplete order:",
-                    deleteError
-                );
-
-            }
-
-
             throw itemsError;
+
         }
 
 
-        // -----------------------------------------
+        // -------------------------------------
         // SAVE CUSTOMER PROFILE
-        // -----------------------------------------
+        // -------------------------------------
 
-        await saveCheckoutProfile({
+        try {
 
-            user_id:
-                checkoutUser.id,
+            await supabaseClient
+                .from("customer_profiles")
+                .upsert(
+                    {
 
-            full_name:
-                customerName,
+                        user_id:
+                            checkoutUser.id,
 
-            phone:
-                customerPhone,
+                        full_name:
+                            customerName,
 
-            delivery_address:
-                deliveryAddress,
+                        phone:
+                            customerPhone,
 
-            delivery_city:
-                deliveryCity,
+                        delivery_address:
+                            deliveryAddress,
 
-            delivery_state:
-                deliveryState
+                        delivery_city:
+                            deliveryCity,
 
-        });
+                        delivery_state:
+                            deliveryState,
+
+                        updated_at:
+                            new Date()
+                                .toISOString()
+
+                    },
+                    {
+                        onConflict:
+                            "user_id"
+                    }
+                );
+
+        } catch (profileError) {
+
+            console.warn(
+                "Profile update failed:",
+                profileError
+            );
+
+        }
 
 
-        // -----------------------------------------
+        // -------------------------------------
         // CLEAR CART
-        // -----------------------------------------
+        // -------------------------------------
 
         localStorage.removeItem(
             "ayodejiCart"
         );
 
 
-        // -----------------------------------------
-        // CLEAR PENDING PROFILE
-        // -----------------------------------------
-
         localStorage.removeItem(
             "ayodejiPendingProfile"
         );
 
 
-        // -----------------------------------------
+        localStorage.removeItem(
+            "ayodejiCheckoutReturn"
+        );
+
+
+        // -------------------------------------
         // SHOW SUCCESS
-        // -----------------------------------------
+        // -------------------------------------
 
         showOrderSuccess(
             orderReference,
             paymentMethod,
+            paymentPlan,
             payNow,
             balance
         );
@@ -1367,7 +1387,7 @@ async function handleCheckoutSubmit(
     } catch (error) {
 
         console.error(
-            "Checkout error:",
+            "Checkout submission error:",
             error
         );
 
@@ -1385,100 +1405,12 @@ async function handleCheckoutSubmit(
         checkoutSubmitting =
             false;
 
-        setSubmitLoading(false);
 
-    }
-
-}
-
-
-// =========================================
-// SAVE PROFILE FROM CHECKOUT
-// =========================================
-
-async function saveCheckoutProfile(
-    profile
-) {
-
-    if (!profile?.user_id) {
-        return;
-    }
-
-
-    const supabaseClient =
-        window.supabaseClient;
-
-
-    const {
-        error
-    } =
-        await supabaseClient
-            .from("customer_profiles")
-            .upsert(
-                {
-
-                    user_id:
-                        profile.user_id,
-
-                    full_name:
-                        profile.full_name,
-
-                    phone:
-                        profile.phone,
-
-                    delivery_address:
-                        profile.delivery_address,
-
-                    delivery_city:
-                        profile.delivery_city,
-
-                    delivery_state:
-                        profile.delivery_state,
-
-                    updated_at:
-                        new Date()
-                            .toISOString()
-
-                },
-                {
-                    onConflict:
-                        "user_id"
-                }
-            );
-
-
-    if (error) {
-
-        console.warn(
-            "Profile could not be updated:",
-            error
+        setSubmitLoading(
+            false
         );
 
     }
-
-}
-
-
-// =========================================
-// CALCULATE CART TOTAL
-// =========================================
-
-function calculateCartTotal() {
-
-    return checkoutCart.reduce(
-        (total, item) => {
-
-            return (
-                total +
-                (
-                    Number(item.price) *
-                    Number(item.quantity)
-                )
-            );
-
-        },
-        0
-    );
 
 }
 
@@ -1493,37 +1425,51 @@ function generateOrderReference() {
         new Date();
 
 
-    const datePart =
-        now.getFullYear().toString() +
+    const year =
+        now.getFullYear();
+
+
+    const month =
         String(
             now.getMonth() + 1
-        ).padStart(2, "0") +
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    const day =
         String(
             now.getDate()
-        ).padStart(2, "0");
+        ).padStart(
+            2,
+            "0"
+        );
 
 
-    const randomPart =
+    const random =
         Math.floor(
             1000 +
-            Math.random() * 9000
+            Math.random() *
+            9000
         );
 
 
     return (
-        `AFH-${datePart}-${randomPart}`
+        `AFH-${year}${month}${day}-${random}`
     );
 
 }
 
 
 // =========================================
-// SHOW ORDER SUCCESS
+// SHOW SUCCESS
 // =========================================
 
 function showOrderSuccess(
-    orderReference,
+    reference,
     paymentMethod,
+    paymentPlan,
     payNow,
     balance
 ) {
@@ -1534,21 +1480,21 @@ function showOrderSuccess(
         );
 
 
-    const successSection =
+    const success =
         document.getElementById(
             "orderSuccess"
-        );
-
-
-    const referenceElement =
-        document.getElementById(
-            "orderReference"
         );
 
 
     const successMessage =
         document.getElementById(
             "successMessage"
+        );
+
+
+    const referenceElement =
+        document.getElementById(
+            "orderReference"
         );
 
 
@@ -1560,10 +1506,24 @@ function showOrderSuccess(
     }
 
 
+    const loginRequired =
+        document.getElementById(
+            "loginRequiredMessage"
+        );
+
+
+    if (loginRequired) {
+
+        loginRequired.style.display =
+            "none";
+
+    }
+
+
     if (referenceElement) {
 
         referenceElement.textContent =
-            orderReference;
+            reference;
 
     }
 
@@ -1575,35 +1535,27 @@ function showOrderSuccess(
             "OPay Bank Transfer"
         ) {
 
-            if (balance > 0) {
-
-                successMessage.textContent =
-                    `Your order has been received. Please transfer ${formatCurrency(payNow)} to our OPay account. Your remaining balance is ${formatCurrency(balance)}.`;
-
-            } else {
-
-                successMessage.textContent =
-                    `Your order has been received. Please transfer ${formatCurrency(payNow)} to our OPay account.`;
-
-            }
+            successMessage.textContent =
+                paymentPlan === "deposit"
+                    ? `Your order has been received. Please transfer ${formatCurrency(payNow)} to our OPay account. Your remaining balance is ${formatCurrency(balance)}.`
+                    : `Your order has been received. Please transfer ${formatCurrency(payNow)} to our OPay account.`;
 
         } else {
 
             successMessage.textContent =
-                `Your order has been received. You selected Cash on Delivery. Your order reference is ${orderReference}.`;
+                "Your order has been received. Please prepare your payment for delivery.";
 
         }
 
     }
 
 
-    if (successSection) {
+    if (success) {
 
-        successSection.style.display =
+        success.style.display =
             "block";
 
-
-        successSection.scrollIntoView({
+        success.scrollIntoView({
             behavior: "smooth",
             block: "start"
         });
@@ -1619,15 +1571,15 @@ function showOrderSuccess(
 
 function showLoginRequired() {
 
-    const form =
+    const message =
         document.getElementById(
-            "checkoutForm"
+            "loginRequiredMessage"
         );
 
 
-    const loginMessage =
+    const form =
         document.getElementById(
-            "loginRequiredMessage"
+            "checkoutForm"
         );
 
 
@@ -1639,19 +1591,17 @@ function showLoginRequired() {
     }
 
 
-    if (loginMessage) {
+    if (message) {
 
-        loginMessage.style.display =
+        message.style.display =
             "flex";
 
+        message.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+
     }
-
-
-    // Save checkout destination.
-    localStorage.setItem(
-        "ayodejiCheckoutReturn",
-        "checkout.html"
-    );
 
 }
 
@@ -1673,87 +1623,85 @@ function disableCheckoutForm() {
     }
 
 
-    const controls =
-        form.querySelectorAll(
-            "input, textarea, select, button"
+    form
+        .querySelectorAll(
+            "input, textarea, button"
+        )
+        .forEach(
+            element => {
+
+                element.disabled =
+                    true;
+
+            }
         );
-
-
-    controls.forEach(
-        control => {
-
-            control.disabled =
-                true;
-
-        }
-    );
 
 }
 
 
 // =========================================
-// SET SUBMIT LOADING
+// SUBMIT LOADING
 // =========================================
 
 function setSubmitLoading(
-    isLoading
+    loading
 ) {
 
-    const buttons =
-        document.querySelectorAll(
-            ".place-order-button"
+    const button =
+        document.getElementById(
+            "placeOrderButton"
         );
 
 
-    buttons.forEach(button => {
+    const buttonText =
+        document.getElementById(
+            "placeOrderButtonText"
+        );
+
+
+    const spinner =
+        document.getElementById(
+            "placeOrderSpinner"
+        );
+
+
+    if (button) {
 
         button.disabled =
-            isLoading;
+            loading;
+
+    }
 
 
-        const text =
-            button.querySelector(
-                ".place-order-text"
-            );
+    if (buttonText) {
+
+        buttonText.style.display =
+            loading
+                ? "none"
+                : "inline";
+
+    }
 
 
-        const spinner =
-            button.querySelector(
-                ".place-order-spinner"
-            );
+    if (spinner) {
 
+        spinner.style.display =
+            loading
+                ? "inline"
+                : "none";
 
-        if (text) {
-
-            text.style.display =
-                isLoading
-                    ? "none"
-                    : "inline";
-
-        }
-
-
-        if (spinner) {
-
-            spinner.style.display =
-                isLoading
-                    ? "inline"
-                    : "none";
-
-        }
-
-    });
+    }
 
 }
 
 
 // =========================================
-// SHOW CHECKOUT MESSAGE
+// MESSAGE
 // =========================================
 
 function showCheckoutMessage(
     message,
-    type = "error"
+    type
 ) {
 
     const element =
@@ -1783,29 +1731,88 @@ function showCheckoutMessage(
 }
 
 
-// =========================================
-// GET INPUT VALUE
-// =========================================
-
-function getValue(id) {
+function clearCheckoutMessage() {
 
     const element =
-        document.getElementById(id);
+        document.getElementById(
+            "checkoutMessage"
+        );
 
+
+    if (!element) {
+        return;
+    }
+
+
+    element.textContent =
+        "";
+
+
+    element.className =
+        "checkout-message";
+
+}
+
+
+// =========================================
+// HELPERS
+// =========================================
+
+function getValue(
+    id
+) {
 
     return (
-        element?.value?.trim() ||
+        document.getElementById(id)
+            ?.value
+            ?.trim() ||
         ""
     );
 
 }
 
 
-// =========================================
-// FOCUS ELEMENT
-// =========================================
+function setValue(
+    id,
+    value
+) {
 
-function focusElement(id) {
+    const element =
+        document.getElementById(id);
+
+
+    if (element) {
+
+        element.value =
+            value || "";
+
+    }
+
+}
+
+
+function setText(
+    id,
+    value
+) {
+
+    const element =
+        document.getElementById(id);
+
+
+    if (element) {
+
+        element.textContent =
+            value;
+
+    }
+
+}
+
+
+function focusElement(
+    id
+) {
 
     const element =
         document.getElementById(id);
@@ -1824,7 +1831,9 @@ function focusElement(id) {
 // PHONE VALIDATION
 // =========================================
 
-function isValidPhone(phone) {
+function isValidPhone(
+    phone
+) {
 
     const cleaned =
         phone.replace(
@@ -1834,29 +1843,26 @@ function isValidPhone(phone) {
 
 
     return (
-        /^0\d{10}$/.test(cleaned) ||
-        /^\+234\d{10}$/.test(cleaned) ||
-        /^234\d{10}$/.test(cleaned)
+        /^(?:\+234|234|0)8[0-9]{9}$/
+            .test(cleaned)
     );
 
 }
 
 
 // =========================================
-// FORMAT CURRENCY
+// CURRENCY
 // =========================================
 
 function formatCurrency(
     amount
 ) {
 
-    const value =
-        Number(amount) || 0;
-
-
     return (
         "₦" +
-        value.toLocaleString(
+        Number(
+            amount || 0
+        ).toLocaleString(
             "en-NG",
             {
                 minimumFractionDigits: 0,
@@ -1872,9 +1878,13 @@ function formatCurrency(
 // ESCAPE HTML
 // =========================================
 
-function escapeHTML(value) {
+function escapeHTML(
+    value
+) {
 
-    return String(value ?? "")
+    return String(
+        value ?? ""
+    )
         .replace(
             /&/g,
             "&amp;"
@@ -1900,7 +1910,7 @@ function escapeHTML(value) {
 
 
 // =========================================
-// CHECKOUT ERROR TRANSLATOR
+// ERROR TRANSLATOR
 // =========================================
 
 function getCheckoutErrorMessage(
@@ -1908,7 +1918,8 @@ function getCheckoutErrorMessage(
 ) {
 
     const message =
-        error?.message || "";
+        error?.message ||
+        "";
 
 
     const lower =
@@ -1918,27 +1929,11 @@ function getCheckoutErrorMessage(
     if (
         lower.includes(
             "row-level security"
-        ) ||
-        lower.includes(
-            "violates row-level security"
         )
     ) {
 
         return (
-            "Your account is not currently permitted to place this order. Please make sure you are logged in and try again."
-        );
-
-    }
-
-
-    if (
-        lower.includes(
-            "foreign key"
-        )
-    ) {
-
-        return (
-            "Some product information in your cart is no longer available. Please return to your cart and try again."
+            "Your account is not currently allowed to place this order. Please make sure you are logged in and try again."
         );
 
     }
@@ -1954,7 +1949,7 @@ function getCheckoutErrorMessage(
     ) {
 
         return (
-            "A duplicate order reference was detected. Please try placing the order again."
+            "There was a problem generating your order reference. Please try again."
         );
 
     }
@@ -1976,16 +1971,32 @@ function getCheckoutErrorMessage(
     }
 
 
+    if (
+        lower.includes(
+            "empty"
+        ) &&
+        lower.includes(
+            "cart"
+        )
+    ) {
+
+        return (
+            "Your cart is empty. Please add a product before checking out."
+        );
+
+    }
+
+
     return (
         message ||
-        "We could not place your order. Please try again."
+        "We could not complete your order. Please try again."
     );
 
 }
 
 
 // =========================================
-// EXPORT
+// EXPORTS
 // =========================================
 
 window.initializeCheckout =

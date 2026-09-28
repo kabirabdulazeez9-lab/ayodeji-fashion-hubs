@@ -30,7 +30,6 @@
 
 <body>
 
-
 <!-- =====================================
      HEADER
 ====================================== -->
@@ -52,7 +51,6 @@
             </span>
         </a>
 
-
         <a
             href="cart.html"
             class="back-to-cart"
@@ -65,19 +63,15 @@
 </header>
 
 
-
 <!-- =====================================
-     CHECKOUT PAGE
+     MAIN
 ====================================== -->
 
 <main class="checkout-page">
 
     <div class="container">
 
-
-        <!-- =================================
-             CHECKOUT HEADING
-        ================================== -->
+        <!-- HEADING -->
 
         <div class="checkout-heading">
 
@@ -97,10 +91,7 @@
         </div>
 
 
-
-        <!-- =================================
-             LOGIN REQUIRED MESSAGE
-        ================================== -->
+        <!-- LOGIN REQUIRED -->
 
         <div
             id="loginRequiredMessage"
@@ -136,7 +127,6 @@
         </div>
 
 
-
         <!-- =================================
              CHECKOUT FORM
         ================================== -->
@@ -146,7 +136,6 @@
             class="checkout-layout"
         >
 
-
             <!-- =================================
                  LEFT SIDE
             ================================== -->
@@ -154,9 +143,7 @@
             <div class="checkout-main">
 
 
-                <!-- =================================
-                     CUSTOMER INFORMATION
-                ================================== -->
+                <!-- CUSTOMER INFORMATION -->
 
                 <section class="checkout-card">
 
@@ -182,7 +169,6 @@
 
 
                     <div class="form-grid">
-
 
                         <div class="form-group full-width">
 
@@ -247,7 +233,6 @@
                 </section>
 
 
-
                 <!-- =================================
                      DELIVERY INFORMATION
                 ================================== -->
@@ -276,7 +261,6 @@
 
 
                     <div class="form-grid">
-
 
                         <div class="form-group full-width">
 
@@ -336,7 +320,6 @@
                 </section>
 
 
-
                 <!-- =================================
                      PAYMENT METHOD
                 ================================== -->
@@ -365,7 +348,6 @@
 
 
                     <div class="payment-options">
-
 
                         <label
                             class="payment-option"
@@ -403,7 +385,6 @@
                         </label>
 
 
-
                         <label
                             class="payment-option"
                             for="cashOnDelivery"
@@ -439,7 +420,6 @@
                         </label>
 
                     </div>
-
 
 
                     <!-- OPAY DETAILS -->
@@ -522,17 +502,14 @@
 
 
                         <p class="bank-warning">
-
                             ⚠️ Please make your transfer only
                             after placing your order and keep
                             your payment receipt.
-
                         </p>
 
                     </div>
 
                 </section>
-
 
 
                 <!-- =================================
@@ -565,7 +542,6 @@
 
                     <div class="payment-plans">
 
-
                         <label
                             class="payment-plan"
                             for="depositPlan"
@@ -593,7 +569,6 @@
                             </span>
 
                         </label>
-
 
 
                         <label
@@ -625,7 +600,6 @@
                     </div>
 
                 </section>
-
 
 
                 <!-- =================================
@@ -676,10 +650,7 @@
                 </section>
 
 
-
-                <!-- =================================
-                     MESSAGE
-                ================================== -->
+                <!-- MESSAGE -->
 
                 <div
                     id="checkoutMessage"
@@ -688,37 +659,7 @@
                     aria-live="polite"
                 ></div>
 
-
-
-                <!-- MOBILE SUBMIT -->
-
-                <div class="mobile-submit">
-
-                    <button
-                        type="submit"
-                        class="place-order-button"
-                        id="mobilePlaceOrderButton"
-                    >
-                        <span class="place-order-text">
-                            Place Order
-                        </span>
-
-                        <span
-                            class="place-order-spinner"
-                            style="display:none;"
-                        >
-                            Processing...
-                        </span>
-                    </button>
-
-                    <p>
-                        🔒 Your order details are securely submitted.
-                    </p>
-
-                </div>
-
             </div>
-
 
 
             <!-- =================================
@@ -728,7 +669,9 @@
             <aside class="checkout-sidebar">
 
 
-                <!-- ORDER SUMMARY -->
+                <!-- =================================
+                     ORDER SUMMARY
+                ================================== -->
 
                 <div class="order-summary-card">
 
@@ -756,11 +699,15 @@
                     </div>
 
 
+                    <!-- PRODUCTS -->
+
                     <div
                         id="orderItems"
                         class="order-items"
                     ></div>
 
+
+                    <!-- TOTALS -->
 
                     <div class="summary-totals">
 
@@ -821,21 +768,28 @@
                     </div>
 
 
-                    <!-- DESKTOP SUBMIT -->
+                    <!-- =================================
+                         PLACE ORDER
+                         BELOW ORDER SUMMARY
+                    ================================== -->
 
-                    <div class="desktop-submit">
+                    <div class="checkout-submit-area">
 
                         <button
                             type="submit"
                             class="place-order-button"
-                            id="desktopPlaceOrderButton"
+                            id="placeOrderButton"
                         >
 
-                            <span class="place-order-text">
-                                Place Order
+                            <span
+                                id="placeOrderButtonText"
+                                class="place-order-text"
+                            >
+                                🛍️ Place Order
                             </span>
 
                             <span
+                                id="placeOrderSpinner"
                                 class="place-order-spinner"
                                 style="display:none;"
                             >
@@ -843,6 +797,7 @@
                             </span>
 
                         </button>
+
 
                         <p>
                             🔒 Your information is submitted securely.
@@ -853,11 +808,11 @@
                 </div>
 
 
-
-                <!-- TRUST BOX -->
+                <!-- =================================
+                     TRUST BOX
+                ================================== -->
 
                 <div class="checkout-trust">
-
 
                     <div class="trust-item">
 
@@ -926,7 +881,6 @@
             </aside>
 
         </form>
-
 
 
         <!-- =================================
@@ -1008,7 +962,6 @@
 </main>
 
 
-
 <!-- =====================================
      FOOTER
 ====================================== -->
@@ -1045,7 +998,6 @@
 </footer>
 
 
-
 <!-- =====================================
      SUPABASE
 ====================================== -->
@@ -1055,31 +1007,11 @@
 ></script>
 
 
-<!-- =====================================
-     SUPABASE CONFIG
-====================================== -->
+<script src="js/supabase.js"></script>
 
-<script
-    src="js/supabase.js"
-></script>
+<script src="js/auth.js"></script>
 
-
-<!-- =====================================
-     SHARED AUTH
-====================================== -->
-
-<script
-    src="js/auth.js"
-></script>
-
-
-<!-- =====================================
-     CHECKOUT JAVASCRIPT
-====================================== -->
-
-<script
-    src="js/checkout.js"
-></script>
+<script src="js/checkout.js"></script>
 
 
 </body>
