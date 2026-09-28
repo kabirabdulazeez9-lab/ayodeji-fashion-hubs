@@ -1,390 +1,488 @@
 // =========================================
-// AYODEJI FASHION HUBS - REGISTER
+// AYODEJI FASHION HUBS
+// CUSTOMER REGISTRATION
 // =========================================
 
-document.addEventListener(
-    "DOMContentLoaded",
-    initializeRegister
-);
+document.addEventListener("DOMContentLoaded", () => {
+    initializeRegistration();
+});
 
+function initializeRegistration() {
 
-// =========================================
-// INITIALIZE
-// =========================================
-
-async function initializeRegister() {
-
-    const supabaseClient =
-        window.supabaseClient;
+    const supabaseClient = window.supabaseClient;
 
     if (!supabaseClient) {
-
-        console.error(
-            "Supabase client was not loaded."
+        console.error("Supabase client was not loaded.");
+        showMessage(
+            "Unable to connect to the registration service. Please refresh the page.",
+            "error"
         );
-
-        showRegisterMessage(
-            "Unable to connect to the account system.",
-            true
-        );
-
         return;
     }
 
+    const registerForm =
+        document.getElementById("registerForm");
 
-    setupPasswordToggle(
-        "toggleRegisterPassword",
-        "registerPassword"
-    );
+    const togglePassword =
+        document.getElementById("togglePassword");
 
+    const toggleConfirmPassword =
+        document.getElementById("toggleConfirmPassword");
 
-    setupPasswordToggle(
-        "toggleConfirmPassword",
-        "registerConfirmPassword"
-    );
+    if (!registerForm) {
+        console.error("Registration form not found.");
+        return;
+    }
 
+    // -----------------------------------------
+    // PASSWORD TOGGLE
+    // -----------------------------------------
 
-    const form =
-        document.getElementById(
-            "registerForm"
-        );
+    if (togglePassword) {
+        togglePassword.addEventListener("click", () => {
 
+            const password =
+                document.getElementById("password");
 
-    if (!form) return;
+            if (!password) return;
 
+            if (password.type === "password") {
+                password.type = "text";
+                togglePassword.textContent = "🙈";
+            } else {
+                password.type = "password";
+                togglePassword.textContent = "👁️";
+            }
 
-    form.addEventListener(
-        "submit",
-        async event => {
+        });
+    }
 
-            event.preventDefault();
+    // -----------------------------------------
+    // CONFIRM PASSWORD TOGGLE
+    // -----------------------------------------
 
-            await registerUser(
-                supabaseClient
+    if (toggleConfirmPassword) {
+        toggleConfirmPassword.addEventListener("click", () => {
+
+            const confirmPassword =
+                document.getElementById("confirmPassword");
+
+            if (!confirmPassword) return;
+
+            if (confirmPassword.type === "password") {
+                confirmPassword.type = "text";
+                toggleConfirmPassword.textContent = "🙈";
+            } else {
+                confirmPassword.type = "password";
+                toggleConfirmPassword.textContent = "👁️";
+            }
+
+        });
+    }
+
+    // -----------------------------------------
+    // REGISTRATION
+    // -----------------------------------------
+
+    registerForm.addEventListener("submit", async (event) => {
+
+        event.preventDefault();
+
+        clearMessage();
+
+        const fullName =
+            document.getElementById("fullName")?.value.trim() || "";
+
+        const phone =
+            document.getElementById("phone")?.value.trim() || "";
+
+        const email =
+            document.getElementById("email")?.value.trim().toLowerCase() || "";
+
+        const password =
+            document.getElementById("password")?.value || "";
+
+        const confirmPassword =
+            document.getElementById("confirmPassword")?.value || "";
+
+        const deliveryAddress =
+            document.getElementById("deliveryAddress")?.value.trim() || "";
+
+        const deliveryCity =
+            document.getElementById("deliveryCity")?.value.trim() || "";
+
+        const deliveryState =
+            document.getElementById("deliveryState")?.value || "";
+
+        const agreeTerms =
+            document.getElementById("agreeTerms")?.checked || false;
+
+        // -----------------------------------------
+        // VALIDATION
+        // -----------------------------------------
+
+        if (!fullName) {
+            showMessage(
+                "Please enter your full name.",
+                "error"
             );
-        }
-    );
-}
-
-
-// =========================================
-// REGISTER USER
-// =========================================
-
-async function registerUser(
-    supabaseClient
-) {
-
-    const name =
-        document.getElementById(
-            "registerName"
-        )?.value.trim();
-
-
-    const email =
-        document.getElementById(
-            "registerEmail"
-        )?.value.trim();
-
-
-    const phone =
-        document.getElementById(
-            "registerPhone"
-        )?.value.trim();
-
-
-    const password =
-        document.getElementById(
-            "registerPassword"
-        )?.value;
-
-
-    const confirmPassword =
-        document.getElementById(
-            "registerConfirmPassword"
-        )?.value;
-
-
-    const terms =
-        document.getElementById(
-            "registerTerms"
-        )?.checked;
-
-
-    const button =
-        document.getElementById(
-            "registerButton"
-        );
-
-
-    const buttonText =
-        document.getElementById(
-            "registerButtonText"
-        );
-
-
-    if (!name) {
-
-        showRegisterMessage(
-            "Please enter your full name.",
-            true
-        );
-
-        return;
-    }
-
-
-    if (!email) {
-
-        showRegisterMessage(
-            "Please enter your email address.",
-            true
-        );
-
-        return;
-    }
-
-
-    if (!password) {
-
-        showRegisterMessage(
-            "Please create a password.",
-            true
-        );
-
-        return;
-    }
-
-
-    if (password.length < 6) {
-
-        showRegisterMessage(
-            "Password must be at least 6 characters.",
-            true
-        );
-
-        return;
-    }
-
-
-    if (
-        password !==
-        confirmPassword
-    ) {
-
-        showRegisterMessage(
-            "Passwords do not match.",
-            true
-        );
-
-        return;
-    }
-
-
-    if (!terms) {
-
-        showRegisterMessage(
-            "Please agree to the terms and conditions.",
-            true
-        );
-
-        return;
-    }
-
-
-    if (button) {
-        button.disabled = true;
-    }
-
-
-    if (buttonText) {
-
-        buttonText.textContent =
-            "Creating Account...";
-    }
-
-
-    showRegisterMessage(
-        "",
-        false
-    );
-
-
-    try {
-
-        const { data, error } =
-            await supabaseClient.auth.signUp({
-
-                email,
-
-                password,
-
-                options: {
-
-                    data: {
-
-                        full_name:
-                            name,
-
-                        name:
-                            name,
-
-                        phone:
-                            phone || ""
-                    }
-                }
-            });
-
-
-        if (error) {
-            throw error;
-        }
-
-
-        /*
-         * If Supabase email confirmation
-         * is enabled, session may be null.
-         */
-
-        if (!data.session) {
-
-            showRegisterMessage(
-                "Account created successfully. Please check your email to confirm your account.",
-                false
-            );
-
-
-            setTimeout(
-                () => {
-
-                    window.location.href =
-                        "login.html";
-
-                },
-                2500
-            );
-
-
             return;
         }
 
-
-        showRegisterMessage(
-            "Account created successfully. Redirecting...",
-            false
-        );
-
-
-        setTimeout(
-            () => {
-
-                window.location.href =
-                    "profile.html";
-
-            },
-            800
-        );
-
-
-    } catch (error) {
-
-        console.error(
-            "Registration error:",
-            error
-        );
-
-
-        let message =
-            error?.message ||
-            "Unable to create your account.";
-
-
-        if (
-            message
-                .toLowerCase()
-                .includes(
-                    "already registered"
-                )
-        ) {
-
-            message =
-                "An account with this email already exists. Please login instead.";
+        if (!phone) {
+            showMessage(
+                "Please enter your phone number.",
+                "error"
+            );
+            return;
         }
 
-
-        showRegisterMessage(
-            message,
-            true
-        );
-
-
-    } finally {
-
-        if (button) {
-            button.disabled = false;
+        if (!isValidPhone(phone)) {
+            showMessage(
+                "Please enter a valid Nigerian phone number.",
+                "error"
+            );
+            return;
         }
 
-
-        if (buttonText) {
-
-            buttonText.textContent =
-                "Create Account";
+        if (!email) {
+            showMessage(
+                "Please enter your email address.",
+                "error"
+            );
+            return;
         }
-    }
+
+        if (!isValidEmail(email)) {
+            showMessage(
+                "Please enter a valid email address.",
+                "error"
+            );
+            return;
+        }
+
+        if (password.length < 6) {
+            showMessage(
+                "Password must be at least 6 characters.",
+                "error"
+            );
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            showMessage(
+                "Passwords do not match.",
+                "error"
+            );
+            return;
+        }
+
+        if (!deliveryAddress) {
+            showMessage(
+                "Please enter your delivery address.",
+                "error"
+            );
+            return;
+        }
+
+        if (!deliveryCity) {
+            showMessage(
+                "Please enter your delivery city.",
+                "error"
+            );
+            return;
+        }
+
+        if (!deliveryState) {
+            showMessage(
+                "Please select your state.",
+                "error"
+            );
+            return;
+        }
+
+        if (!agreeTerms) {
+            showMessage(
+                "Please agree to the Terms & Conditions and Privacy Policy.",
+                "error"
+            );
+            return;
+        }
+
+        // -----------------------------------------
+        // LOADING STATE
+        // -----------------------------------------
+
+        setLoading(true);
+
+        try {
+
+            // -----------------------------------------
+            // CHECK IF ANOTHER USER IS ALREADY SIGNED IN
+            // -----------------------------------------
+
+            const {
+                data: existingSessionData
+            } = await supabaseClient.auth.getSession();
+
+            if (existingSessionData?.session) {
+
+                await supabaseClient.auth.signOut();
+
+            }
+
+            // -----------------------------------------
+            // CREATE SUPABASE ACCOUNT
+            // -----------------------------------------
+
+            const {
+                data,
+                error
+            } = await supabaseClient.auth.signUp({
+
+                email: email,
+
+                password: password,
+
+                options: {
+                    data: {
+                        full_name: fullName,
+                        name: fullName,
+                        phone: phone
+                    }
+                }
+
+            });
+
+            if (error) {
+                throw error;
+            }
+
+            if (!data?.user) {
+                throw new Error(
+                    "Account could not be created. Please try again."
+                );
+            }
+
+            const user = data.user;
+
+            // -----------------------------------------
+            // SAVE CUSTOMER PROFILE
+            // -----------------------------------------
+
+            const {
+                error: profileError
+            } = await supabaseClient
+                .from("customer_profiles")
+                .upsert(
+                    {
+                        user_id: user.id,
+                        full_name: fullName,
+                        phone: phone,
+                        delivery_address: deliveryAddress,
+                        delivery_city: deliveryCity,
+                        delivery_state: deliveryState,
+                        updated_at: new Date().toISOString()
+                    },
+                    {
+                        onConflict: "user_id"
+                    }
+                );
+
+            if (profileError) {
+                console.error(
+                    "Profile save error:",
+                    profileError
+                );
+
+                // The Auth account was created, so don't tell
+                // the customer that registration completely failed.
+                showMessage(
+                    "Your account was created, but we could not save your delivery information. Please log in and update your profile.",
+                    "error"
+                );
+
+                setLoading(false);
+                return;
+            }
+
+            // -----------------------------------------
+            // CHECK WHETHER EMAIL CONFIRMATION IS REQUIRED
+            // -----------------------------------------
+
+            const {
+                data: sessionData
+            } = await supabaseClient.auth.getSession();
+
+            if (sessionData?.session) {
+
+                showMessage(
+                    "Account created successfully. Redirecting...",
+                    "success"
+                );
+
+                setTimeout(() => {
+                    redirectAfterRegistration();
+                }, 800);
+
+            } else {
+
+                showMessage(
+                    "Account created successfully. Please check your email to confirm your account, then log in.",
+                    "success"
+                );
+
+                setLoading(false);
+
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Registration error:",
+                error
+            );
+
+            showMessage(
+                getRegistrationErrorMessage(error),
+                "error"
+            );
+
+            setLoading(false);
+        }
+
+    });
 }
 
 
 // =========================================
-// PASSWORD TOGGLE
+// REDIRECT AFTER REGISTRATION
 // =========================================
 
-function setupPasswordToggle(
-    toggleId,
-    inputId
-) {
+function redirectAfterRegistration() {
 
-    const toggle =
-        document.getElementById(
-            toggleId
-        );
+    const params =
+        new URLSearchParams(window.location.search);
 
+    const requestedRedirect =
+        params.get("redirect");
 
-    const input =
-        document.getElementById(
-            inputId
-        );
-
-
-    if (!toggle || !input) {
+    if (isSafeRedirect(requestedRedirect)) {
+        window.location.href = requestedRedirect;
         return;
     }
 
+    const savedCheckoutReturn =
+        localStorage.getItem(
+            "ayodejiCheckoutReturn"
+        );
 
-    toggle.addEventListener(
-        "click",
-        () => {
+    if (isSafeRedirect(savedCheckoutReturn)) {
 
-            if (
-                input.type ===
-                "password"
-            ) {
+        localStorage.removeItem(
+            "ayodejiCheckoutReturn"
+        );
 
-                input.type =
-                    "text";
+        window.location.href =
+            savedCheckoutReturn;
 
-                toggle.textContent =
-                    "🙈";
+        return;
+    }
 
-            } else {
+    // Default destination
+    window.location.href = "index.html";
+}
 
-                input.type =
-                    "password";
 
-                toggle.textContent =
-                    "👁️";
-            }
-        }
+// =========================================
+// SAFE REDIRECT
+// =========================================
+
+function isSafeRedirect(value) {
+
+    if (!value) {
+        return false;
+    }
+
+    // Only allow local HTML pages.
+    if (
+        value.includes("://") ||
+        value.startsWith("//") ||
+        value.toLowerCase().startsWith("javascript:")
+    ) {
+        return false;
+    }
+
+    return (
+        value.endsWith(".html") ||
+        value.startsWith("./") ||
+        value.startsWith("/")
     );
+}
+
+
+// =========================================
+// EMAIL VALIDATION
+// =========================================
+
+function isValidEmail(email) {
+
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+}
+
+
+// =========================================
+// NIGERIAN PHONE VALIDATION
+// =========================================
+
+function isValidPhone(phone) {
+
+    const cleaned =
+        phone.replace(/[\s\-()]/g, "");
+
+    return (
+        /^0\d{10}$/.test(cleaned) ||
+        /^\+234\d{10}$/.test(cleaned) ||
+        /^234\d{10}$/.test(cleaned)
+    );
+
+}
+
+
+// =========================================
+// LOADING STATE
+// =========================================
+
+function setLoading(isLoading) {
+
+    const button =
+        document.getElementById("registerButton");
+
+    const buttonText =
+        document.getElementById("registerButtonText");
+
+    const spinner =
+        document.getElementById("registerSpinner");
+
+    if (button) {
+        button.disabled = isLoading;
+    }
+
+    if (buttonText) {
+        buttonText.textContent =
+            isLoading
+                ? "Creating Account..."
+                : "Create Account";
+    }
+
+    if (spinner) {
+        spinner.style.display =
+            isLoading
+                ? "inline-block"
+                : "none";
+    }
+
 }
 
 
@@ -392,26 +490,93 @@ function setupPasswordToggle(
 // MESSAGE
 // =========================================
 
-function showRegisterMessage(
-    message,
-    error = false
-) {
+function showMessage(message, type) {
 
-    const element =
-        document.getElementById(
-            "registerMessage"
-        );
+    const messageElement =
+        document.getElementById("registerMessage");
 
+    if (!messageElement) return;
 
-    if (!element) return;
+    messageElement.textContent = message;
 
+    messageElement.className =
+        `auth-message show ${type}`;
 
-    element.textContent =
-        message;
-
-
-    element.style.color =
-        error
-            ? "#c62828"
-            : "#16834b";
 }
+
+
+function clearMessage() {
+
+    const messageElement =
+        document.getElementById("registerMessage");
+
+    if (!messageElement) return;
+
+    messageElement.textContent = "";
+
+    messageElement.className =
+        "auth-message";
+
+}
+
+
+// =========================================
+// SUPABASE ERROR TRANSLATION
+// =========================================
+
+function getRegistrationErrorMessage(error) {
+
+    const message =
+        error?.message || "";
+
+    const lowerMessage =
+        message.toLowerCase();
+
+    if (
+        lowerMessage.includes("already registered") ||
+        lowerMessage.includes("already exists") ||
+        lowerMessage.includes("user already registered")
+    ) {
+        return "An account with this email already exists. Please log in instead.";
+    }
+
+    if (
+        lowerMessage.includes("password") &&
+        lowerMessage.includes("weak")
+    ) {
+        return "Your password is too weak. Please use a stronger password.";
+    }
+
+    if (
+        lowerMessage.includes("invalid email")
+    ) {
+        return "Please enter a valid email address.";
+    }
+
+    if (
+        lowerMessage.includes("email rate limit")
+    ) {
+        return "Too many registration attempts. Please wait a little and try again.";
+    }
+
+    if (
+        lowerMessage.includes("network") ||
+        lowerMessage.includes("fetch")
+    ) {
+        return "Network error. Please check your internet connection and try again.";
+    }
+
+    return message ||
+        "Registration failed. Please try again.";
+}
+
+
+// =========================================
+// MAKE FUNCTIONS AVAILABLE
+// =========================================
+
+window.initializeRegistration =
+    initializeRegistration;
+
+window.redirectAfterRegistration =
+    redirectAfterRegistration;

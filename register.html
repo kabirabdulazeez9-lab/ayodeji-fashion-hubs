@@ -2,103 +2,206 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Create Account - Ayodeji Fashion Hubs</title>
+    <title>Create Account | Ayodeji Fashion Hubs</title>
 
-    <link
-        rel="stylesheet"
-        href="css/auth.css"
-    >
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/auth.css">
+
+    <style>
+        .auth-extra-fields {
+            margin-top: 18px;
+        }
+
+        .auth-extra-fields h3 {
+            margin: 0 0 14px;
+            font-size: 16px;
+        }
+
+        .auth-form-group {
+            margin-bottom: 16px;
+        }
+
+        .auth-form-group label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: 600;
+        }
+
+        .auth-form-group input,
+        .auth-form-group select {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .password-hint {
+            display: block;
+            margin-top: 6px;
+            font-size: 12px;
+            color: #999;
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-wrapper input {
+            padding-right: 48px;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 5px;
+        }
+
+        .terms-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 9px;
+            margin: 18px 0;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .terms-row input {
+            width: auto !important;
+            margin-top: 3px;
+            flex-shrink: 0;
+        }
+
+        .terms-row a {
+            color: #d4af37;
+        }
+
+        .auth-message {
+            display: none;
+            margin: 15px 0;
+            padding: 12px 14px;
+            border-radius: 10px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .auth-message.show {
+            display: block;
+        }
+
+        .auth-message.success {
+            background: rgba(74, 222, 128, 0.1);
+            color: #4ade80;
+            border: 1px solid rgba(74, 222, 128, 0.25);
+        }
+
+        .auth-message.error {
+            background: rgba(255, 98, 98, 0.1);
+            color: #ff6262;
+            border: 1px solid rgba(255, 98, 98, 0.25);
+        }
+
+        .register-login-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .checkout-register-note {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            margin-top: 20px;
+            padding: 14px;
+            border-radius: 12px;
+            background: rgba(212, 175, 55, 0.08);
+            border: 1px solid rgba(212, 175, 55, 0.18);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .checkout-register-note span {
+            font-size: 20px;
+        }
+    </style>
 </head>
 
-<body>
+<body class="auth-page">
 
-    <main class="auth-page">
+    <main class="auth-container">
 
         <section class="auth-card">
 
             <div class="auth-logo">
-                👞
+                <a href="index.html">
+                    Ayodeji Fashion Hubs
+                </a>
             </div>
 
-            <h1>
-                Create Account
-            </h1>
-
-            <p class="auth-subtitle">
-                Create your Ayodeji Fashion Hubs account
-            </p>
-
-
-            <!-- REGISTER FORM -->
+            <div class="auth-header">
+                <h1>Create Account</h1>
+                <p>Create your customer account to place orders.</p>
+            </div>
 
             <form id="registerForm">
 
-                <div class="form-group">
-
-                    <label for="registerName">
-                        Full Name
-                    </label>
+                <!-- Full name -->
+                <div class="auth-form-group">
+                    <label for="fullName">Full Name</label>
 
                     <input
                         type="text"
-                        id="registerName"
+                        id="fullName"
+                        name="fullName"
                         placeholder="Enter your full name"
                         autocomplete="name"
                         required
                     >
-
                 </div>
 
-
-                <div class="form-group">
-
-                    <label for="registerEmail">
-                        Email Address
-                    </label>
-
-                    <input
-                        type="email"
-                        id="registerEmail"
-                        placeholder="Enter your email"
-                        autocomplete="email"
-                        required
-                    >
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label for="registerPhone">
-                        Phone Number
-                    </label>
+                <!-- Phone -->
+                <div class="auth-form-group">
+                    <label for="phone">Phone Number</label>
 
                     <input
                         type="tel"
-                        id="registerPhone"
-                        placeholder="08012345678"
+                        id="phone"
+                        name="phone"
+                        placeholder="e.g. 08012345678"
                         autocomplete="tel"
+                        required
                     >
-
                 </div>
 
+                <!-- Email -->
+                <div class="auth-form-group">
+                    <label for="email">Email Address</label>
 
-                <div class="form-group">
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter your email address"
+                        autocomplete="email"
+                        required
+                    >
+                </div>
 
-                    <label for="registerPassword">
-                        Password
-                    </label>
+                <!-- Password -->
+                <div class="auth-form-group">
+
+                    <label for="password">Password</label>
 
                     <div class="password-wrapper">
 
                         <input
                             type="password"
-                            id="registerPassword"
+                            id="password"
+                            name="password"
                             placeholder="Create a password"
                             autocomplete="new-password"
                             minlength="6"
@@ -107,20 +210,25 @@
 
                         <button
                             type="button"
-                            id="toggleRegisterPassword"
+                            id="togglePassword"
                             class="password-toggle"
+                            aria-label="Show password"
                         >
                             👁️
                         </button>
 
                     </div>
 
+                    <small class="password-hint">
+                        Password must be at least 6 characters.
+                    </small>
+
                 </div>
 
+                <!-- Confirm password -->
+                <div class="auth-form-group">
 
-                <div class="form-group">
-
-                    <label for="registerConfirmPassword">
+                    <label for="confirmPassword">
                         Confirm Password
                     </label>
 
@@ -128,7 +236,8 @@
 
                         <input
                             type="password"
-                            id="registerConfirmPassword"
+                            id="confirmPassword"
+                            name="confirmPassword"
                             placeholder="Confirm your password"
                             autocomplete="new-password"
                             minlength="6"
@@ -139,6 +248,7 @@
                             type="button"
                             id="toggleConfirmPassword"
                             class="password-toggle"
+                            aria-label="Show password"
                         >
                             👁️
                         </button>
@@ -147,73 +257,179 @@
 
                 </div>
 
+                <!-- Delivery information -->
+                <div class="auth-extra-fields">
 
-                <label class="checkbox-row">
+                    <h3>Delivery Information</h3>
+
+                    <div class="auth-form-group">
+
+                        <label for="deliveryAddress">
+                            Delivery Address
+                        </label>
+
+                        <input
+                            type="text"
+                            id="deliveryAddress"
+                            name="deliveryAddress"
+                            placeholder="House number, street, area"
+                            autocomplete="street-address"
+                            required
+                        >
+
+                    </div>
+
+                    <div class="auth-form-group">
+
+                        <label for="deliveryCity">
+                            City
+                        </label>
+
+                        <input
+                            type="text"
+                            id="deliveryCity"
+                            name="deliveryCity"
+                            placeholder="Enter your city"
+                            autocomplete="address-level2"
+                            required
+                        >
+
+                    </div>
+
+                    <div class="auth-form-group">
+
+                        <label for="deliveryState">
+                            State
+                        </label>
+
+                        <select
+                            id="deliveryState"
+                            name="deliveryState"
+                            autocomplete="address-level1"
+                            required
+                        >
+                            <option value="">Select your state</option>
+                            <option value="Abia">Abia</option>
+                            <option value="Adamawa">Adamawa</option>
+                            <option value="Akwa Ibom">Akwa Ibom</option>
+                            <option value="Anambra">Anambra</option>
+                            <option value="Bauchi">Bauchi</option>
+                            <option value="Bayelsa">Bayelsa</option>
+                            <option value="Benue">Benue</option>
+                            <option value="Borno">Borno</option>
+                            <option value="Cross River">Cross River</option>
+                            <option value="Delta">Delta</option>
+                            <option value="Ebonyi">Ebonyi</option>
+                            <option value="Edo">Edo</option>
+                            <option value="Ekiti">Ekiti</option>
+                            <option value="Enugu">Enugu</option>
+                            <option value="Gombe">Gombe</option>
+                            <option value="Imo">Imo</option>
+                            <option value="Jigawa">Jigawa</option>
+                            <option value="Kaduna">Kaduna</option>
+                            <option value="Kano">Kano</option>
+                            <option value="Katsina">Katsina</option>
+                            <option value="Kebbi">Kebbi</option>
+                            <option value="Kogi">Kogi</option>
+                            <option value="Kwara">Kwara</option>
+                            <option value="Lagos">Lagos</option>
+                            <option value="Nasarawa">Nasarawa</option>
+                            <option value="Niger">Niger</option>
+                            <option value="Ogun">Ogun</option>
+                            <option value="Ondo">Ondo</option>
+                            <option value="Osun">Osun</option>
+                            <option value="Oyo">Oyo</option>
+                            <option value="Plateau">Plateau</option>
+                            <option value="Rivers">Rivers</option>
+                            <option value="Sokoto">Sokoto</option>
+                            <option value="Taraba">Taraba</option>
+                            <option value="Yobe">Yobe</option>
+                            <option value="Zamfara">Zamfara</option>
+                            <option value="FCT">Federal Capital Territory</option>
+                        </select>
+
+                    </div>
+
+                </div>
+
+                <!-- Terms -->
+                <label class="terms-row">
 
                     <input
                         type="checkbox"
-                        id="registerTerms"
+                        id="agreeTerms"
                         required
                     >
 
                     <span>
-                        I agree to the Ayodeji Fashion Hubs
-                        terms and conditions.
+                        I agree to the
+                        <a href="terms.html" target="_blank">
+                            Terms & Conditions
+                        </a>
+                        and
+                        <a href="privacy-policy.html" target="_blank">
+                            Privacy Policy
+                        </a>.
                     </span>
 
                 </label>
 
+                <!-- Message -->
+                <div
+                    id="registerMessage"
+                    class="auth-message"
+                    role="alert"
+                ></div>
 
+                <!-- Register button -->
                 <button
                     type="submit"
                     id="registerButton"
-                    class="auth-button"
+                    class="auth-submit-button"
                 >
                     <span id="registerButtonText">
                         Create Account
                     </span>
+
+                    <span
+                        id="registerSpinner"
+                        class="auth-spinner"
+                        style="display:none;"
+                    >
+                        ⏳
+                    </span>
                 </button>
-
-
-                <p
-                    id="registerMessage"
-                    class="auth-message"
-                ></p>
 
             </form>
 
-
-            <div class="auth-divider">
+            <div class="register-login-link">
                 Already have an account?
+                <a href="login.html">
+                    Login
+                </a>
             </div>
 
+            <div class="checkout-register-note">
+                <span>🛒</span>
 
-            <a
-                href="login.html"
-                class="auth-link-button"
-            >
-                Login
-            </a>
-
-
-            <a
-                href="index.html"
-                class="back-home"
-            >
-                ← Back to Store
-            </a>
+                <p>
+                    You can browse products and add items to your cart
+                    without an account. An account is required before
+                    placing an order.
+                </p>
+            </div>
 
         </section>
 
     </main>
 
-
-    <!-- SUPABASE -->
-
+    <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+    <!-- Your Supabase configuration -->
     <script src="js/supabase.js"></script>
 
+    <!-- Registration logic -->
     <script src="js/register.js"></script>
 
 </body>
