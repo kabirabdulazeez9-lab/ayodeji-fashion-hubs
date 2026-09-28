@@ -1,11 +1,29 @@
 /* =========================================
-AYODEJI FASHION HUBS
-MAIN STYLESHEET
+   AYODEJI FASHION HUBS
+   GLOBAL DARK THEME
 ========================================= */
+
+:root {
+    --black: #ffffff;
+    --white: #050505;
+
+    --cream: #0b0b0b;
+    --gold: #d6b36a;
+    --gold-dark: #e0bd72;
+
+    --gray: #a0a0a0;
+    --dark-gray: #777777;
+
+    --border: #242424;
+    --danger: #b83a3a;
+
+    --surface: #101010;
+    --surface-light: #151515;
+}
 
 
 /* =========================================
-RESET
+   RESET
 ========================================= */
 
 * {
@@ -21,18 +39,23 @@ html {
 
 
 body {
+    background: #000000;
+    color: #ffffff;
+
     font-family:
         Arial,
         Helvetica,
         sans-serif;
 
-    background: #ffffff;
-
-    color: #171717;
-
     line-height: 1.6;
 
-    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+
+img {
+    max-width: 100%;
+    display: block;
 }
 
 
@@ -50,88 +73,31 @@ textarea {
 }
 
 
-img {
-    max-width: 100%;
-    display: block;
-}
-
-
 /* =========================================
-VARIABLES
-========================================= */
-
-:root {
-
-    --black: #111111;
-
-    --dark: #171717;
-
-    --white: #ffffff;
-
-    --cream: #f8f5ef;
-
-    --light: #f5f5f5;
-
-    --border: #e5e5e5;
-
-    --gray: #666666;
-
-    --gold: #c89b3c;
-
-    --gold-dark: #a97d26;
-
-    --success: #16803c;
-
-    --danger: #c62828;
-
-}
-
-
-/* =========================================
-CONTAINER
-========================================= */
-
-.container {
-
-    width: min(
-        1120px,
-        90%
-    );
-
-    margin: 0 auto;
-
-}
-
-
-/* =========================================
-HEADER
+   HEADER
 ========================================= */
 
 .site-header {
-
     width: 100%;
 
     height: 74px;
 
-    background: var(--white);
+    background: rgba(0, 0, 0, 0.96);
 
     border-bottom:
         1px solid
-        var(--border);
+        #222222;
 
-    position: sticky;
-
-    top: 0;
+    position: relative;
 
     z-index: 1000;
 }
 
 
 .header-container {
-
     width: min(
-        1200px,
-        92%
+        1120px,
+        90%
     );
 
     height: 100%;
@@ -149,124 +115,74 @@ HEADER
 
 
 /* =========================================
-BRAND
+   BRAND
 ========================================= */
 
 .brand {
-
-    display: inline-flex;
+    display: flex;
 
     align-items: center;
 
     gap: 9px;
 
-    font-weight: 800;
+    color: #ffffff;
 
-    color: var(--black);
+    font-weight: 800;
 
     white-space: nowrap;
 }
 
 
 .brand-icon {
-
     font-size: 25px;
-
-    line-height: 1;
 }
 
 
 .brand-text {
-
     font-size: 18px;
 
-    letter-spacing: -0.3px;
+    letter-spacing: -0.4px;
 }
 
 
 /* =========================================
-DESKTOP NAVIGATION
+   DESKTOP NAVIGATION
 ========================================= */
 
 .desktop-navigation {
-
     display: flex;
 
     align-items: center;
 
-    justify-content: center;
-
     gap: 28px;
 
     margin-left: auto;
-
-    margin-right: 20px;
 }
 
 
 .desktop-navigation a {
+    color: #a8a8a8;
 
-    position: relative;
-
-    font-size: 14px;
+    font-size: 13px;
 
     font-weight: 600;
-
-    color: #555555;
-
-    padding: 27px 0;
 
     transition:
         color 0.2s ease;
 }
 
 
-.desktop-navigation a:hover {
-
-    color: var(--black);
-}
-
-
+.desktop-navigation a:hover,
 .desktop-navigation a.active {
-
-    color: var(--black);
-}
-
-
-.desktop-navigation a.active::after {
-
-    content: "";
-
-    position: absolute;
-
-    left: 0;
-
-    right: 0;
-
-    bottom: 18px;
-
-    height: 2px;
-
-    background: var(--gold);
+    color: #ffffff;
 }
 
 
 /* =========================================
-HEADER ACTIONS
+   CART LINK
 ========================================= */
 
-.header-actions {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 12px;
-}
-
-
 .cart-link {
-
     position: relative;
 
     width: 42px;
@@ -279,28 +195,34 @@ HEADER ACTIONS
 
     justify-content: center;
 
-    font-size: 21px;
+    border:
+        1px solid
+        #292929;
 
     border-radius: 50%;
 
+    background: #0b0b0b;
+
+    color: #ffffff;
+
     transition:
-        background 0.2s ease;
+        all 0.2s ease;
 }
 
 
 .cart-link:hover {
+    border-color: #ffffff;
 
-    background: var(--cream);
+    background: #151515;
 }
 
 
 .cart-count {
-
     position: absolute;
 
-    top: 1px;
+    top: -5px;
 
-    right: 0;
+    right: -5px;
 
     min-width: 18px;
 
@@ -308,78 +230,71 @@ HEADER ACTIONS
 
     padding: 0 4px;
 
+    border-radius: 50%;
+
+    background: #ffffff;
+
+    color: #000000;
+
     display: flex;
 
     align-items: center;
 
     justify-content: center;
 
-    border-radius: 50%;
-
-    background: var(--black);
-
-    color: var(--white);
-
     font-size: 10px;
 
-    font-weight: 700;
-
-    line-height: 1;
+    font-weight: 800;
 }
 
 
 /* =========================================
-MENU BUTTON
+   MENU BUTTON
 ========================================= */
 
 .menu-button {
-
     display: none;
 
     width: 42px;
 
     height: 42px;
 
-    border: none;
+    border:
+        1px solid
+        #292929;
 
-    background: transparent;
+    border-radius: 6px;
 
-    color: var(--black);
+    background: #080808;
 
-    font-size: 25px;
+    color: #ffffff;
+
+    font-size: 22px;
 
     align-items: center;
 
     justify-content: center;
 
-    padding: 0;
-
     cursor: pointer;
 
-    border-radius: 8px;
+    padding: 0;
 
     -webkit-tap-highlight-color: transparent;
 }
 
 
 .menu-button:hover {
+    background: #151515;
 
-    background: var(--cream);
-}
-
-
-.menu-button:active {
-
-    transform: scale(0.95);
+    border-color: #444444;
 }
 
 
 /* =========================================
-MOBILE MENU
+   MOBILE MENU
 ========================================= */
 
 .mobile-menu {
-
     display: none;
 
     position: fixed;
@@ -390,17 +305,15 @@ MOBILE MENU
 
     right: 0;
 
-    width: 100%;
-
-    background: var(--white);
+    background: #080808;
 
     border-bottom:
         1px solid
-        var(--border);
+        #292929;
 
     box-shadow:
-        0 15px 35px
-        rgba(0, 0, 0, 0.12);
+        0 20px 45px
+        rgba(0, 0, 0, 0.65);
 
     z-index: 2000;
 
@@ -409,60 +322,51 @@ MOBILE MENU
 
 
 .mobile-menu.open {
-
     display: block;
 }
 
 
 .mobile-menu a {
-
     display: block;
 
     padding: 16px 5px;
 
+    color: #eeeeee;
+
     border-bottom:
         1px solid
-        var(--border);
+        #202020;
 
     font-size: 14px;
 
     font-weight: 600;
-
-    color: var(--black);
 }
 
 
 .mobile-menu a:last-child {
-
     border-bottom: none;
 }
 
 
-.mobile-menu a:hover {
-
-    color: var(--gold-dark);
-
-    background: var(--cream);
-}
-
-
+.mobile-menu a:hover,
 .mobile-menu a:active {
+    background: #111111;
 
-    background: var(--cream);
+    color: #ffffff;
 }
 
 
 /* =========================================
-HERO
+   HERO
 ========================================= */
 
 .hero {
-
     background:
-        linear-gradient(
-            135deg,
-            #f8f5ef 0%,
-            #ffffff 100%
+        radial-gradient(
+            circle at 75% 40%,
+            #181818 0%,
+            #090909 35%,
+            #000000 75%
         );
 
     min-height: 580px;
@@ -470,11 +374,14 @@ HERO
     display: flex;
 
     align-items: center;
+
+    border-bottom:
+        1px solid
+        #151515;
 }
 
 
 .hero-container {
-
     width: min(
         1120px,
         90%
@@ -497,8 +404,7 @@ HERO
 
 
 .hero-small-text {
-
-    color: var(--gold-dark);
+    color: var(--gold);
 
     font-size: 13px;
 
@@ -511,7 +417,6 @@ HERO
 
 
 .hero h1 {
-
     font-size:
         clamp(
             48px,
@@ -525,12 +430,11 @@ HERO
 
     margin-bottom: 25px;
 
-    color: var(--black);
+    color: #ffffff;
 }
 
 
 .hero h1 span {
-
     display: block;
 
     color: var(--gold);
@@ -538,10 +442,9 @@ HERO
 
 
 .hero-description {
-
     max-width: 520px;
 
-    color: var(--gray);
+    color: #a0a0a0;
 
     font-size: 17px;
 
@@ -550,11 +453,10 @@ HERO
 
 
 /* =========================================
-HERO BUTTONS
+   HERO BUTTONS
 ========================================= */
 
 .hero-buttons {
-
     display: flex;
 
     align-items: center;
@@ -566,7 +468,6 @@ HERO BUTTONS
 
 
 .btn {
-
     display: inline-flex;
 
     align-items: center;
@@ -575,8 +476,7 @@ HERO BUTTONS
 
     min-height: 48px;
 
-    padding:
-        0 24px;
+    padding: 0 24px;
 
     border-radius: 6px;
 
@@ -590,47 +490,44 @@ HERO BUTTONS
 
 
 .btn-primary {
+    background: #ffffff;
 
-    background: var(--black);
-
-    color: var(--white);
+    color: #000000;
 }
 
 
 .btn-primary:hover {
-
-    background: #333333;
+    background: #dddddd;
 
     transform: translateY(-1px);
 }
 
 
 .btn-secondary {
+    background: #0b0b0b;
 
-    background: var(--white);
-
-    color: var(--black);
+    color: #ffffff;
 
     border:
         1px solid
-        var(--border);
+        #333333;
 }
 
 
 .btn-secondary:hover {
+    border-color: #ffffff;
 
-    border-color: var(--black);
+    background: #151515;
 
     transform: translateY(-1px);
 }
 
 
 /* =========================================
-HERO VISUAL
+   HERO VISUAL
 ========================================= */
 
 .hero-visual {
-
     display: flex;
 
     align-items: center;
@@ -640,7 +537,6 @@ HERO VISUAL
 
 
 .hero-shoe {
-
     width: 360px;
 
     height: 360px;
@@ -650,7 +546,12 @@ HERO VISUAL
     border-radius: 50%;
 
     background:
-        #eee8dd;
+        radial-gradient(
+            circle,
+            #242424 0%,
+            #111111 60%,
+            #080808 100%
+        );
 
     display: flex;
 
@@ -660,12 +561,15 @@ HERO VISUAL
 
     box-shadow:
         0 30px 70px
-        rgba(0, 0, 0, 0.12);
+        rgba(0, 0, 0, 0.65);
+
+    border:
+        1px solid
+        #292929;
 }
 
 
 .shoe-emoji {
-
     font-size: 150px;
 
     transform:
@@ -674,21 +578,17 @@ HERO VISUAL
 
 
 /* =========================================
-FEATURES
+   FEATURES
 ========================================= */
 
 .features-section {
+    padding: 90px 0;
 
-    padding:
-        90px 0;
-
-    background:
-        var(--white);
+    background: #050505;
 }
 
 
 .section-heading {
-
     text-align: center;
 
     margin-bottom: 45px;
@@ -696,8 +596,7 @@ FEATURES
 
 
 .section-label {
-
-    color: var(--gold-dark);
+    color: var(--gold);
 
     font-size: 12px;
 
@@ -711,7 +610,6 @@ FEATURES
 
 .section-heading h2,
 .section-header h2 {
-
     font-size:
         clamp(
             30px,
@@ -721,12 +619,11 @@ FEATURES
 
     line-height: 1.15;
 
-    color: var(--black);
+    color: #ffffff;
 }
 
 
 .features-grid {
-
     display: grid;
 
     grid-template-columns:
@@ -740,38 +637,38 @@ FEATURES
 
 
 .feature-card {
-
     padding: 30px 22px;
 
     text-align: center;
 
     border:
         1px solid
-        var(--border);
+        #242424;
 
     border-radius: 10px;
 
-    background: var(--white);
+    background: #0b0b0b;
 
     transition:
         transform 0.2s ease,
-        box-shadow 0.2s ease;
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
 }
 
 
 .feature-card:hover {
-
     transform:
         translateY(-4px);
 
+    border-color: #3a3a3a;
+
     box-shadow:
         0 15px 35px
-        rgba(0, 0, 0, 0.07);
+        rgba(0, 0, 0, 0.55);
 }
 
 
 .feature-icon {
-
     font-size: 34px;
 
     margin-bottom: 16px;
@@ -779,37 +676,33 @@ FEATURES
 
 
 .feature-card h3 {
-
     font-size: 17px;
 
     margin-bottom: 8px;
+
+    color: #ffffff;
 }
 
 
 .feature-card p {
-
     font-size: 13px;
 
-    color: var(--gray);
+    color: #999999;
 }
 
 
 /* =========================================
-PRODUCT SECTION
+   PRODUCT SECTION
 ========================================= */
 
 .products-section {
+    padding: 90px 0;
 
-    padding:
-        90px 0;
-
-    background:
-        var(--cream);
+    background: #090909;
 }
 
 
 .section-header {
-
     display: flex;
 
     align-items: flex-end;
@@ -823,23 +716,20 @@ PRODUCT SECTION
 
 
 .view-all {
-
     font-size: 14px;
 
     font-weight: 700;
 
-    color: var(--black);
+    color: #ffffff;
 }
 
 
 .view-all:hover {
-
-    color: var(--gold-dark);
+    color: var(--gold);
 }
 
 
 .product-preview-grid {
-
     display: grid;
 
     grid-template-columns:
@@ -853,12 +743,11 @@ PRODUCT SECTION
 
 
 .home-product-card {
-
-    background: var(--white);
+    background: #0d0d0d;
 
     border:
         1px solid
-        var(--border);
+        #252525;
 
     border-radius: 10px;
 
@@ -866,27 +755,33 @@ PRODUCT SECTION
 
     transition:
         transform 0.2s ease,
-        box-shadow 0.2s ease;
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
 }
 
 
 .home-product-card:hover {
-
     transform:
         translateY(-4px);
 
+    border-color: #383838;
+
     box-shadow:
         0 15px 35px
-        rgba(0, 0, 0, 0.08);
+        rgba(0, 0, 0, 0.6);
 }
 
 
 .home-product-image {
-
     min-height: 250px;
 
     background:
-        #f1eee8;
+        radial-gradient(
+            circle,
+            #202020 0%,
+            #101010 65%,
+            #080808 100%
+        );
 
     display: flex;
 
@@ -901,21 +796,19 @@ PRODUCT SECTION
 
 
 .product-badge {
-
     position: absolute;
 
     top: 15px;
 
     left: 15px;
 
-    padding:
-        5px 10px;
+    padding: 5px 10px;
 
     border-radius: 4px;
 
-    background: var(--black);
+    background: #ffffff;
 
-    color: var(--white);
+    color: #000000;
 
     font-size: 10px;
 
@@ -926,21 +819,19 @@ PRODUCT SECTION
 
 
 .product-badge.sale {
+    background: var(--danger);
 
-    background:
-        var(--danger);
+    color: #ffffff;
 }
 
 
 .home-product-info {
-
     padding: 22px;
 }
 
 
 .product-category {
-
-    color: var(--gray);
+    color: #858585;
 
     font-size: 11px;
 
@@ -955,25 +846,26 @@ PRODUCT SECTION
 
 
 .home-product-info h3 {
-
     font-size: 18px;
 
     margin-bottom: 10px;
+
+    color: #ffffff;
 }
 
 
 .product-price {
-
     font-size: 18px;
 
     font-weight: 800;
 
     margin-bottom: 18px;
+
+    color: #ffffff;
 }
 
 
 .product-button {
-
     display: flex;
 
     align-items: center;
@@ -984,9 +876,11 @@ PRODUCT SECTION
 
     border:
         1px solid
-        var(--black);
+        #444444;
 
     border-radius: 5px;
+
+    color: #ffffff;
 
     font-size: 13px;
 
@@ -998,33 +892,43 @@ PRODUCT SECTION
 
 
 .product-button:hover {
+    background: #ffffff;
 
-    background: var(--black);
+    color: #000000;
 
-    color: var(--white);
+    border-color: #ffffff;
 }
 
 
 /* =========================================
-CTA
+   CTA
 ========================================= */
 
 .cta-section {
-
-    padding:
-        90px 0;
+    padding: 90px 0;
 
     background:
-        var(--black);
+        linear-gradient(
+            135deg,
+            #111111 0%,
+            #000000 100%
+        );
 
-    color: var(--white);
+    color: #ffffff;
 
     text-align: center;
+
+    border-top:
+        1px solid
+        #1c1c1c;
+
+    border-bottom:
+        1px solid
+        #1c1c1c;
 }
 
 
 .cta-content {
-
     max-width: 650px;
 
     margin: 0 auto;
@@ -1032,13 +936,11 @@ CTA
 
 
 .cta-content .section-label {
-
     color: var(--gold);
 }
 
 
 .cta-content h2 {
-
     font-size:
         clamp(
             30px,
@@ -1053,44 +955,43 @@ CTA
 
 
 .cta-content p:not(.section-label) {
-
-    color: #cccccc;
+    color: #a0a0a0;
 
     margin-bottom: 28px;
 }
 
 
 .cta-content .btn-primary {
+    background: #ffffff;
 
-    background: var(--white);
-
-    color: var(--black);
+    color: #000000;
 }
 
 
 .cta-content .btn-primary:hover {
-
-    background: var(--cream);
+    background: #dddddd;
 }
 
 
 /* =========================================
-FOOTER
+   FOOTER
 ========================================= */
 
 .site-footer {
-
     background:
-        #0c0c0c;
+        #000000;
 
-    color: var(--white);
+    color: #ffffff;
 
     padding-top: 65px;
+
+    border-top:
+        1px solid
+        #202020;
 }
 
 
 .footer-container {
-
     width: min(
         1120px,
         90%
@@ -1112,25 +1013,22 @@ FOOTER
 
 
 .footer-logo {
-
-    color: var(--white);
+    color: #ffffff;
 
     margin-bottom: 15px;
 }
 
 
 .footer-brand p {
-
     max-width: 350px;
 
-    color: #999999;
+    color: #777777;
 
     font-size: 14px;
 }
 
 
 .footer-links {
-
     display: flex;
 
     flex-direction: column;
@@ -1140,16 +1038,16 @@ FOOTER
 
 
 .footer-links h3 {
-
     font-size: 14px;
 
     margin-bottom: 8px;
+
+    color: #ffffff;
 }
 
 
 .footer-links a {
-
-    color: #999999;
+    color: #777777;
 
     font-size: 13px;
 
@@ -1159,36 +1057,33 @@ FOOTER
 
 
 .footer-links a:hover {
-
-    color: var(--white);
+    color: #ffffff;
 }
 
 
 .footer-bottom {
-
     border-top:
         1px solid
-        #292929;
+        #202020;
 
     text-align: center;
 
     padding:
         22px 5%;
 
-    color: #777777;
+    color: #666666;
 
     font-size: 12px;
 }
 
 
 /* =========================================
-TABLET
+   TABLET
 ========================================= */
 
 @media (max-width: 1000px) {
 
     .desktop-navigation {
-
         gap: 18px;
 
         margin-right: 10px;
@@ -1196,7 +1091,6 @@ TABLET
 
 
     .features-grid {
-
         grid-template-columns:
             repeat(
                 2,
@@ -1206,7 +1100,6 @@ TABLET
 
 
     .hero-container {
-
         gap: 30px;
     }
 
@@ -1214,36 +1107,31 @@ TABLET
 
 
 /* =========================================
-MOBILE NAVIGATION
+   MOBILE NAVIGATION
 ========================================= */
 
 @media (max-width: 900px) {
 
     .desktop-navigation {
-
         display: none;
     }
 
 
     .menu-button {
-
         display: flex;
     }
 
 
     .hero-container {
-
         grid-template-columns: 1fr;
 
         text-align: center;
 
-        padding:
-            60px 0;
+        padding: 60px 0;
     }
 
 
     .hero-description {
-
         margin-left: auto;
 
         margin-right: auto;
@@ -1251,19 +1139,16 @@ MOBILE NAVIGATION
 
 
     .hero-buttons {
-
         justify-content: center;
     }
 
 
     .hero-visual {
-
         order: -1;
     }
 
 
     .hero-shoe {
-
         width: 280px;
 
         height: 280px;
@@ -1271,13 +1156,11 @@ MOBILE NAVIGATION
 
 
     .shoe-emoji {
-
         font-size: 115px;
     }
 
 
     .product-preview-grid {
-
         grid-template-columns:
             repeat(
                 2,
@@ -1287,14 +1170,12 @@ MOBILE NAVIGATION
 
 
     .footer-container {
-
         grid-template-columns:
             1fr 1fr;
     }
 
 
     .footer-brand {
-
         grid-column:
             1 / -1;
     }
@@ -1303,43 +1184,37 @@ MOBILE NAVIGATION
 
 
 /* =========================================
-SMALL MOBILE
+   SMALL MOBILE
 ========================================= */
 
 @media (max-width: 650px) {
 
     .site-header {
-
         height: 68px;
     }
 
 
     .header-container {
-
         width: 92%;
     }
 
 
     .brand-text {
-
         font-size: 15px;
     }
 
 
     .brand-icon {
-
         font-size: 21px;
     }
 
 
     .mobile-menu {
-
         top: 68px;
     }
 
 
     .cart-link {
-
         width: 38px;
 
         height: 38px;
@@ -1347,7 +1222,6 @@ SMALL MOBILE
 
 
     .menu-button {
-
         width: 38px;
 
         height: 38px;
@@ -1355,20 +1229,16 @@ SMALL MOBILE
 
 
     .hero {
-
         min-height: auto;
     }
 
 
     .hero-container {
-
-        padding:
-            50px 0;
+        padding: 50px 0;
     }
 
 
     .hero h1 {
-
         font-size: 48px;
 
         letter-spacing: -2px;
@@ -1376,13 +1246,11 @@ SMALL MOBILE
 
 
     .hero-description {
-
         font-size: 15px;
     }
 
 
     .hero-buttons {
-
         flex-direction: column;
 
         width: 100%;
@@ -1390,13 +1258,11 @@ SMALL MOBILE
 
 
     .hero-buttons .btn {
-
         width: 100%;
     }
 
 
     .hero-shoe {
-
         width: 220px;
 
         height: 220px;
@@ -1404,7 +1270,6 @@ SMALL MOBILE
 
 
     .shoe-emoji {
-
         font-size: 90px;
     }
 
@@ -1412,14 +1277,11 @@ SMALL MOBILE
     .features-section,
     .products-section,
     .cta-section {
-
-        padding:
-            65px 0;
+        padding: 65px 0;
     }
 
 
     .features-grid {
-
         grid-template-columns: 1fr;
 
         gap: 14px;
@@ -1427,7 +1289,6 @@ SMALL MOBILE
 
 
     .section-header {
-
         align-items: flex-start;
 
         flex-direction: column;
@@ -1435,7 +1296,6 @@ SMALL MOBILE
 
 
     .product-preview-grid {
-
         grid-template-columns: 1fr;
 
         gap: 18px;
@@ -1443,13 +1303,11 @@ SMALL MOBILE
 
 
     .home-product-image {
-
         min-height: 230px;
     }
 
 
     .footer-container {
-
         grid-template-columns: 1fr;
 
         gap: 35px;
@@ -1457,7 +1315,6 @@ SMALL MOBILE
 
 
     .footer-brand {
-
         grid-column: auto;
     }
 
@@ -1465,25 +1322,22 @@ SMALL MOBILE
 
 
 /* =========================================
-VERY SMALL PHONES
+   VERY SMALL PHONES
 ========================================= */
 
 @media (max-width: 380px) {
 
     .brand-text {
-
         font-size: 13px;
     }
 
 
     .hero h1 {
-
         font-size: 42px;
     }
 
 
     .hero-shoe {
-
         width: 190px;
 
         height: 190px;
@@ -1491,8 +1345,61 @@ VERY SMALL PHONES
 
 
     .shoe-emoji {
-
         font-size: 75px;
     }
 
+}
+
+
+/* =========================================
+   DARK SCROLLBAR
+========================================= */
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+
+::-webkit-scrollbar-track {
+    background: #050505;
+}
+
+
+::-webkit-scrollbar-thumb {
+    background: #333333;
+
+    border-radius: 10px;
+}
+
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555555;
+}
+
+
+/* =========================================
+   SELECTION
+========================================= */
+
+::selection {
+    background: #ffffff;
+
+    color: #000000;
+}
+
+
+/* =========================================
+   ACCESSIBILITY
+========================================= */
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline:
+        2px solid
+        var(--gold);
+
+    outline-offset: 3px;
 }

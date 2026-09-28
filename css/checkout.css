@@ -1,10 +1,57 @@
 /* =====================================================
    AYODEJI FASHION HUBS — CHECKOUT
+   DARK THEME
    ===================================================== */
+
+:root {
+    --checkout-bg: #000000;
+    --checkout-surface: #0b0b0b;
+    --checkout-surface-2: #111111;
+    --checkout-surface-3: #161616;
+
+    --checkout-text: #f5f5f5;
+    --checkout-text-soft: #d8d8d8;
+    --checkout-muted: #999999;
+    --checkout-muted-2: #777777;
+
+    --checkout-border: #242424;
+    --checkout-border-light: #2d2d2d;
+
+    --checkout-gold: #d4af37;
+    --checkout-gold-light: #f0d96a;
+    --checkout-gold-dark: #a88416;
+
+    --checkout-green: #43c66b;
+    --checkout-red: #ff6666;
+    --checkout-orange: #e1a52b;
+
+    --checkout-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.45);
+
+    --checkout-shadow-large:
+        0 20px 60px rgba(0, 0, 0, 0.65);
+
+    --checkout-radius: 16px;
+}
+
+
+/* =====================================================
+   PAGE
+===================================================== */
 
 .checkout-page {
     padding: 40px 0 80px;
-    background: #f8f6f1;
+
+    background:
+        radial-gradient(
+            circle at top right,
+            rgba(212, 175, 55, 0.04),
+            transparent 35%
+        ),
+        var(--checkout-bg);
+
+    color: var(--checkout-text);
+
     min-height: 80vh;
 }
 
@@ -13,7 +60,10 @@
     margin: 0 auto;
 }
 
-/* ================= HEADING ================= */
+
+/* =====================================================
+   HEADING
+===================================================== */
 
 .checkout-heading {
     margin-bottom: 30px;
@@ -22,32 +72,43 @@
 .checkout-heading .eyebrow,
 .order-success .eyebrow {
     margin: 0 0 8px;
-    color: #9a7b2f;
+
+    color: var(--checkout-gold);
+
     font-size: 12px;
     font-weight: 700;
     letter-spacing: 2px;
+    text-transform: uppercase;
 }
 
 .checkout-heading h1 {
     margin: 0 0 8px;
-    color: #111;
+
+    color: var(--checkout-text);
+
     font-size: 34px;
     line-height: 1.1;
 }
 
 .checkout-heading p {
     margin: 0;
-    color: #777;
+
+    color: var(--checkout-muted);
+
     font-size: 15px;
     line-height: 1.6;
 }
 
 
-/* ================= LAYOUT ================= */
+/* =====================================================
+   LAYOUT
+===================================================== */
 
 .checkout-layout {
     display: grid;
+
     grid-template-columns: minmax(0, 1fr);
+
     gap: 24px;
 }
 
@@ -58,24 +119,34 @@
 }
 
 
-/* ================= CARD ================= */
+/* =====================================================
+   CARDS
+===================================================== */
 
 .checkout-card,
 .order-summary-card {
-    background: #fff;
-    border: 1px solid #e8e3d9;
-    border-radius: 16px;
+    background: var(--checkout-surface);
+
+    border: 1px solid var(--checkout-border);
+
+    border-radius: var(--checkout-radius);
+
     padding: 22px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.04);
+
+    box-shadow: var(--checkout-shadow);
 }
 
 
-/* ================= SECTION TITLE ================= */
+/* =====================================================
+   SECTION TITLE
+===================================================== */
 
 .section-title {
     display: flex;
     align-items: flex-start;
+
     gap: 13px;
+
     margin-bottom: 24px;
 }
 
@@ -91,32 +162,40 @@
 
     border-radius: 50%;
 
-    background: #111;
-    color: #fff;
+    background: var(--checkout-gold);
+    color: #000000;
 
     font-size: 12px;
-    font-weight: 700;
+    font-weight: 800;
 }
 
 .section-title h2 {
     margin: 0 0 4px;
-    color: #111;
+
+    color: var(--checkout-text);
+
     font-size: 19px;
 }
 
 .section-title p {
     margin: 0;
-    color: #888;
+
+    color: var(--checkout-muted);
+
     font-size: 13px;
     line-height: 1.5;
 }
 
 
-/* ================= FORM ================= */
+/* =====================================================
+   FORM
+===================================================== */
 
 .form-grid {
     display: grid;
+
     grid-template-columns: 1fr;
+
     gap: 17px;
 }
 
@@ -127,38 +206,49 @@
 
 .form-group label {
     margin-bottom: 7px;
-    color: #222;
+
+    color: var(--checkout-text-soft);
+
     font-size: 13px;
     font-weight: 700;
 }
 
 .form-group label span {
-    color: #999;
+    color: var(--checkout-muted-2);
     font-weight: 400;
 }
+
+
+/* Inputs */
 
 .form-group input,
 .form-group select,
 .form-group textarea {
     width: 100%;
+
     box-sizing: border-box;
 
-    border: 1px solid #ddd7cc;
+    border: 1px solid var(--checkout-border-light);
+
     border-radius: 10px;
 
-    background: #fff;
+    background: var(--checkout-surface-2);
 
     padding: 13px 14px;
 
-    color: #222;
+    color: var(--checkout-text);
+
     font-family: inherit;
     font-size: 14px;
 
     outline: none;
 
+    color-scheme: dark;
+
     transition:
         border-color 0.2s ease,
-        box-shadow 0.2s ease;
+        box-shadow 0.2s ease,
+        background 0.2s ease;
 }
 
 .form-group textarea {
@@ -168,28 +258,40 @@
 
 .form-group input::placeholder,
 .form-group textarea::placeholder {
-    color: #aaa;
+    color: #666666;
+}
+
+.form-group input:hover,
+.form-group select:hover,
+.form-group textarea:hover {
+    border-color: #363636;
 }
 
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
-    border-color: #9a7b2f;
-    box-shadow: 0 0 0 3px rgba(154, 123, 47, 0.10);
+    border-color: var(--checkout-gold);
+
+    box-shadow:
+        0 0 0 3px rgba(212, 175, 55, 0.10);
+
+    background: var(--checkout-surface-3);
 }
 
 .form-error {
     min-height: 17px;
+
     margin-top: 5px;
 
-    color: #c62828;
+    color: var(--checkout-red);
+
     font-size: 11px;
 }
 
 .form-group.has-error input,
 .form-group.has-error select,
 .form-group.has-error textarea {
-    border-color: #c62828;
+    border-color: var(--checkout-red);
 }
 
 .full-width {
@@ -197,7 +299,9 @@
 }
 
 
-/* ================= PAYMENT ================= */
+/* =====================================================
+   PAYMENT
+===================================================== */
 
 .payment-method-title {
     margin-bottom: 13px;
@@ -205,13 +309,17 @@
 
 .payment-method-title h3 {
     margin: 0 0 4px;
-    color: #222;
+
+    color: var(--checkout-text-soft);
+
     font-size: 15px;
 }
 
 .payment-method-title p {
     margin: 0;
-    color: #888;
+
+    color: var(--checkout-muted);
+
     font-size: 13px;
 }
 
@@ -220,11 +328,14 @@
 }
 
 
-/* ================= PAYMENT METHODS ================= */
+/* =====================================================
+   PAYMENT METHODS
+===================================================== */
 
 .method-options {
     display: flex;
     flex-direction: column;
+
     gap: 12px;
 }
 
@@ -233,32 +344,46 @@
 
     display: flex;
     align-items: center;
+
     gap: 12px;
 
     padding: 15px;
 
-    border: 1px solid #ddd7cc;
+    border: 1px solid var(--checkout-border-light);
+
     border-radius: 12px;
+
+    background: var(--checkout-surface-2);
 
     cursor: pointer;
 
     transition:
         border-color 0.2s ease,
-        background 0.2s ease;
+        background 0.2s ease,
+        transform 0.2s ease;
 }
 
 .method-option:hover {
-    border-color: #bda66a;
+    border-color: #665728;
+
+    background: var(--checkout-surface-3);
 }
 
 .method-option:has(input:checked) {
-    border-color: #9a7b2f;
-    background: #faf8f2;
+    border-color: var(--checkout-gold);
+
+    background:
+        rgba(212, 175, 55, 0.06);
+
+    box-shadow:
+        inset 0 0 0 1px rgba(212, 175, 55, 0.08);
 }
 
 .method-option input {
     position: absolute;
+
     opacity: 0;
+
     pointer-events: none;
 }
 
@@ -274,7 +399,9 @@
 
     border-radius: 10px;
 
-    background: #f3f0e8;
+    background: var(--checkout-surface-3);
+
+    border: 1px solid var(--checkout-border);
 
     font-size: 20px;
 }
@@ -282,18 +409,21 @@
 .method-content {
     display: flex;
     flex-direction: column;
+
     gap: 4px;
 
     flex: 1;
 }
 
 .method-content strong {
-    color: #222;
+    color: var(--checkout-text);
+
     font-size: 14px;
 }
 
 .method-content small {
-    color: #888;
+    color: var(--checkout-muted);
+
     font-size: 12px;
     line-height: 1.4;
 }
@@ -304,14 +434,15 @@
 
     flex: 0 0 18px;
 
-    border: 2px solid #cfc8bc;
+    border: 2px solid #444444;
+
     border-radius: 50%;
 
     position: relative;
 }
 
 .method-option:has(input:checked) .radio-circle {
-    border-color: #9a7b2f;
+    border-color: var(--checkout-gold);
 }
 
 .method-option:has(input:checked) .radio-circle::after {
@@ -327,15 +458,18 @@
 
     border-radius: 50%;
 
-    background: #9a7b2f;
+    background: var(--checkout-gold);
 }
 
 
-/* ================= PAYMENT PLANS ================= */
+/* =====================================================
+   PAYMENT PLANS
+===================================================== */
 
 .plan-options {
     display: flex;
     flex-direction: column;
+
     gap: 12px;
 }
 
@@ -344,12 +478,16 @@
 
     display: flex;
     align-items: center;
+
     gap: 12px;
 
     padding: 16px;
 
-    border: 1px solid #ddd7cc;
+    border: 1px solid var(--checkout-border-light);
+
     border-radius: 12px;
+
+    background: var(--checkout-surface-2);
 
     cursor: pointer;
 
@@ -359,49 +497,62 @@
 }
 
 .plan-option:hover {
-    border-color: #bda66a;
+    border-color: #665728;
+
+    background: var(--checkout-surface-3);
 }
 
 .plan-option:has(input:checked) {
-    border-color: #9a7b2f;
-    background: #faf8f2;
+    border-color: var(--checkout-gold);
+
+    background:
+        rgba(212, 175, 55, 0.06);
 }
 
 .plan-option input {
     width: 17px;
     height: 17px;
-    accent-color: #9a7b2f;
+
+    accent-color: var(--checkout-gold);
+
     flex: 0 0 auto;
 }
 
 .plan-content {
     display: flex;
     flex-direction: column;
+
     gap: 4px;
 
     flex: 1;
 }
 
 .plan-content strong {
-    color: #222;
+    color: var(--checkout-text);
+
     font-size: 14px;
 }
 
 .plan-content small {
-    color: #888;
+    color: var(--checkout-muted);
+
     font-size: 12px;
     line-height: 1.4;
 }
 
 .plan-price {
-    color: #111;
+    color: var(--checkout-gold-light);
+
     font-size: 14px;
     font-weight: 800;
+
     white-space: nowrap;
 }
 
 
-/* ================= BANK DETAILS ================= */
+/* =====================================================
+   BANK DETAILS
+===================================================== */
 
 .bank-details {
     margin-top: 20px;
@@ -410,13 +561,15 @@
 
     border-radius: 13px;
 
-    background: #f7f4ed;
-    border: 1px solid #e7dfce;
+    background: var(--checkout-surface-2);
+
+    border: 1px solid var(--checkout-border);
 }
 
 .bank-details-header {
     display: flex;
     align-items: center;
+
     gap: 12px;
 
     margin-bottom: 18px;
@@ -432,7 +585,9 @@
 
     border-radius: 10px;
 
-    background: #fff;
+    background: var(--checkout-surface-3);
+
+    border: 1px solid var(--checkout-border);
 
     font-size: 21px;
 }
@@ -440,21 +595,27 @@
 .bank-details-header h3 {
     margin: 0 0 3px;
 
-    color: #222;
+    color: var(--checkout-text);
+
     font-size: 15px;
 }
 
 .bank-details-header p {
     margin: 0;
 
-    color: #888;
+    color: var(--checkout-muted);
+
     font-size: 12px;
     line-height: 1.4;
 }
 
 .bank-info {
-    background: #fff;
+    background: var(--checkout-surface-3);
+
+    border: 1px solid var(--checkout-border);
+
     border-radius: 10px;
+
     overflow: hidden;
 }
 
@@ -467,7 +628,7 @@
 
     padding: 13px 14px;
 
-    border-bottom: 1px solid #eee9df;
+    border-bottom: 1px solid var(--checkout-border);
 }
 
 .bank-row:last-child {
@@ -476,13 +637,16 @@
 
 .bank-row > span,
 .bank-row div span {
-    color: #888;
+    color: var(--checkout-muted);
+
     font-size: 12px;
 }
 
 .bank-row strong {
-    color: #222;
+    color: var(--checkout-text);
+
     font-size: 13px;
+
     text-align: right;
 }
 
@@ -493,24 +657,36 @@
 .account-number-row > div {
     display: flex;
     flex-direction: column;
+
     gap: 4px;
 }
 
 .copy-button {
-    border: none;
+    border: 1px solid var(--checkout-border);
 
     padding: 8px 12px;
 
     border-radius: 7px;
 
-    background: #111;
-    color: #fff;
+    background: #000000;
+
+    color: var(--checkout-text);
 
     font-family: inherit;
     font-size: 11px;
     font-weight: 700;
 
     cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.copy-button:hover {
+    background: var(--checkout-surface-3);
+
+    border-color: var(--checkout-gold);
 }
 
 .copy-button:active {
@@ -520,6 +696,7 @@
 .bank-warning {
     display: flex;
     align-items: flex-start;
+
     gap: 9px;
 
     margin-top: 13px;
@@ -532,18 +709,21 @@
 .bank-warning p {
     margin: 0;
 
-    color: #777;
+    color: var(--checkout-muted);
 
     font-size: 11px;
     line-height: 1.6;
 }
 
 
-/* ================= COD ================= */
+/* =====================================================
+   CASH ON DELIVERY
+===================================================== */
 
 .cod-details {
     display: flex;
     align-items: flex-start;
+
     gap: 13px;
 
     margin-top: 20px;
@@ -552,8 +732,9 @@
 
     border-radius: 12px;
 
-    background: #f7f4ed;
-    border: 1px solid #e7dfce;
+    background: var(--checkout-surface-2);
+
+    border: 1px solid var(--checkout-border);
 }
 
 .cod-icon {
@@ -566,7 +747,10 @@
     align-items: center;
     justify-content: center;
 
-    background: #fff;
+    background: var(--checkout-surface-3);
+
+    border: 1px solid var(--checkout-border);
+
     border-radius: 10px;
 
     font-size: 21px;
@@ -575,37 +759,42 @@
 .cod-details h3 {
     margin: 0 0 5px;
 
-    color: #222;
+    color: var(--checkout-text);
+
     font-size: 14px;
 }
 
 .cod-details p {
     margin: 0 0 6px;
 
-    color: #666;
+    color: var(--checkout-muted);
 
     font-size: 12px;
     line-height: 1.5;
 }
 
 .cod-details small {
-    color: #999;
+    color: var(--checkout-muted-2);
 
     font-size: 11px;
     line-height: 1.5;
 }
 
 
-/* ================= ORDER SUMMARY ================= */
+/* =====================================================
+   ORDER SUMMARY
+===================================================== */
 
 .checkout-sidebar {
     display: flex;
     flex-direction: column;
+
     gap: 16px;
 }
 
 .order-summary-card {
     position: sticky;
+
     top: 20px;
 }
 
@@ -620,12 +809,13 @@
 .summary-heading h2 {
     margin: 0;
 
-    color: #111;
+    color: var(--checkout-text);
+
     font-size: 19px;
 }
 
 .summary-heading a {
-    color: #9a7b2f;
+    color: var(--checkout-gold);
 
     font-size: 12px;
     font-weight: 700;
@@ -634,21 +824,27 @@
 }
 
 .summary-heading a:hover {
+    color: var(--checkout-gold-light);
+
     text-decoration: underline;
 }
 
 
-/* ================= CHECKOUT ITEMS ================= */
+/* =====================================================
+   CHECKOUT ITEMS
+===================================================== */
 
 .checkout-items {
     display: flex;
     flex-direction: column;
+
     gap: 13px;
 }
 
 .checkout-item {
     display: flex;
     align-items: center;
+
     gap: 11px;
 }
 
@@ -666,7 +862,9 @@
 
     border-radius: 9px;
 
-    background: #f3f0e8;
+    background: var(--checkout-surface-3);
+
+    border: 1px solid var(--checkout-border);
 
     font-size: 26px;
 }
@@ -674,18 +872,20 @@
 .checkout-item-image img {
     width: 100%;
     height: 100%;
+
     object-fit: cover;
 }
 
 .checkout-item-info {
     min-width: 0;
+
     flex: 1;
 }
 
 .checkout-item-info h3 {
     margin: 0 0 3px;
 
-    color: #222;
+    color: var(--checkout-text);
 
     font-size: 12px;
     line-height: 1.4;
@@ -694,14 +894,14 @@
 .checkout-item-info p {
     margin: 0;
 
-    color: #999;
+    color: var(--checkout-muted-2);
 
     font-size: 10px;
     line-height: 1.5;
 }
 
 .checkout-item-price {
-    color: #222;
+    color: var(--checkout-text);
 
     font-size: 12px;
     font-weight: 800;
@@ -710,14 +910,16 @@
 }
 
 
-/* ================= SUMMARY ================= */
+/* =====================================================
+   SUMMARY
+===================================================== */
 
 .summary-divider {
     height: 1px;
 
     margin: 17px 0;
 
-    background: #eee9df;
+    background: var(--checkout-border);
 }
 
 .summary-row {
@@ -735,12 +937,14 @@
 }
 
 .summary-row span {
-    color: #777;
+    color: var(--checkout-muted);
+
     font-size: 12px;
 }
 
 .summary-row strong {
-    color: #222;
+    color: var(--checkout-text-soft);
+
     font-size: 12px;
 }
 
@@ -749,31 +953,40 @@
 }
 
 .total-row span {
-    color: #222;
+    color: var(--checkout-text);
+
     font-size: 14px;
     font-weight: 700;
 }
 
 .total-row strong {
-    color: #111;
+    color: var(--checkout-gold-light);
+
     font-size: 17px;
 }
 
 
-/* ================= PAYMENT BREAKDOWN ================= */
+/* =====================================================
+   PAYMENT BREAKDOWN
+===================================================== */
 
 .payment-breakdown {
     margin-top: 18px;
+
     padding: 14px;
 
-    background: #f7f4ed;
+    background: var(--checkout-surface-2);
+
+    border: 1px solid var(--checkout-border);
+
     border-radius: 10px;
 }
 
 .breakdown-heading {
     margin-bottom: 12px;
 
-    color: #222;
+    color: var(--checkout-text);
+
     font-size: 12px;
     font-weight: 800;
 }
@@ -787,15 +1000,17 @@
 }
 
 .payment-breakdown .summary-row strong {
-    color: #9a7b2f;
+    color: var(--checkout-gold);
 }
 
 .payment-breakdown #balanceSummaryRow strong {
-    color: #777;
+    color: var(--checkout-muted);
 }
 
 
-/* ================= PLACE ORDER ================= */
+/* =====================================================
+   PLACE ORDER
+===================================================== */
 
 .place-order-button {
     width: 100%;
@@ -804,11 +1019,13 @@
 
     padding: 15px 18px;
 
-    border: none;
+    border: 1px solid var(--checkout-gold);
+
     border-radius: 10px;
 
-    background: #111;
-    color: #fff;
+    background: var(--checkout-gold);
+
+    color: #000000;
 
     font-family: inherit;
     font-size: 14px;
@@ -818,11 +1035,18 @@
 
     transition:
         background 0.2s ease,
-        transform 0.2s ease;
+        border-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 .place-order-button:hover {
-    background: #2b2b2b;
+    background: var(--checkout-gold-light);
+
+    border-color: var(--checkout-gold-light);
+
+    box-shadow:
+        0 8px 25px rgba(212, 175, 55, 0.12);
 }
 
 .place-order-button:active {
@@ -831,13 +1055,16 @@
 
 .place-order-button:disabled {
     opacity: 0.55;
+
     cursor: not-allowed;
+
+    box-shadow: none;
 }
 
 .secure-note {
     margin: 12px 0 0;
 
-    color: #999;
+    color: var(--checkout-muted-2);
 
     font-size: 10px;
     text-align: center;
@@ -845,51 +1072,65 @@
 }
 
 
-/* ================= TRUST ================= */
+/* =====================================================
+   TRUST
+===================================================== */
 
 .checkout-trust {
     display: flex;
     flex-direction: column;
+
     gap: 8px;
 
     padding: 15px;
 
-    background: #fff;
+    background: var(--checkout-surface);
 
-    border: 1px solid #e8e3d9;
+    border: 1px solid var(--checkout-border);
+
     border-radius: 12px;
+
+    box-shadow: var(--checkout-shadow);
 }
 
 .checkout-trust div {
     display: flex;
     align-items: center;
+
     gap: 8px;
 
-    color: #777;
+    color: var(--checkout-muted);
 
     font-size: 11px;
 }
 
 .checkout-trust span {
-    color: #9a7b2f;
+    color: var(--checkout-gold);
+
     font-weight: 800;
 }
 
 
-/* ================= EMPTY ================= */
+/* =====================================================
+   EMPTY CHECKOUT
+===================================================== */
 
 .empty-checkout {
     max-width: 520px;
 
     margin: 40px auto;
+
     padding: 40px 25px;
 
-    background: #fff;
+    background: var(--checkout-surface);
 
-    border: 1px solid #e8e3d9;
+    border: 1px solid var(--checkout-border);
+
     border-radius: 16px;
 
     text-align: center;
+
+    box-shadow: var(--checkout-shadow);
 }
 
 .empty-icon {
@@ -901,21 +1142,24 @@
 .empty-checkout h2 {
     margin: 0 0 8px;
 
-    color: #222;
+    color: var(--checkout-text);
+
     font-size: 22px;
 }
 
 .empty-checkout p {
     margin: 0 0 22px;
 
-    color: #888;
+    color: var(--checkout-muted);
 
     font-size: 13px;
     line-height: 1.6;
 }
 
 
-/* ================= BUTTONS ================= */
+/* =====================================================
+   BUTTONS
+===================================================== */
 
 .primary-button,
 .secondary-button {
@@ -933,37 +1177,64 @@
     font-weight: 700;
 
     text-decoration: none;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
 }
 
 .primary-button {
-    background: #111;
-    color: #fff;
+    background: var(--checkout-gold);
+
+    border: 1px solid var(--checkout-gold);
+
+    color: #000000;
+}
+
+.primary-button:hover {
+    background: var(--checkout-gold-light);
+
+    border-color: var(--checkout-gold-light);
 }
 
 .secondary-button {
-    border: 1px solid #ddd7cc;
+    border: 1px solid var(--checkout-border-light);
 
-    background: #fff;
-    color: #222;
+    background: var(--checkout-surface-2);
+
+    color: var(--checkout-text);
+}
+
+.secondary-button:hover {
+    border-color: var(--checkout-gold);
+
+    background: var(--checkout-surface-3);
 }
 
 
-/* ================= SUCCESS ================= */
+/* =====================================================
+   ORDER SUCCESS
+===================================================== */
 
 .order-success {
     max-width: 650px;
 
     margin: 20px auto 50px;
+
     padding: 35px 22px;
 
-    background: #fff;
+    background: var(--checkout-surface);
 
-    border: 1px solid #e8e3d9;
+    border: 1px solid var(--checkout-border);
+
     border-radius: 16px;
 
     text-align: center;
 
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.04);
+    box-shadow: var(--checkout-shadow-large);
 }
 
 .success-icon {
@@ -978,8 +1249,12 @@
 
     border-radius: 50%;
 
-    background: #f0eadc;
-    color: #9a7b2f;
+    background:
+        rgba(67, 198, 107, 0.10);
+
+    border: 1px solid rgba(67, 198, 107, 0.25);
+
+    color: var(--checkout-green);
 
     font-size: 30px;
     font-weight: 800;
@@ -988,7 +1263,7 @@
 .order-success h2 {
     margin: 0 0 10px;
 
-    color: #111;
+    color: var(--checkout-text);
 
     font-size: 25px;
 }
@@ -998,7 +1273,7 @@
 
     margin: 0 auto 20px;
 
-    color: #777;
+    color: var(--checkout-muted);
 
     font-size: 13px;
     line-height: 1.6;
@@ -1009,7 +1284,9 @@
 
     margin-bottom: 15px;
 
-    background: #f7f4ed;
+    background: var(--checkout-surface-2);
+
+    border: 1px solid var(--checkout-border);
 
     border-radius: 10px;
 }
@@ -1019,17 +1296,20 @@
 
     margin-bottom: 5px;
 
-    color: #999;
+    color: var(--checkout-muted-2);
 
     font-size: 10px;
+
     text-transform: uppercase;
+
     letter-spacing: 1px;
 }
 
 .success-order-number strong {
-    color: #222;
+    color: var(--checkout-text);
 
     font-size: 17px;
+
     letter-spacing: 1px;
 }
 
@@ -1038,30 +1318,39 @@
 
     padding: 15px;
 
-    border: 1px solid #e8e3d9;
+    border: 1px solid var(--checkout-border);
+
     border-radius: 10px;
 
-    color: #666;
+    background: var(--checkout-surface-2);
+
+    color: var(--checkout-muted);
 
     font-size: 12px;
+
     line-height: 1.6;
 }
 
 .success-actions {
     display: flex;
     flex-direction: column;
+
     gap: 10px;
 }
 
 
-/* ================= HIDDEN ================= */
+/* =====================================================
+   HIDDEN
+===================================================== */
 
 .hidden {
     display: none !important;
 }
 
 
-/* ================= MOBILE NAV SPACE ================= */
+/* =====================================================
+   MOBILE NAV SPACE
+===================================================== */
 
 @media (max-width: 767px) {
 
@@ -1076,6 +1365,7 @@
     .checkout-card,
     .order-summary-card {
         padding: 18px;
+
         border-radius: 14px;
     }
 
@@ -1086,6 +1376,7 @@
     .checkout-item-image {
         width: 52px;
         height: 52px;
+
         flex-basis: 52px;
     }
 
@@ -1111,12 +1402,16 @@
 
     .success-actions a {
         width: 100%;
+
         box-sizing: border-box;
     }
+
 }
 
 
-/* ================= TABLET ================= */
+/* =====================================================
+   TABLET
+===================================================== */
 
 @media (min-width: 600px) {
 
@@ -1126,12 +1421,16 @@
 
     .success-actions {
         flex-direction: row;
+
         justify-content: center;
     }
+
 }
 
 
-/* ================= DESKTOP ================= */
+/* =====================================================
+   DESKTOP
+===================================================== */
 
 @media (min-width: 900px) {
 
@@ -1148,7 +1447,10 @@
     }
 
     .checkout-layout {
-        grid-template-columns: minmax(0, 1.5fr) minmax(320px, 0.8fr);
+        grid-template-columns:
+            minmax(0, 1.5fr)
+            minmax(320px, 0.8fr);
+
         align-items: start;
     }
 
@@ -1160,19 +1462,101 @@
     .checkout-sidebar {
         position: relative;
     }
+
 }
 
 
-/* ================= LARGE DESKTOP ================= */
+/* =====================================================
+   LARGE DESKTOP
+===================================================== */
 
 @media (min-width: 1100px) {
 
     .checkout-layout {
-        grid-template-columns: minmax(0, 1.6fr) minmax(350px, 0.8fr);
+        grid-template-columns:
+            minmax(0, 1.6fr)
+            minmax(350px, 0.8fr);
+
         gap: 30px;
     }
 
     .checkout-heading h1 {
         font-size: 44px;
     }
+
+}
+
+
+/* =====================================================
+   ACCESSIBILITY
+===================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .method-option,
+    .plan-option,
+    .form-group input,
+    .form-group select,
+    .form-group textarea,
+    .place-order-button,
+    .primary-button,
+    .secondary-button,
+    .copy-button {
+        transition: none;
+    }
+
+}
+
+
+/* =====================================================
+   DARK SELECT / OPTION SUPPORT
+===================================================== */
+
+select option {
+    background: #111111;
+    color: #f5f5f5;
+}
+
+
+/* =====================================================
+   MOBILE SMALL SCREEN
+===================================================== */
+
+@media (max-width: 380px) {
+
+    .checkout-container {
+        width: 94%;
+    }
+
+    .checkout-heading h1 {
+        font-size: 26px;
+    }
+
+    .checkout-card,
+    .order-summary-card {
+        padding: 15px;
+    }
+
+    .section-title h2 {
+        font-size: 17px;
+    }
+
+    .method-option,
+    .plan-option {
+        padding: 13px;
+    }
+
+    .bank-row {
+        gap: 10px;
+    }
+
+    .bank-row strong {
+        max-width: 140px;
+        font-size: 12px;
+    }
+
+    .checkout-item-price {
+        font-size: 11px;
+    }
+
 }

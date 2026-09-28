@@ -1,39 +1,39 @@
 /* =========================================
    AYODEJI FASHION HUBS
-   SHOP PAGE
-   ========================================= */
+   SHOP PAGE - DARK THEME
+========================================= */
 
 :root {
-    --shop-black: #111111;
-    --shop-black-2: #1c1c1c;
+    --shop-black: #ffffff;
+    --shop-black-2: #dddddd;
 
-    --shop-cream: #f7f3eb;
-    --shop-cream-2: #eee7da;
+    --shop-cream: #0a0a0a;
+    --shop-cream-2: #151515;
 
-    --shop-gold: #c9a227;
-    --shop-gold-light: #ead98e;
+    --shop-gold: #d6b36a;
+    --shop-gold-light: #e6c985;
 
-    --shop-white: #ffffff;
+    --shop-white: #0b0b0b;
 
-    --shop-text: #181818;
-    --shop-muted: #777777;
+    --shop-text: #ffffff;
+    --shop-muted: #999999;
 
-    --shop-border: #e3ddd2;
+    --shop-border: #272727;
 
-    --shop-green: #16834b;
-    --shop-green-bg: #e7f6ed;
+    --shop-green: #52c58a;
+    --shop-green-bg: #10251a;
 
-    --shop-red: #c62828;
-    --shop-red-bg: #fdeaea;
+    --shop-red: #e05a5a;
+    --shop-red-bg: #2a1111;
 
-    --shop-orange: #b77900;
-    --shop-orange-bg: #fff3d7;
+    --shop-orange: #d6a447;
+    --shop-orange-bg: #2a2110;
 
     --shop-shadow-sm:
-        0 4px 15px rgba(0, 0, 0, .06);
+        0 4px 15px rgba(0, 0, 0, .35);
 
     --shop-shadow:
-        0 10px 30px rgba(0, 0, 0, .09);
+        0 10px 30px rgba(0, 0, 0, .60);
 
     --shop-radius: 16px;
 }
@@ -41,7 +41,7 @@
 
 /* =========================================
    SHOP HERO
-   ========================================= */
+========================================= */
 
 .shop-hero {
     position: relative;
@@ -51,19 +51,23 @@
     background:
         radial-gradient(
             circle at 85% 20%,
-            rgba(201, 162, 39, .20),
+            rgba(214, 179, 106, .15),
             transparent 30%
         ),
         linear-gradient(
             135deg,
-            #111111,
-            #242424
+            #080808,
+            #171717
         );
 
-    color: var(--shop-white);
+    color: #ffffff;
 
     padding:
         55px 0 48px;
+
+    border-bottom:
+        1px solid
+        #222222;
 }
 
 
@@ -82,7 +86,7 @@
 
     border:
         1px solid
-        rgba(201, 162, 39, .25);
+        rgba(214, 179, 106, .22);
 }
 
 
@@ -113,11 +117,14 @@
 .shop-hero h1 {
     margin-bottom: 13px;
 
-    font-size: clamp(
-        30px,
-        7vw,
-        48px
-    );
+    color: #ffffff;
+
+    font-size:
+        clamp(
+            30px,
+            7vw,
+            48px
+        );
 
     line-height: 1.08;
 
@@ -128,7 +135,8 @@
 .shop-hero p {
     max-width: 550px;
 
-    color: rgba(255,255,255,.72);
+    color:
+        rgba(255,255,255,.68);
 
     font-size: 14px;
 
@@ -149,14 +157,15 @@
 
     border:
         1px solid
-        rgba(201,162,39,.30);
+        rgba(214,179,106,.30);
 
     border-radius: 50px;
 
     background:
-        rgba(201,162,39,.10);
+        rgba(214,179,106,.08);
 
-    color: var(--shop-gold-light);
+    color:
+        var(--shop-gold-light);
 
     font-size: 11px;
 
@@ -166,20 +175,20 @@
 
 /* =========================================
    SHOP SECTION
-   ========================================= */
+========================================= */
 
 .shop-section {
     padding:
         25px 0 50px;
 
     background:
-        var(--shop-cream);
+        #050505;
 }
 
 
 /* =========================================
    CONTROLS
-   ========================================= */
+========================================= */
 
 .shop-controls {
     display: grid;
@@ -207,6 +216,8 @@
 
     left: 14px;
 
+    color: #999999;
+
     font-size: 15px;
 
     pointer-events: none;
@@ -230,10 +241,10 @@
     outline: none;
 
     background:
-        var(--shop-white);
+        #0e0e0e;
 
     color:
-        var(--shop-text);
+        #ffffff;
 
     font-size: 13px;
 
@@ -246,13 +257,18 @@
 }
 
 
+.search-box input::placeholder {
+    color: #666666;
+}
+
+
 .search-box input:focus {
     border-color:
         var(--shop-gold);
 
     box-shadow:
         0 0 0 3px
-        rgba(201,162,39,.12);
+        rgba(214,179,106,.10);
 }
 
 
@@ -270,7 +286,8 @@
 
     font-weight: 800;
 
-    color: var(--shop-muted);
+    color:
+        var(--shop-muted);
 
     text-transform: uppercase;
 
@@ -289,10 +306,10 @@
     border-radius: 12px;
 
     background:
-        var(--shop-white);
+        #0e0e0e;
 
     color:
-        var(--shop-text);
+        #ffffff;
 
     padding:
         0 12px;
@@ -312,9 +329,17 @@
 }
 
 
+.category-filter select option,
+.sort-select option {
+    background: #111111;
+
+    color: #ffffff;
+}
+
+
 /* =========================================
    CATEGORY BUTTONS
-   ========================================= */
+========================================= */
 
 .category-buttons {
     display: flex;
@@ -353,10 +378,10 @@
     border-radius: 50px;
 
     background:
-        var(--shop-white);
+        #0d0d0d;
 
     color:
-        var(--shop-muted);
+        #999999;
 
     font-size: 12px;
 
@@ -373,13 +398,13 @@
 
 .category-button.active {
     border-color:
-        var(--shop-black);
+        #ffffff;
 
     background:
-        var(--shop-black);
+        #ffffff;
 
     color:
-        var(--shop-white);
+        #000000;
 }
 
 
@@ -388,13 +413,13 @@
         var(--shop-gold);
 
     color:
-        var(--shop-black);
+        #ffffff;
 }
 
 
 /* =========================================
    RESULTS BAR
-   ========================================= */
+========================================= */
 
 .shop-results-bar {
     display: flex;
@@ -426,7 +451,7 @@
 
 .results-count strong {
     color:
-        var(--shop-black);
+        #ffffff;
 
     font-size: 18px;
 }
@@ -444,7 +469,7 @@
 
 /* =========================================
    PRODUCTS GRID
-   ========================================= */
+========================================= */
 
 .products-grid {
     display: grid;
@@ -458,7 +483,7 @@
 
 /* =========================================
    PRODUCT CARD
-   ========================================= */
+========================================= */
 
 .product-card {
     position: relative;
@@ -466,7 +491,7 @@
     overflow: hidden;
 
     background:
-        var(--shop-white);
+        #0d0d0d;
 
     border:
         1px solid
@@ -482,13 +507,17 @@
 
     transition:
         transform .2s ease,
-        box-shadow .2s ease;
+        box-shadow .2s ease,
+        border-color .2s ease;
 }
 
 
 .product-card:hover {
     transform:
         translateY(-4px);
+
+    border-color:
+        #3b3b3b;
 
     box-shadow:
         var(--shop-shadow);
@@ -498,7 +527,7 @@
 .product-card:focus {
     outline:
         3px solid
-        rgba(201,162,39,.25);
+        rgba(214,179,106,.25);
 
     outline-offset: 2px;
 }
@@ -506,7 +535,7 @@
 
 /* =========================================
    PRODUCT IMAGE
-   ========================================= */
+========================================= */
 
 .product-image {
     position: relative;
@@ -518,10 +547,11 @@
     overflow: hidden;
 
     background:
-        linear-gradient(
-            135deg,
-            #eee8dc,
-            #e3d9c8
+        radial-gradient(
+            circle at center,
+            #242424,
+            #111111 65%,
+            #080808
         );
 
     display: flex;
@@ -567,7 +597,7 @@
 
 /* =========================================
    BADGE
-   ========================================= */
+========================================= */
 
 .product-badge {
     position: absolute;
@@ -583,10 +613,10 @@
     border-radius: 50px;
 
     background:
-        var(--shop-black);
+        #ffffff;
 
     color:
-        var(--shop-white);
+        #000000;
 
     font-size: 10px;
 
@@ -604,17 +634,20 @@
         var(--shop-red);
 
     color:
-        var(--shop-white);
+        #ffffff;
 }
 
 
 /* =========================================
    PRODUCT BODY
-   ========================================= */
+========================================= */
 
 .product-body {
     padding:
         15px;
+
+    background:
+        #0d0d0d;
 }
 
 
@@ -642,7 +675,7 @@
     margin-bottom: 6px;
 
     color:
-        var(--shop-text);
+        #ffffff;
 
     font-size: 16px;
 
@@ -676,7 +709,7 @@
 
 /* =========================================
    PRICE
-   ========================================= */
+========================================= */
 
 .product-price {
     display: flex;
@@ -693,7 +726,7 @@
 
 .current-price {
     color:
-        var(--shop-black);
+        #ffffff;
 
     font-size: 18px;
 
@@ -703,7 +736,7 @@
 
 .old-price {
     color:
-        var(--shop-muted);
+        #666666;
 
     font-size: 11px;
 
@@ -714,7 +747,7 @@
 
 /* =========================================
    PAYMENT PREVIEW
-   ========================================= */
+========================================= */
 
 .payment-preview {
     display: grid;
@@ -736,7 +769,11 @@
         8px;
 
     background:
-        var(--shop-cream);
+        #151515;
+
+    border:
+        1px solid
+        #222222;
 
     font-size: 9px;
 }
@@ -748,7 +785,7 @@
     margin-bottom: 3px;
 
     color:
-        var(--shop-muted);
+        #777777;
 
     font-size: 9px;
 }
@@ -775,7 +812,7 @@
 
 /* =========================================
    SIZES
-   ========================================= */
+========================================= */
 
 .product-sizes {
     display: flex;
@@ -796,7 +833,7 @@
     margin-bottom: 2px;
 
     color:
-        var(--shop-muted);
+        #777777;
 
     font-size: 9px;
 
@@ -820,15 +857,15 @@
 
     border:
         1px solid
-        var(--shop-border);
+        #2b2b2b;
 
     border-radius: 6px;
 
     background:
-        var(--shop-white);
+        #111111;
 
     color:
-        var(--shop-text);
+        #dddddd;
 
     font-size: 9px;
 
@@ -838,7 +875,7 @@
 
 /* =========================================
    STOCK
-   ========================================= */
+========================================= */
 
 .stock-status {
     display: inline-flex;
@@ -888,7 +925,7 @@
 
 /* =========================================
    PRODUCT ACTIONS
-   ========================================= */
+========================================= */
 
 .product-card-actions {
     display: grid;
@@ -928,34 +965,34 @@
 
 .view-product {
     background:
-        var(--shop-white);
+        #111111;
 
     color:
-        var(--shop-black);
+        #ffffff;
 }
 
 
 .view-product:hover {
     border-color:
-        var(--shop-black);
+        #ffffff;
 
     background:
-        var(--shop-black);
+        #ffffff;
 
     color:
-        var(--shop-white);
+        #000000;
 }
 
 
 .add-to-cart {
     border-color:
-        var(--shop-black) !important;
+        #ffffff !important;
 
     background:
-        var(--shop-black);
+        #ffffff;
 
     color:
-        var(--shop-white);
+        #000000;
 }
 
 
@@ -967,19 +1004,19 @@
         var(--shop-gold);
 
     color:
-        var(--shop-black);
+        #000000;
 }
 
 
 .add-to-cart:disabled {
     border-color:
-        var(--shop-border) !important;
+        #2b2b2b !important;
 
     background:
-        #eeeeee;
+        #1a1a1a;
 
     color:
-        #999999;
+        #666666;
 
     cursor:
         not-allowed;
@@ -988,7 +1025,7 @@
 
 /* =========================================
    NO PRODUCTS
-   ========================================= */
+========================================= */
 
 .no-products {
     width: 100%;
@@ -1004,7 +1041,7 @@
         var(--shop-radius);
 
     background:
-        var(--shop-white);
+        #0c0c0c;
 
     text-align:
         center;
@@ -1028,7 +1065,7 @@
         50%;
 
     background:
-        var(--shop-cream);
+        #161616;
 
     font-size:
         28px;
@@ -1040,7 +1077,7 @@
         6px;
 
     color:
-        var(--shop-black);
+        #ffffff;
 
     font-size:
         19px;
@@ -1073,10 +1110,10 @@
         9px;
 
     background:
-        var(--shop-black);
+        #ffffff;
 
     color:
-        var(--shop-white);
+        #000000;
 
     font-size:
         12px;
@@ -1094,13 +1131,13 @@
         var(--shop-gold);
 
     color:
-        var(--shop-black);
+        #000000;
 }
 
 
 /* =========================================
    LOADING
-   ========================================= */
+========================================= */
 
 .admin-loading {
     grid-column:
@@ -1141,7 +1178,7 @@
 
     border:
         3px solid
-        var(--shop-cream-2);
+        #242424;
 
     border-top-color:
         var(--shop-gold);
@@ -1167,14 +1204,14 @@
 
 /* =========================================
    PAYMENT INFO
-   ========================================= */
+========================================= */
 
 .payment-info-section {
     padding:
         45px 0;
 
     background:
-        var(--shop-white);
+        #000000;
 }
 
 
@@ -1205,7 +1242,7 @@
         18px;
 
     background:
-        var(--shop-cream);
+        #0d0d0d;
 
     box-shadow:
         var(--shop-shadow-sm);
@@ -1235,7 +1272,10 @@
         16px;
 
     background:
-        var(--shop-black);
+        #ffffff;
+
+    color:
+        #000000;
 
     font-size:
         27px;
@@ -1268,7 +1308,7 @@
         6px;
 
     color:
-        var(--shop-black);
+        #ffffff;
 
     font-size:
         20px;
@@ -1292,7 +1332,7 @@
 
 /* =========================================
    RESPONSIVE
-   ========================================= */
+========================================= */
 
 @media (max-width: 1050px) {
 
@@ -1476,7 +1516,7 @@
 
 /* =========================================
    REDUCED MOTION
-   ========================================= */
+========================================= */
 
 @media (prefers-reduced-motion: reduce) {
 
@@ -1495,7 +1535,45 @@
 
         transition-duration:
             .01ms !important;
-
     }
 
+}
+
+
+/* =========================================
+   DARK SCROLLBAR
+========================================= */
+
+.category-buttons,
+body {
+    scrollbar-color:
+        #333333
+        #050505;
+}
+
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+
+::-webkit-scrollbar-track {
+    background:
+        #050505;
+}
+
+
+::-webkit-scrollbar-thumb {
+    background:
+        #333333;
+
+    border-radius:
+        10px;
+}
+
+
+::-webkit-scrollbar-thumb:hover {
+    background:
+        #555555;
 }
