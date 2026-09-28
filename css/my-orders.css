@@ -1,0 +1,632 @@
+/* =========================================
+   AYODEJI FASHION HUBS
+   MY ORDERS - DARK THEME
+========================================= */
+
+:root {
+    --black: #000;
+    --dark: #080808;
+    --card: #111;
+    --card-2: #161616;
+    --border: #272727;
+
+    --gold: #d4af37;
+    --gold-light: #e8cc67;
+
+    --white: #fff;
+    --text: #f3f3f3;
+    --muted: #999;
+
+    --green: #4ade80;
+    --blue: #6d9cff;
+    --orange: #e5a72e;
+    --red: #ff6262;
+
+    --radius: 16px;
+}
+
+
+/* PAGE */
+
+body {
+    background: #000;
+    color: var(--text);
+}
+
+
+/* HEADER */
+
+.orders-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    padding: 20px;
+
+    border-bottom: 1px solid var(--border);
+
+    background: #050505;
+
+    position: sticky;
+    top: 0;
+    z-index: 20;
+}
+
+
+.back-button {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid var(--border);
+    border-radius: 50%;
+
+    color: white;
+    text-decoration: none;
+
+    font-size: 22px;
+
+    background: #111;
+}
+
+
+.orders-header h1 {
+    margin: 0;
+
+    font-size: 22px;
+}
+
+
+.orders-header p {
+    margin: 4px 0 0;
+
+    color: var(--muted);
+
+    font-size: 13px;
+}
+
+
+/* CONTAINER */
+
+.orders-container {
+    width: min(900px, 100%);
+
+    margin: auto;
+
+    padding: 24px 18px 60px;
+}
+
+
+/* TOP */
+
+.orders-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 20px;
+}
+
+
+.small-label {
+    color: var(--gold);
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    letter-spacing: 2px;
+}
+
+
+.orders-top h2 {
+    margin: 5px 0 0;
+
+    font-size: 24px;
+}
+
+
+.shop-button {
+    padding: 11px 15px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 10px;
+
+    color: white;
+
+    text-decoration: none;
+
+    background: #111;
+
+    font-size: 13px;
+}
+
+
+/* ORDER CARD */
+
+.order-card {
+    background: linear-gradient(
+        145deg,
+        #141414,
+        #090909
+    );
+
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius);
+
+    margin-bottom: 18px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 10px 35px rgba(0,0,0,.35);
+}
+
+
+.order-card-header {
+    display: flex;
+
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 18px;
+
+    border-bottom: 1px solid var(--border);
+}
+
+
+.order-label {
+    color: var(--gold);
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
+}
+
+
+.order-card h3 {
+    margin: 5px 0;
+
+    font-size: 17px;
+}
+
+
+.order-card-header p {
+    margin: 0;
+
+    color: var(--muted);
+
+    font-size: 12px;
+}
+
+
+/* STATUS */
+
+.status-badge {
+    display: inline-flex;
+
+    align-items: center;
+
+    padding: 7px 10px;
+
+    border-radius: 20px;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+
+.status-pending {
+    color: var(--orange);
+
+    background: rgba(229,167,46,.12);
+}
+
+
+.status-paid,
+.status-delivered {
+    color: var(--green);
+
+    background: rgba(74,222,128,.12);
+}
+
+
+.status-processing {
+    color: var(--blue);
+
+    background: rgba(109,156,255,.12);
+}
+
+
+.status-shipped {
+    color: var(--gold-light);
+
+    background: rgba(212,175,55,.12);
+}
+
+
+.status-cancelled {
+    color: var(--red);
+
+    background: rgba(255,98,98,.12);
+}
+
+
+/* ITEMS */
+
+.order-items {
+    padding: 5px 18px;
+}
+
+
+.order-item {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 12px 0;
+
+    border-bottom: 1px solid #202020;
+}
+
+
+.order-item:last-child {
+    border-bottom: none;
+}
+
+
+.item-image {
+    width: 55px;
+    height: 55px;
+
+    flex-shrink: 0;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #1b1b1b;
+
+    font-size: 25px;
+}
+
+
+.item-image img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+
+.item-info {
+    flex: 1;
+
+    min-width: 0;
+}
+
+
+.item-info strong {
+    display: block;
+
+    color: white;
+
+    font-size: 14px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+.item-info small {
+    display: block;
+
+    margin-top: 5px;
+
+    color: var(--muted);
+
+    font-size: 11px;
+}
+
+
+.item-price {
+    font-size: 13px;
+
+    font-weight: 700;
+
+    color: var(--gold-light);
+
+    white-space: nowrap;
+}
+
+
+/* SUMMARY */
+
+.order-summary {
+    display: flex;
+
+    justify-content: space-between;
+
+    padding: 15px 18px;
+
+    border-top: 1px solid var(--border);
+
+    border-bottom: 1px solid var(--border);
+}
+
+
+.order-summary div {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+
+.order-summary span {
+    color: var(--muted);
+
+    font-size: 11px;
+}
+
+
+.order-summary strong {
+    color: white;
+
+    font-size: 14px;
+}
+
+
+/* PAYMENT */
+
+.order-payment {
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 10px;
+
+    padding: 13px 18px;
+
+    color: var(--muted);
+
+    font-size: 11px;
+}
+
+
+/* ACTIONS */
+
+.order-actions {
+    padding: 0 18px 18px;
+}
+
+
+.track-button {
+    display: block;
+
+    width: 100%;
+
+    padding: 13px;
+
+    border-radius: 10px;
+
+    background: var(--gold);
+
+    color: #000;
+
+    text-align: center;
+
+    text-decoration: none;
+
+    font-size: 13px;
+
+    font-weight: 800;
+}
+
+
+.track-button:active {
+    transform: scale(.98);
+}
+
+
+/* EMPTY / MESSAGES */
+
+.empty-card,
+.message-card,
+.error-card,
+.loading-card {
+    text-align: center;
+
+    padding: 45px 20px;
+
+    background: #0d0d0d;
+
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius);
+}
+
+
+.empty-icon,
+.message-icon {
+    font-size: 42px;
+
+    margin-bottom: 12px;
+}
+
+
+.empty-card h2,
+.message-card h2,
+.error-card h2 {
+    margin: 0 0 8px;
+
+    font-size: 20px;
+}
+
+
+.empty-card p,
+.message-card p,
+.error-card p,
+.loading-card p {
+    color: var(--muted);
+
+    font-size: 13px;
+
+    line-height: 1.6;
+
+    margin-bottom: 22px;
+}
+
+
+.primary-button {
+    display: inline-block;
+
+    padding: 13px 20px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: var(--gold);
+
+    color: #000;
+
+    text-decoration: none;
+
+    font-weight: 800;
+
+    font-size: 13px;
+}
+
+
+.error-card {
+    border-color: rgba(255,98,98,.35);
+}
+
+
+/* LOADER */
+
+.loader {
+    width: 32px;
+    height: 32px;
+
+    margin: 0 auto 15px;
+
+    border: 3px solid #333;
+
+    border-top-color: var(--gold);
+
+    border-radius: 50%;
+
+    animation:
+        spin .8s linear infinite;
+}
+
+
+@keyframes spin {
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}
+
+
+/* HIDDEN */
+
+.hidden {
+    display: none !important;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+    .orders-container {
+        padding: 20px 14px 50px;
+    }
+
+
+    .orders-top {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+
+    .shop-button {
+        width: 100%;
+
+        text-align: center;
+    }
+
+
+    .order-card-header {
+        flex-direction: column;
+    }
+
+
+    .status-badge {
+        align-self: flex-start;
+    }
+
+
+    .order-payment {
+        flex-direction: column;
+
+        gap: 5px;
+    }
+
+}
+
+
+/* SMALL PHONES */
+
+@media (max-width: 380px) {
+
+    .orders-header {
+        padding: 16px;
+    }
+
+
+    .orders-header h1 {
+        font-size: 19px;
+    }
+
+
+    .item-image {
+        width: 48px;
+        height: 48px;
+    }
+
+
+    .item-price {
+        font-size: 12px;
+    }
+
+}

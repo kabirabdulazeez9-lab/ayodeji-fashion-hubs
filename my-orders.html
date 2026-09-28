@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Orders - Ayodeji Fashion Hubs</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/my-orders.css">
+</head>
+
+<body>
+
+<header class="orders-header">
+
+    <a href="index.html" class="back-button">
+        ←
+    </a>
+
+    <div>
+        <h1>My Orders</h1>
+        <p>View and track your orders</p>
+    </div>
+
+</header>
+
+
+<main class="orders-container">
+
+    <div id="loginRequired" class="message-card hidden">
+
+        <div class="message-icon">🔐</div>
+
+        <h2>Login Required</h2>
+
+        <p>
+            Please log in to view your orders.
+        </p>
+
+        <a
+            href="login.html?redirect=my-orders.html"
+            class="primary-button"
+        >
+            Login
+        </a>
+
+    </div>
+
+
+    <div id="loadingOrders" class="loading-card">
+
+        <div class="loader"></div>
+
+        <p>Loading your orders...</p>
+
+    </div>
+
+
+    <div id="ordersContent" class="hidden">
+
+        <div class="orders-top">
+
+            <div>
+                <span class="small-label">YOUR ORDERS</span>
+                <h2 id="ordersCount">0 Orders</h2>
+            </div>
+
+            <a href="shop.html" class="shop-button">
+                Continue Shopping
+            </a>
+
+        </div>
+
+
+        <div id="emptyOrders" class="empty-card hidden">
+
+            <div class="empty-icon">📦</div>
+
+            <h2>No Orders Yet</h2>
+
+            <p>
+                You haven't placed any orders yet.
+            </p>
+
+            <a href="shop.html" class="primary-button">
+                Start Shopping
+            </a>
+
+        </div>
+
+
+        <div id="ordersList" class="orders-list"></div>
+
+    </div>
+
+
+    <div id="ordersError" class="error-card hidden">
+
+        <div>⚠️</div>
+
+        <h2>Unable to Load Orders</h2>
+
+        <p id="ordersErrorMessage">
+            Something went wrong while loading your orders.
+        </p>
+
+        <button
+            id="retryOrders"
+            class="primary-button"
+        >
+            Try Again
+        </button>
+
+    </div>
+
+</main>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="js/supabase.js"></script>
+
+<script src="js/my-orders.js"></script>
+
+</body>
+</html>
