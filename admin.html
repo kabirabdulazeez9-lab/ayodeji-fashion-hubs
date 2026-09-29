@@ -2,453 +2,311 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0"
     >
 
-    <meta
-        name="theme-color"
-        content="#000000"
-    >
-
-    <meta
-        name="description"
-        content="Ayodeji Fashion Hubs Admin Dashboard"
-    >
-
     <title>Admin Dashboard | Ayodeji Fashion Hubs</title>
 
-    <!-- Main Website CSS -->
-    <link
-        rel="stylesheet"
-        href="css/style.css"
-    >
-
-    <!-- Admin CSS -->
     <link
         rel="stylesheet"
         href="css/admin.css"
     >
 </head>
 
-<body class="admin-page">
+<body>
 
-
-<!-- =========================================================
+<!-- =====================================================
      ADMIN LOGIN
-========================================================= -->
+===================================================== -->
 
-<section
-    id="adminLoginView"
-    class="admin-login-view"
->
+<section id="adminLoginView" class="admin-login-page">
 
-    <div class="admin-login-container">
+    <div class="admin-login-card">
 
-        <div class="admin-login-logo">
-            <span>👟</span>
+        <div class="admin-logo">
+            👟
         </div>
 
-        <div class="admin-login-header">
+        <h1>Ayodeji Fashion Hubs</h1>
 
-            <h1>
-                Ayodeji Fashion Hubs
-            </h1>
+        <p class="admin-subtitle">
+            Administrator Login
+        </p>
 
-            <p>
-                Admin Dashboard
-            </p>
+        <form id="adminLoginForm">
 
-        </div>
+            <div class="form-group">
 
+                <label for="adminEmail">
+                    Email Address
+                </label>
 
-        <!-- Login Card -->
-
-        <div class="admin-login-card">
-
-            <div class="admin-login-card-header">
-
-                <h2>
-                    Admin Login
-                </h2>
-
-                <p>
-                    Sign in to manage your store.
-                </p>
+                <input
+                    type="email"
+                    id="adminEmail"
+                    placeholder="Admin email"
+                    autocomplete="email"
+                    required
+                >
 
             </div>
 
+            <div class="form-group">
 
-            <form
-                id="adminLoginForm"
-                autocomplete="on"
-            >
+                <label for="adminPassword">
+                    Password
+                </label>
 
-                <!-- Email -->
-
-                <div class="admin-form-group">
-
-                    <label for="adminEmail">
-                        Email Address
-                    </label>
+                <div class="password-wrapper">
 
                     <input
-                        type="email"
-                        id="adminEmail"
-                        name="email"
-                        placeholder="Enter admin email"
-                        autocomplete="username"
+                        type="password"
+                        id="adminPassword"
+                        placeholder="Password"
+                        autocomplete="current-password"
                         required
                     >
 
-                </div>
-
-
-                <!-- Password -->
-
-                <div class="admin-form-group">
-
-                    <label for="adminPassword">
-                        Password
-                    </label>
-
-                    <div class="admin-password-wrapper">
-
-                        <input
-                            type="password"
-                            id="adminPassword"
-                            name="password"
-                            placeholder="Enter password"
-                            autocomplete="current-password"
-                            required
-                        >
-
-                        <button
-                            type="button"
-                            id="toggleAdminPassword"
-                            class="password-toggle"
-                            aria-label="Show password"
-                        >
-                            👁️
-                        </button>
-
-                    </div>
+                    <button
+                        type="button"
+                        id="toggleAdminPassword"
+                        class="password-toggle"
+                    >
+                        👁️
+                    </button>
 
                 </div>
 
+            </div>
 
-                <!-- Message -->
+            <button
+                type="submit"
+                id="adminLoginButton"
+                class="admin-primary-button full-button"
+            >
+                <span id="adminLoginButtonText">
+                    Login
+                </span>
 
-                <div
-                    id="adminLoginMessage"
-                    class="admin-message"
-                    role="alert"
-                    aria-live="polite"
-                ></div>
+                <span
+                    id="adminLoginSpinner"
+                    class="spinner hidden"
+                ></span>
+            </button>
 
+            <div
+                id="adminLoginMessage"
+                class="form-message"
+            ></div>
 
-                <!-- Login Button -->
-
-                <button
-                    type="submit"
-                    id="adminLoginButton"
-                    class="admin-login-button"
-                >
-
-                    <span id="adminLoginButtonText">
-                        Login
-                    </span>
-
-                </button>
-
-            </form>
-
-        </div>
-
-
-        <p class="admin-login-footer">
-            Ayodeji Fashion Hubs © 2026
-        </p>
+        </form>
 
     </div>
 
 </section>
 
 
-
-<!-- =========================================================
+<!-- =====================================================
      ADMIN DASHBOARD
-========================================================= -->
+===================================================== -->
 
 <section
     id="adminDashboardView"
-    class="admin-dashboard-view"
-    style="display:none;"
+    class="admin-dashboard hidden"
 >
 
-
-    <!-- =====================================================
-         HEADER
-    ====================================================== -->
+    <!-- HEADER -->
 
     <header class="admin-header">
 
-        <div class="admin-header-inner">
+        <div class="admin-header-left">
 
-
-            <!-- Brand -->
-
-            <a
-                href="index.html"
-                class="admin-brand"
+            <button
+                id="mobileMenuButton"
+                class="mobile-menu-button"
+                type="button"
             >
+                ☰
+            </button>
 
-                <span class="admin-brand-icon">
-                    👟
-                </span>
+            <div>
+                <h1>Admin Dashboard</h1>
 
-                <span>
+                <p>
                     Ayodeji Fashion Hubs
-                </span>
-
-            </a>
-
-
-            <!-- Header Actions -->
-
-            <div class="admin-header-actions">
-
-                <a
-                    href="index.html"
-                    class="admin-header-link"
-                    target="_blank"
-                    rel="noopener"
-                >
-                    View Store
-                </a>
-
-                <button
-                    type="button"
-                    id="adminLogout"
-                    class="admin-logout-button"
-                >
-                    Logout
-                </button>
-
+                </p>
             </div>
 
         </div>
 
+        <button
+            id="adminLogout"
+            class="logout-button"
+            type="button"
+        >
+            Logout
+        </button>
+
     </header>
 
 
+    <!-- NAVIGATION -->
 
-    <!-- =====================================================
-         MAIN
-    ====================================================== -->
+    <nav class="admin-nav">
+
+        <button
+            class="admin-nav-button active"
+            data-section="ordersSection"
+            type="button"
+        >
+            📦 Orders
+        </button>
+
+        <button
+            class="admin-nav-button"
+            data-section="productsSection"
+            type="button"
+        >
+            👟 Products
+        </button>
+
+        <button
+            class="admin-nav-button"
+            data-section="categoriesSection"
+            type="button"
+        >
+            🗂️ Categories
+        </button>
+
+    </nav>
+
 
     <main class="admin-main">
 
 
         <!-- =================================================
-             PAGE HEADER
-        ================================================== -->
-
-        <div class="admin-page-header">
-
-            <div>
-
-                <span class="admin-eyebrow">
-                    STORE MANAGEMENT
-                </span>
-
-                <h1>
-                    Admin Dashboard
-                </h1>
-
-                <p>
-                    Manage orders, products and categories.
-                </p>
-
-            </div>
-
-        </div>
-
-
-
-        <!-- =================================================
-             NAVIGATION TABS
-        ================================================== -->
-
-        <nav
-            class="admin-tabs"
-            aria-label="Admin navigation"
-        >
-
-            <button
-                type="button"
-                class="admin-tab active"
-                data-section="ordersSection"
-            >
-                <span>📦</span>
-                <span>Orders</span>
-            </button>
-
-
-            <button
-                type="button"
-                class="admin-tab"
-                data-section="productsSection"
-            >
-                <span>👟</span>
-                <span>Products</span>
-            </button>
-
-
-            <button
-                type="button"
-                class="admin-tab"
-                data-section="categoriesSection"
-            >
-                <span>🏷️</span>
-                <span>Categories</span>
-            </button>
-
-        </nav>
-
-
-
-        <!-- =================================================
-             ORDERS SECTION
+             ORDERS
         ================================================== -->
 
         <section
             id="ordersSection"
-            class="admin-section"
+            class="admin-section active"
         >
 
-
-            <!-- Section Header -->
-
-            <div class="admin-section-header">
+            <div class="section-heading">
 
                 <div>
-
-                    <span class="admin-eyebrow">
-                        SALES
-                    </span>
-
-                    <h2>
-                        Orders
-                    </h2>
+                    <h2>Orders</h2>
 
                     <p>
-                        View and manage customer orders.
+                        View customers and manage order status.
                     </p>
-
                 </div>
 
-
                 <button
-                    type="button"
                     id="refreshOrders"
-                    class="admin-button"
+                    class="admin-secondary-button"
+                    type="button"
                 >
-                    🔄 Refresh Orders
+                    🔄 Refresh
                 </button>
 
             </div>
 
 
+            <!-- PERMISSION NOTICE -->
 
-            <!-- =================================================
-                 ORDER STATISTICS
-            ================================================== -->
+            <div class="permission-notice">
 
-            <div class="admin-stats-grid">
+                <strong>Admin permissions</strong>
+
+                <p>
+                    You can update payment status, order status,
+                    delivery information and order notes.
+                    Customer identity and existing order items
+                    cannot be changed or deleted.
+                </p>
+
+            </div>
 
 
-                <div class="admin-stat-card">
+            <!-- STATS -->
 
-                    <div class="admin-stat-icon">
+            <div class="stats-grid">
+
+                <div class="stat-card">
+
+                    <span class="stat-icon">
                         📦
-                    </div>
+                    </span>
 
                     <div>
-
-                        <span>
+                        <span class="stat-label">
                             Total Orders
                         </span>
 
                         <strong id="totalOrders">
                             0
                         </strong>
-
                     </div>
 
                 </div>
 
 
-                <div class="admin-stat-card">
+                <div class="stat-card">
 
-                    <div class="admin-stat-icon">
+                    <span class="stat-icon">
                         ⏳
-                    </div>
+                    </span>
 
                     <div>
-
-                        <span>
+                        <span class="stat-label">
                             Pending Payment
                         </span>
 
                         <strong id="pendingPayment">
                             0
                         </strong>
-
                     </div>
 
                 </div>
 
 
-                <div class="admin-stat-card">
+                <div class="stat-card">
 
-                    <div class="admin-stat-icon">
-                        💰
-                    </div>
+                    <span class="stat-icon">
+                        💳
+                    </span>
 
                     <div>
-
-                        <span>
+                        <span class="stat-label">
                             Paid Orders
                         </span>
 
                         <strong id="paidOrders">
                             0
                         </strong>
-
                     </div>
 
                 </div>
 
 
-                <div class="admin-stat-card">
+                <div class="stat-card">
 
-                    <div class="admin-stat-icon">
-                        ✅
-                    </div>
+                    <span class="stat-icon">
+                        🚚
+                    </span>
 
                     <div>
-
-                        <span>
+                        <span class="stat-label">
                             Delivered
                         </span>
 
                         <strong id="deliveredOrders">
                             0
                         </strong>
-
                     </div>
 
                 </div>
@@ -456,43 +314,35 @@
             </div>
 
 
+            <!-- ORDER FILTERS -->
 
-            <!-- =================================================
-                 ORDER FILTERS
-            ================================================== -->
+            <div class="filter-card">
 
-            <div class="admin-filter-bar">
+                <div class="filter-group">
 
-
-                <div class="admin-search-wrapper">
-
-                    <span>
-                        🔎
-                    </span>
+                    <label for="orderSearch">
+                        Search
+                    </label>
 
                     <input
                         type="search"
                         id="orderSearch"
-                        placeholder="Search by order, customer, phone or email..."
-                        autocomplete="off"
+                        placeholder="Reference, name, phone or email..."
                     >
 
                 </div>
 
 
-                <div class="admin-filter-group">
+                <div class="filter-group">
 
-                    <label
-                        for="statusFilter"
-                        class="sr-only"
-                    >
-                        Filter by status
+                    <label for="statusFilter">
+                        Status
                     </label>
 
                     <select id="statusFilter">
 
                         <option value="">
-                            All Statuses
+                            All statuses
                         </option>
 
                         <option value="Pending Payment">
@@ -534,89 +384,74 @@
             </div>
 
 
+            <!-- DESKTOP TABLE -->
 
-            <!-- =================================================
-                 ORDERS TABLE
-            ================================================== -->
+            <div class="table-card">
 
-            <div class="admin-table-wrapper">
+                <div class="table-wrapper">
 
-                <table class="admin-orders-table">
+                    <table>
 
-                    <thead>
+                        <thead>
 
-                        <tr>
+                            <tr>
 
-                            <th>
-                                Order
-                            </th>
+                                <th>
+                                    Order
+                                </th>
 
-                            <th>
-                                Customer
-                            </th>
+                                <th>
+                                    Customer
+                                </th>
 
-                            <th>
-                                Total
-                            </th>
+                                <th>
+                                    Total
+                                </th>
 
-                            <th>
-                                Payment
-                            </th>
+                                <th>
+                                    Payment
+                                </th>
 
-                            <th>
-                                Status
-                            </th>
+                                <th>
+                                    Status
+                                </th>
 
-                            <th>
-                                Date
-                            </th>
+                                <th>
+                                    Date
+                                </th>
 
-                            <th>
-                                Action
-                            </th>
+                                <th>
+                                    Action
+                                </th>
 
-                        </tr>
+                            </tr>
 
-                    </thead>
+                        </thead>
 
+                        <tbody id="ordersTable">
 
-                    <tbody id="ordersTable">
+                        </tbody>
 
-                        <tr>
+                    </table>
 
-                            <td colspan="7">
-                                Loading orders...
-                            </td>
-
-                        </tr>
-
-                    </tbody>
-
-                </table>
+                </div>
 
             </div>
 
 
-
-            <!-- =================================================
-                 MOBILE ORDERS
-            ================================================== -->
+            <!-- MOBILE ORDERS -->
 
             <div
                 id="ordersGrid"
-                class="admin-orders-grid"
+                class="orders-grid"
             ></div>
 
 
-            <!-- Empty Orders -->
-
             <div
                 id="emptyOrders"
-                class="admin-empty-state"
-                style="display:none;"
+                class="empty-state hidden"
             >
-
-                <div class="admin-empty-icon">
+                <div>
                     📦
                 </div>
 
@@ -625,93 +460,86 @@
                 </h3>
 
                 <p>
-                    Orders will appear here when customers place them.
+                    Orders will appear here.
                 </p>
-
             </div>
 
         </section>
 
 
-
         <!-- =================================================
-             PRODUCTS SECTION
+             PRODUCTS
         ================================================== -->
 
         <section
             id="productsSection"
             class="admin-section"
-            style="display:none;"
         >
 
-
-            <!-- Section Header -->
-
-            <div class="admin-section-header">
+            <div class="section-heading">
 
                 <div>
-
-                    <span class="admin-eyebrow">
-                        INVENTORY
-                    </span>
-
-                    <h2>
-                        Products
-                    </h2>
+                    <h2>Products</h2>
 
                     <p>
-                        Add, edit and manage your store products.
+                        Manage your store products.
                     </p>
-
                 </div>
 
-
                 <button
-                    type="button"
                     id="addProductButton"
-                    class="admin-button"
+                    class="admin-primary-button"
+                    type="button"
                 >
-                    ＋ Add Product
+                    + Add Product
                 </button>
 
             </div>
 
 
+            <div class="filter-card">
 
-            <!-- Product Filters -->
+                <div class="filter-group">
 
-            <div class="admin-filter-bar">
-
-
-                <div class="admin-search-wrapper">
-
-                    <span>
-                        🔎
-                    </span>
+                    <label for="productSearch">
+                        Search
+                    </label>
 
                     <input
                         type="search"
                         id="productSearch"
                         placeholder="Search products..."
-                        autocomplete="off"
                     >
 
                 </div>
 
 
-                <div class="admin-filter-group">
+                <div class="filter-group">
 
-                    <label
-                        for="productCategoryFilter"
-                        class="sr-only"
-                    >
-                        Product category
+                    <label for="productCategoryFilter">
+                        Category
                     </label>
 
                     <select id="productCategoryFilter">
 
                         <option value="">
-                            All Categories
+                            All categories
+                        </option>
+
+                        <option value="sneakers">
+                            Sneakers
+                        </option>
+
+                        <option value="formal">
+                            Formal
+                        </option>
+
+                        <option value="casual">
+                            Casual
+                        </option>
+
+                        <option value="slippers">
+                            Slippers
                         </option>
 
                     </select>
@@ -719,19 +547,16 @@
                 </div>
 
 
-                <div class="admin-filter-group">
+                <div class="filter-group">
 
-                    <label
-                        for="productStatusFilter"
-                        class="sr-only"
-                    >
-                        Product status
+                    <label for="productStatusFilter">
+                        Status
                     </label>
 
                     <select id="productStatusFilter">
 
                         <option value="">
-                            All Products
+                            All
                         </option>
 
                         <option value="active">
@@ -749,36 +574,28 @@
             </div>
 
 
+            <div class="section-count">
 
-            <!-- Product Count -->
+                <strong id="productsCount">
+                    0
+                </strong>
 
-            <div class="admin-results-header">
-
-                <span id="productsCount">
-                    0 products
-                </span>
+                products
 
             </div>
 
 
-
-            <!-- Products -->
-
             <div
                 id="productsAdminGrid"
-                class="admin-products-grid"
+                class="products-admin-grid"
             ></div>
 
 
-            <!-- Empty Products -->
-
             <div
                 id="emptyProducts"
-                class="admin-empty-state"
-                style="display:none;"
+                class="empty-state hidden"
             >
-
-                <div class="admin-empty-icon">
+                <div>
                     👟
                 </div>
 
@@ -787,93 +604,70 @@
                 </h3>
 
                 <p>
-                    Add your first product to start selling.
+                    Add your first product.
                 </p>
-
             </div>
 
         </section>
 
 
-
         <!-- =================================================
-             CATEGORIES SECTION
+             CATEGORIES
         ================================================== -->
 
         <section
             id="categoriesSection"
             class="admin-section"
-            style="display:none;"
         >
 
-
-            <!-- Section Header -->
-
-            <div class="admin-section-header">
+            <div class="section-heading">
 
                 <div>
-
-                    <span class="admin-eyebrow">
-                        CATALOG
-                    </span>
-
-                    <h2>
-                        Categories
-                    </h2>
+                    <h2>Categories</h2>
 
                     <p>
-                        Organize your products into categories.
+                        Manage product categories.
                     </p>
-
                 </div>
 
-
                 <button
-                    type="button"
                     id="addCategoryButton"
-                    class="admin-button"
+                    class="admin-primary-button"
+                    type="button"
                 >
-                    ＋ Add Category
+                    + Add Category
                 </button>
 
             </div>
 
 
+            <div class="filter-card">
 
-            <!-- Category Filters -->
+                <div class="filter-group">
 
-            <div class="admin-filter-bar">
-
-
-                <div class="admin-search-wrapper">
-
-                    <span>
-                        🔎
-                    </span>
+                    <label for="categorySearch">
+                        Search
+                    </label>
 
                     <input
                         type="search"
                         id="categorySearch"
                         placeholder="Search categories..."
-                        autocomplete="off"
                     >
 
                 </div>
 
 
-                <div class="admin-filter-group">
+                <div class="filter-group">
 
-                    <label
-                        for="categoryStatusFilter"
-                        class="sr-only"
-                    >
-                        Category status
+                    <label for="categoryStatusFilter">
+                        Status
                     </label>
 
                     <select id="categoryStatusFilter">
 
                         <option value="">
-                            All Categories
+                            All
                         </option>
 
                         <option value="active">
@@ -891,24 +685,20 @@
             </div>
 
 
+            <div class="section-count">
 
-            <!-- Category Count -->
+                <strong id="categoriesCount">
+                    0
+                </strong>
 
-            <div class="admin-results-header">
-
-                <span id="categoriesCount">
-                    0 categories
-                </span>
+                categories
 
             </div>
 
 
-
-            <!-- Categories -->
-
             <div
                 id="categoriesAdminGrid"
-                class="admin-categories-grid"
+                class="categories-admin-grid"
             ></div>
 
         </section>
@@ -918,23 +708,18 @@
 </section>
 
 
-
-<!-- =========================================================
+<!-- =====================================================
      PRODUCT MODAL
-========================================================= -->
+===================================================== -->
 
 <div
     id="productModal"
-    class="admin-modal-overlay"
-    style="display:none;"
+    class="modal-overlay hidden"
 >
 
-    <div class="admin-modal admin-product-modal">
+    <div class="modal-card">
 
-
-        <!-- Header -->
-
-        <div class="admin-modal-header">
+        <div class="modal-header">
 
             <div>
 
@@ -942,18 +727,12 @@
                     Add Product
                 </h2>
 
-                <p>
-                    Product information
-                </p>
-
             </div>
 
-
             <button
-                type="button"
                 id="closeProductModal"
-                class="admin-modal-close"
-                aria-label="Close"
+                class="modal-close"
+                type="button"
             >
                 ×
             </button>
@@ -961,643 +740,387 @@
         </div>
 
 
+        <form id="productForm">
 
-        <!-- Body -->
+            <input
+                type="hidden"
+                id="productId"
+            >
 
-        <div class="admin-modal-body">
 
-            <form id="productForm">
+            <div
+                id="productImagePreview"
+                class="product-image-preview"
+            >
+                👟
+            </div>
 
 
-                <!-- Product ID -->
+            <label
+                for="productImage"
+                class="gallery-upload-button"
+            >
+                📷 Choose Image From Gallery
+            </label>
+
+            <input
+                type="file"
+                id="productImage"
+                accept="image/*"
+                hidden
+            >
+
+
+            <div class="form-group">
+
+                <label for="productName">
+                    Product Name
+                </label>
 
                 <input
-                    type="hidden"
-                    id="productId"
+                    type="text"
+                    id="productName"
+                    required
                 >
-
-
-                <!-- Product Image -->
-
-                <div class="admin-form-group">
-
-                    <label>
-                        Product Image
-                    </label>
-
-
-                    <div
-                        id="productImagePreview"
-                        class="product-image-preview"
-                    >
-
-                        <span>
-                            No image selected
-                        </span>
-
-                    </div>
-
-
-                    <label
-                        for="productImage"
-                        class="gallery-upload-button"
-                    >
-                        📷 Choose Image From Gallery
-                    </label>
-
-                    <input
-                        type="file"
-                        id="productImage"
-                        accept="image/*"
-                        hidden
-                    >
-
-                    <small>
-                        Choose a clear product image from your phone gallery.
-                    </small>
-
-                </div>
-
-
-
-                <!-- Name / Category -->
-
-                <div class="admin-form-grid">
-
-
-                    <div class="admin-form-group">
-
-                        <label for="productName">
-                            Product Name
-                        </label>
-
-                        <input
-                            type="text"
-                            id="productName"
-                            placeholder="Example: Classic White Sneakers"
-                            required
-                        >
-
-                    </div>
-
-
-                    <div class="admin-form-group">
-
-                        <label for="productCategory">
-                            Category
-                        </label>
-
-                        <select
-                            id="productCategory"
-                            required
-                        >
-
-                            <option value="">
-                                Select category
-                            </option>
-
-                        </select>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- Badge / Icon -->
-
-                <div class="admin-form-grid">
-
-
-                    <div class="admin-form-group">
-
-                        <label for="productBadge">
-                            Badge
-                        </label>
-
-                        <input
-                            type="text"
-                            id="productBadge"
-                            placeholder="Popular, Sale, New..."
-                        >
-
-                    </div>
-
-
-                    <div class="admin-form-group">
-
-                        <label for="productIcon">
-                            Product Icon
-                        </label>
-
-                        <input
-                            type="text"
-                            id="productIcon"
-                            value="👟"
-                            maxlength="10"
-                            placeholder="👟"
-                        >
-
-                        <small>
-                            Used when no product image is available.
-                        </small>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- Prices -->
-
-                <div class="admin-form-grid">
-
-
-                    <div class="admin-form-group">
-
-                        <label for="productPrice">
-                            Price (₦)
-                        </label>
-
-                        <input
-                            type="number"
-                            id="productPrice"
-                            min="0"
-                            step="0.01"
-                            placeholder="45000"
-                            required
-                        >
-
-                    </div>
-
-
-                    <div class="admin-form-group">
-
-                        <label for="productOldPrice">
-                            Old Price (₦)
-                        </label>
-
-                        <input
-                            type="number"
-                            id="productOldPrice"
-                            min="0"
-                            step="0.01"
-                            placeholder="52000"
-                        >
-
-                        <small>
-                            Optional. Used to show a discount.
-                        </small>
-
-                    </div>
-
-
-                    <div class="admin-form-group">
-
-                        <label for="productStock">
-                            Stock
-                        </label>
-
-                        <input
-                            type="number"
-                            id="productStock"
-                            min="0"
-                            step="1"
-                            value="0"
-                            required
-                        >
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- =================================================
-                     SIZES
-                ================================================== -->
-
-                <div class="admin-form-group">
-
-                    <label>
-                        Available Sizes
-                    </label>
-
-                    <div class="product-size-checkboxes">
-
-
-                        <label class="size-checkbox">
-
-                            <input
-                                type="checkbox"
-                                name="productSize"
-                                value="39"
-                            >
-
-                            <span>
-                                39
-                            </span>
-
-                        </label>
-
-
-                        <label class="size-checkbox">
-
-                            <input
-                                type="checkbox"
-                                name="productSize"
-                                value="40"
-                            >
-
-                            <span>
-                                40
-                            </span>
-
-                        </label>
-
-
-                        <label class="size-checkbox">
-
-                            <input
-                                type="checkbox"
-                                name="productSize"
-                                value="41"
-                            >
-
-                            <span>
-                                41
-                            </span>
-
-                        </label>
-
-
-                        <label class="size-checkbox">
-
-                            <input
-                                type="checkbox"
-                                name="productSize"
-                                value="42"
-                            >
-
-                            <span>
-                                42
-                            </span>
-
-                        </label>
-
-
-                        <label class="size-checkbox">
-
-                            <input
-                                type="checkbox"
-                                name="productSize"
-                                value="43"
-                            >
-
-                            <span>
-                                43
-                            </span>
-
-                        </label>
-
-
-                        <label class="size-checkbox">
-
-                            <input
-                                type="checkbox"
-                                name="productSize"
-                                value="44"
-                            >
-
-                            <span>
-                                44
-                            </span>
-
-                        </label>
-
-
-                        <label class="size-checkbox">
-
-                            <input
-                                type="checkbox"
-                                name="productSize"
-                                value="45"
-                            >
-
-                            <span>
-                                45
-                            </span>
-
-                        </label>
-
-                    </div>
-
-
-
-                    <!-- Custom Sizes -->
-
-                    <div class="custom-size-controls">
-
-                        <input
-                            type="text"
-                            id="customSizeInput"
-                            placeholder="Add custom size"
-                        >
-
-                        <button
-                            type="button"
-                            id="addCustomSizeButton"
-                            class="admin-small-button"
-                        >
-                            + Add Size
-                        </button>
-
-                    </div>
-
-
-                    <div
-                        id="customSizesList"
-                        class="custom-sizes-list"
-                    ></div>
-
-
-                    <small>
-                        Select standard shoe sizes or add a custom size.
-                    </small>
-
-                </div>
-
-
-
-                <!-- Description -->
-
-                <div class="admin-form-group">
-
-                    <label for="productDescription">
-                        Description
-                    </label>
-
-                    <textarea
-                        id="productDescription"
-                        rows="5"
-                        placeholder="Describe the product..."
-                    ></textarea>
-
-                </div>
-
-
-
-                <!-- Active -->
-
-                <div class="admin-checkbox-group">
-
-                    <label>
-
-                        <input
-                            type="checkbox"
-                            id="productActive"
-                            checked
-                        >
-
-                        <span>
-                            Product is active and visible in the store
-                        </span>
-
-                    </label>
-
-                </div>
-
-
-
-                <!-- Message -->
-
-                <div
-                    id="productFormMessage"
-                    class="admin-form-message"
-                    role="alert"
-                ></div>
-
-
-
-                <!-- Actions -->
-
-                <div class="admin-modal-actions">
-
-                    <button
-                        type="button"
-                        id="cancelProductButton"
-                        class="admin-button secondary"
-                    >
-                        Cancel
-                    </button>
-
-
-                    <button
-                        type="submit"
-                        id="saveProductButton"
-                        class="admin-button"
-                    >
-                        Save Product
-                    </button>
-
-                </div>
-
-            </form>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-
-<!-- =========================================================
-     CATEGORY MODAL
-========================================================= -->
-
-<div
-    id="categoryModal"
-    class="admin-modal-overlay"
-    style="display:none;"
->
-
-    <div class="admin-modal admin-category-modal">
-
-
-        <!-- Header -->
-
-        <div class="admin-modal-header">
-
-            <div>
-
-                <h2 id="categoryModalTitle">
-                    Add Category
-                </h2>
-
-                <p>
-                    Category information
-                </p>
 
             </div>
 
 
-            <button
-                type="button"
-                id="closeCategoryModal"
-                class="admin-modal-close"
-                aria-label="Close"
-            >
-                ×
-            </button>
+            <div class="form-row">
 
-        </div>
+                <div class="form-group">
+
+                    <label for="productCategory">
+                        Category
+                    </label>
+
+                    <select
+                        id="productCategory"
+                        required
+                    >
+
+                        <option value="sneakers">
+                            Sneakers
+                        </option>
+
+                        <option value="formal">
+                            Formal
+                        </option>
+
+                        <option value="casual">
+                            Casual
+                        </option>
+
+                        <option value="slippers">
+                            Slippers
+                        </option>
+
+                    </select>
+
+                </div>
 
 
+                <div class="form-group">
 
-        <!-- Body -->
-
-        <div class="admin-modal-body">
-
-            <form id="categoryForm">
-
-
-                <input
-                    type="hidden"
-                    id="categoryId"
-                >
-
-
-                <div class="admin-form-group">
-
-                    <label for="categoryName">
-                        Category Name
+                    <label for="productBadge">
+                        Badge
                     </label>
 
                     <input
                         type="text"
-                        id="categoryName"
-                        placeholder="Example: Sneakers"
+                        id="productBadge"
+                        placeholder="Popular / Sale"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label for="productPrice">
+                        Price ₦
+                    </label>
+
+                    <input
+                        type="number"
+                        id="productPrice"
+                        min="0"
+                        step="0.01"
                         required
                     >
 
                 </div>
 
 
-                <div class="admin-form-group">
+                <div class="form-group">
 
-                    <label for="categorySlug">
-                        Category Slug
+                    <label for="productOldPrice">
+                        Old Price ₦
+                    </label>
+
+                    <input
+                        type="number"
+                        id="productOldPrice"
+                        min="0"
+                        step="0.01"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label for="productStock">
+                        Stock
+                    </label>
+
+                    <input
+                        type="number"
+                        id="productStock"
+                        min="0"
+                        step="1"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="productIcon">
+                        Icon
                     </label>
 
                     <input
                         type="text"
-                        id="categorySlug"
-                        placeholder="sneakers"
+                        id="productIcon"
+                        value="👟"
                     >
 
-                    <small>
-                        Example: sneakers
-                    </small>
-
                 </div>
 
-
-                <div class="admin-form-group">
-
-                    <label for="categoryDescription">
-                        Description
-                    </label>
-
-                    <textarea
-                        id="categoryDescription"
-                        rows="4"
-                        placeholder="Describe this category..."
-                    ></textarea>
-
-                </div>
+            </div>
 
 
-                <div class="admin-checkbox-group">
+            <div class="form-group">
 
-                    <label>
+                <label for="productSizes">
+                    Sizes
+                </label>
 
-                        <input
-                            type="checkbox"
-                            id="categoryActive"
-                            checked
-                        >
+                <input
+                    type="text"
+                    id="productSizes"
+                    placeholder="39, 40, 41, 42, 43, 44"
+                >
 
-                        <span>
-                            Category is active
-                        </span>
-
-                    </label>
-
-                </div>
+            </div>
 
 
-                <div
-                    id="categoryFormMessage"
-                    class="admin-form-message"
-                    role="alert"
-                ></div>
+            <div class="form-group">
+
+                <label for="productDescription">
+                    Description
+                </label>
+
+                <textarea
+                    id="productDescription"
+                    rows="4"
+                ></textarea>
+
+            </div>
 
 
-                <div class="admin-modal-actions">
+            <label class="checkbox-label">
 
-                    <button
-                        type="button"
-                        id="cancelCategoryButton"
-                        class="admin-button secondary"
-                    >
-                        Cancel
-                    </button>
+                <input
+                    type="checkbox"
+                    id="productActive"
+                    checked
+                >
+
+                Product is active
+
+            </label>
 
 
-                    <button
-                        type="submit"
-                        id="saveCategoryButton"
-                        class="admin-button"
-                    >
-                        Save Category
-                    </button>
+            <div
+                id="productFormMessage"
+                class="form-message"
+            ></div>
 
-                </div>
 
-            </form>
+            <div class="modal-actions">
 
-        </div>
+                <button
+                    id="cancelProductButton"
+                    type="button"
+                    class="admin-secondary-button"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    id="saveProductButton"
+                    type="submit"
+                    class="admin-primary-button"
+                >
+                    Save Product
+                </button>
+
+            </div>
+
+        </form>
 
     </div>
 
 </div>
 
 
+<!-- =====================================================
+     CATEGORY MODAL
+===================================================== -->
 
-<!-- =========================================================
+<div
+    id="categoryModal"
+    class="modal-overlay hidden"
+>
+
+    <div class="modal-card">
+
+        <div class="modal-header">
+
+            <h2 id="categoryModalTitle">
+                Add Category
+            </h2>
+
+            <button
+                id="closeCategoryModal"
+                class="modal-close"
+                type="button"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="categoryForm">
+
+            <input
+                type="hidden"
+                id="categoryId"
+            >
+
+
+            <div class="form-group">
+
+                <label for="categoryName">
+                    Category Name
+                </label>
+
+                <input
+                    type="text"
+                    id="categoryName"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="categorySlug">
+                    Category Slug
+                </label>
+
+                <input
+                    type="text"
+                    id="categorySlug"
+                    placeholder="e.g. sneakers"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="categoryDescription">
+                    Description
+                </label>
+
+                <textarea
+                    id="categoryDescription"
+                    rows="4"
+                ></textarea>
+
+            </div>
+
+
+            <label class="checkbox-label">
+
+                <input
+                    type="checkbox"
+                    id="categoryActive"
+                    checked
+                >
+
+                Category is active
+
+            </label>
+
+
+            <div
+                id="categoryFormMessage"
+                class="form-message"
+            ></div>
+
+
+            <div class="modal-actions">
+
+                <button
+                    id="cancelCategoryButton"
+                    type="button"
+                    class="admin-secondary-button"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    id="saveCategoryButton"
+                    type="submit"
+                    class="admin-primary-button"
+                >
+                    Save Category
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
      SCRIPTS
-========================================================= -->
+===================================================== -->
 
-<!-- EmailJS -->
-<script
-    src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"
-></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-
-<!-- Supabase -->
-<script
-    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
-></script>
-
-
-<!-- Supabase Configuration -->
 <script src="js/supabase.js"></script>
 
-
-<!-- Admin JavaScript -->
 <script src="js/admin.js"></script>
-
 
 </body>
 </html>
