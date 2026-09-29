@@ -1046,6 +1046,65 @@ async function handleCheckoutSubmit(
 
 
         // -------------------------------------
+        // REDUCE PRODUCT STOCK
+        // -------------------------------------
+
+        for (const item of checkoutCart) {
+
+            const productId =
+                item.product_id ||
+                item.productId ||
+                item.id ||
+                null;
+
+            const quantity =
+                Math.max(
+                    1,
+                    Number(item.quantity) || 1
+                );
+
+            if (!productId) {
+                throw new Error(
+                    "A product ID is missing from the order."
+                );
+            }
+
+            const {
+                data: remainingStock,
+                error: stockError
+            } =
+                await supabaseClient.rpc(
+                    "reduce_product_stock",
+                    {
+                        p_product_id:
+                            productId,
+
+                        p_quantity:
+                            quantity
+                    }
+                );
+
+            if (stockError) {
+
+                console.error(
+                    "Stock reduction error:",
+                    stockError
+                );
+
+                throw new Error(
+                    stockError.message ||
+                    "Unable to update product stock."
+                );
+            }
+
+            console.log(
+                `Stock updated for ${productId}. Remaining stock:`,
+                remainingStock
+            );
+        }
+
+
+        // -------------------------------------
         // SAVE CUSTOMER PROFILE
         // -------------------------------------
 
