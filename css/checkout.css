@@ -1281,3 +1281,71 @@ select:focus-visible {
         animation: none !important;
     }
 }
+/* =========================================================
+   SUCCESS MODAL VISIBILITY
+========================================================= */
+
+.hidden {
+    display: none !important;
+}
+
+.checkout-modal.hidden {
+    display: none !important;
+}
+
+.checkout-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.65);
+    box-sizing: border-box;
+}
+
+.checkout-modal-card {
+    width: 100%;
+    max-width: 460px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 28px 22px;
+    text-align: center;
+    box-sizing: border-box;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+}
+
+.success-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #111111;
+    color: #ffffff;
+    font-size: 32px;
+    font-weight: 800;
+}
+
+.checkout-modal-card h2 {
+    margin: 0 0 10px;
+}
+
+.checkout-modal-card p {
+    margin: 0 0 15px;
+    line-height: 1.6;
+}
+
+.success-reference {
+    margin: 15px 0;
+    padding: 12px;
+    border-radius: 10px;
+    background: #f5f5f5;
+    font-weight: 700;
+}
+
