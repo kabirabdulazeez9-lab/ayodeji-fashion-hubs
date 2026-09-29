@@ -9,6 +9,10 @@ document.addEventListener(
 );
 
 
+// =========================================
+// INITIALIZE
+// =========================================
+
 async function initializeMyOrders() {
 
     const supabaseClient =
@@ -22,7 +26,6 @@ async function initializeMyOrders() {
 
         return;
     }
-
 
     try {
 
@@ -42,6 +45,7 @@ async function initializeMyOrders() {
         }
 
 
+        // Customer must be logged in
         if (!session) {
 
             showLoginRequired();
@@ -57,7 +61,7 @@ async function initializeMyOrders() {
     } catch (error) {
 
         console.error(
-            "My Orders error:",
+            "My Orders initialization error:",
             error
         );
 
@@ -70,7 +74,7 @@ async function initializeMyOrders() {
 
 
 // =========================================
-// LOAD ORDERS
+// LOAD CUSTOMER ORDERS
 // =========================================
 
 async function loadCustomerOrders(
@@ -136,7 +140,7 @@ async function loadCustomerOrders(
     if (error) {
 
         console.error(
-            "Orders query error:",
+            "Customer orders query error:",
             error
         );
 
@@ -147,10 +151,14 @@ async function loadCustomerOrders(
     hideLoading();
 
 
-    if (
-        !data ||
-        data.length === 0
-    ) {
+    const orders =
+        Array.isArray(data)
+            ? data
+            : [];
+
+
+    // No orders
+    if (orders.length === 0) {
 
         showEmptyOrders();
 
@@ -158,10 +166,18 @@ async function loadCustomerOrders(
     }
 
 
-    document
-        .getElementById("ordersContent")
-        ?.classList
-        .remove("hidden");
+    const content =
+        document.getElementById(
+            "ordersContent"
+        );
+
+
+    if (content) {
+
+        content.classList.remove(
+            "hidden"
+        );
+    }
 
 
     const countElement =
@@ -173,15 +189,15 @@ async function loadCustomerOrders(
     if (countElement) {
 
         countElement.textContent =
-            `${data.length} ${
-                data.length === 1
+            `${orders.length} ${
+                orders.length === 1
                     ? "Order"
                     : "Orders"
             }`;
     }
 
 
-    renderOrders(data);
+    renderOrders(orders);
 }
 
 
@@ -197,23 +213,33 @@ function renderOrders(orders) {
         );
 
 
-    if (!container) return;
+    if (!container) {
+        return;
+    }
 
 
-    container.innerHTML =
-        orders
-            .map(
-                order =>
-                    createOrderCard(
-                        order
-                    )
-            )
-            .join("");
+    container.innerHTML = "";
+
+
+    orders.forEach(
+        order => {
+
+            const card =
+                createOrderCard(
+                    order
+                );
+
+            container.insertAdjacentHTML(
+                "beforeend",
+                card
+            );
+        }
+    );
 }
 
 
 // =========================================
-// ORDER CARD
+// CREATE ONE ORDER CARD
 // =========================================
 
 function createOrderCard(order) {
@@ -226,19 +252,14 @@ function createOrderCard(order) {
             : [];
 
 
-    const date =
-        formatDate(
-            order.created_at
-        );
+    const orderReference =
+        order.order_reference ||
+        "Order";
 
 
     const status =
         order.status ||
         "Pending Payment";
-
-
-    const statusClass =
-        getStatusClass(status);
 
 
     const total =
@@ -250,109 +271,98 @@ function createOrderCard(order) {
     const itemCount =
         items.reduce(
             (
-                total,
+                totalItems,
                 item
-            ) =>
-                total +
-                (
-                    Number(
-                        item.quantity
-                    ) || 1
-                ),
+            ) => {
+
+                return (
+                    totalItems +
+                    Math.max(
+                        1,
+                        Number(
+                            item.quantity
+                        ) || 1
+                    )
+                );
+
+            },
             0
         );
 
 
+    const paymentMethod =
+        order.payment_method ||
+        "Payment";
+
+
+    const paymentPlan =
+        getPaymentPlanText(
+            order.payment_plan
+        );
+
+
+    const statusClass =
+        getStatusClass(
+            status
+        );
+
+
+    const date =
+        formatDate(
+            order.created_at
+        );
+
+
+    // -------------------------------------
+    // ORDER ITEMS
+    // -------------------------------------
+
     const itemsHTML =
-        items
-            .map(
-                item => {
+        items.length > 0
 
-                    const price =
-                        Number(
-                            item.price
-                        ) || 0;
+            ? items
+                .map(
+                    item =>
+                        createOrderItem(
+                            item
+                        )
+                )
+                .join("")
 
-
-                    const quantity =
-                        Number(
-                            item.quantity
-                        ) || 1;
-
-
-                    const image =
-                        item.image;
+            : `
+                <div class="no-items">
+                    Order items unavailable.
+                </div>
+            `;
 
 
-                    return `
-                        <div class="order-item">
+    // -------------------------------------
+    // TRACKING URL
+    // -------------------------------------
 
-                            <div class="item-image">
-
-                                ${
-                                    image
-                                        ? `
-                                            <img
-                                                src="${escapeHTML(image)}"
-                                                alt="${escapeHTML(
-                                                    item.product_name ||
-                                                    "Product"
-                                                )}"
-                                            >
-                                        `
-                                        : `
-                                            <span>
-                                                ${escapeHTML(
-                                                    item.icon ||
-                                                    "👟"
-                                                )}
-                                            </span>
-                                        `
-                                }
-
-                            </div>
+    const trackingURL =
+        `track-order.html?order=${encodeURIComponent(
+            orderReference
+        )}`;
 
 
-                            <div class="item-info">
-
-                                <strong>
-                                    ${escapeHTML(
-                                        item.product_name ||
-                                        "Product"
-                                    )}
-                                </strong>
-
-                                <small>
-                                    Qty: ${quantity}
-                                    ${
-                                        item.size
-                                            ? ` · Size: ${escapeHTML(item.size)}`
-                                            : ""
-                                    }
-                                </small>
-
-                            </div>
-
-
-                            <div class="item-price">
-                                ${formatCurrency(
-                                    price * quantity
-                                )}
-                            </div>
-
-                        </div>
-                    `;
-                }
-            )
-            .join("");
-
+    // -------------------------------------
+    // COMPLETE ORDER CARD
+    // -------------------------------------
 
     return `
-        <article class="order-card">
+        <article
+            class="order-card"
+            data-order-id="${escapeHTML(
+                order.id || ""
+            )}"
+        >
+
+            <!-- ORDER HEADER -->
 
             <div class="order-card-header">
 
-                <div>
+                <div class="order-heading">
 
                     <span class="order-label">
                         ORDER
@@ -360,91 +370,101 @@ function createOrderCard(order) {
 
                     <h3>
                         ${escapeHTML(
-                            order.order_reference ||
-                            "Order"
+                            orderReference
                         )}
                     </h3>
 
                     <p>
-                        ${date}
+                        ${escapeHTML(
+                            date
+                        )}
                     </p>
 
                 </div>
 
 
-                <span class="status-badge ${statusClass}">
-                    ${escapeHTML(status)}
+                <span
+                    class="status-badge ${statusClass}"
+                >
+                    ${escapeHTML(
+                        status
+                    )}
                 </span>
 
             </div>
 
 
+            <!-- ORDER ITEMS -->
+
             <div class="order-items">
 
-                ${
-                    itemsHTML ||
-                    `
-                        <p class="no-items">
-                            Order items unavailable.
-                        </p>
-                    `
-                }
+                ${itemsHTML}
 
             </div>
 
+
+            <!-- ORDER SUMMARY -->
 
             <div class="order-summary">
 
                 <div>
-                    <span>Items</span>
+
+                    <span>
+                        Items
+                    </span>
+
                     <strong>
                         ${itemCount}
                     </strong>
+
                 </div>
 
 
                 <div>
-                    <span>Total</span>
+
+                    <span>
+                        Total
+                    </span>
+
                     <strong>
-                        ${formatCurrency(total)}
+                        ${formatCurrency(
+                            total
+                        )}
                     </strong>
+
                 </div>
 
             </div>
 
+
+            <!-- PAYMENT INFORMATION -->
 
             <div class="order-payment">
 
                 <span>
                     ${escapeHTML(
-                        order.payment_method ||
-                        "Payment"
+                        paymentMethod
                     )}
                 </span>
 
                 <span>
                     ${escapeHTML(
-                        order.payment_plan === "deposit"
-                            ? "60% Deposit"
-                            : order.payment_plan === "full"
-                                ? "Full Payment"
-                                : order.payment_plan ||
-                                  ""
+                        paymentPlan
                     )}
                 </span>
 
             </div>
 
 
+            <!-- ONE TRACK ORDER BUTTON -->
+
             <div class="order-actions">
 
                 <a
-                    href="track-order.html?order=${encodeURIComponent(
-                        order.order_reference || ""
-                    )}"
+                    href="${trackingURL}"
                     class="track-button"
                 >
-                    Track Order
+                    📦 Track Order
                 </a>
 
             </div>
@@ -455,48 +475,254 @@ function createOrderCard(order) {
 
 
 // =========================================
+// CREATE ORDER ITEM
+// =========================================
+
+function createOrderItem(item) {
+
+    const price =
+        Number(
+            item.price
+        ) || 0;
+
+
+    const quantity =
+        Math.max(
+            1,
+            Number(
+                item.quantity
+            ) || 1
+        );
+
+
+    const productName =
+        item.product_name ||
+        "Product";
+
+
+    const image =
+        item.image ||
+        "";
+
+
+    const icon =
+        item.icon ||
+        "👟";
+
+
+    const sizeHTML =
+        item.size
+            ? `
+                <span>
+                    Size:
+                    ${escapeHTML(
+                        item.size
+                    )}
+                </span>
+            `
+            : "";
+
+
+    const imageHTML =
+        image
+
+            ? `
+                <img
+                    src="${escapeHTML(image)}"
+                    alt="${escapeHTML(
+                        productName
+                    )}"
+                    loading="lazy"
+                    onerror="
+                        this.style.display='none';
+                        this.parentElement
+                            .querySelector('.fallback-icon')
+                            .style.display='flex';
+                    "
+                >
+
+                <span
+                    class="fallback-icon"
+                    style="display:none;"
+                >
+                    ${escapeHTML(icon)}
+                </span>
+            `
+
+            : `
+                <span class="fallback-icon">
+                    ${escapeHTML(icon)}
+                </span>
+            `;
+
+
+    return `
+        <div class="order-item">
+
+            <div class="item-image">
+
+                ${imageHTML}
+
+            </div>
+
+
+            <div class="item-info">
+
+                <strong>
+                    ${escapeHTML(
+                        productName
+                    )}
+                </strong>
+
+                <small>
+
+                    <span>
+                        Qty:
+                        ${quantity}
+                    </span>
+
+                    ${sizeHTML}
+
+                </small>
+
+            </div>
+
+
+            <div class="item-price">
+
+                ${formatCurrency(
+                    price * quantity
+                )}
+
+            </div>
+
+        </div>
+    `;
+}
+
+
+// =========================================
+// PAYMENT PLAN
+// =========================================
+
+function getPaymentPlanText(
+    paymentPlan
+) {
+
+    const value =
+        String(
+            paymentPlan || ""
+        ).toLowerCase();
+
+
+    if (
+        value === "deposit"
+    ) {
+
+        return "60% Deposit";
+    }
+
+
+    if (
+        value === "full"
+    ) {
+
+        return "Full Payment";
+    }
+
+
+    if (
+        value.includes("60")
+    ) {
+
+        return "60% Deposit";
+    }
+
+
+    if (
+        value.includes("100")
+    ) {
+
+        return "Full Payment";
+    }
+
+
+    return paymentPlan || "";
+}
+
+
+// =========================================
 // STATUS CLASS
 // =========================================
 
-function getStatusClass(status) {
+function getStatusClass(
+    status
+) {
 
     const value =
-        String(status || "")
+        String(
+            status || ""
+        )
             .toLowerCase();
 
 
     if (
-        value.includes("delivered")
+        value.includes(
+            "cancel"
+        )
     ) {
+
+        return "status-cancelled";
+    }
+
+
+    if (
+        value.includes(
+            "delivered"
+        )
+    ) {
+
         return "status-delivered";
     }
 
 
     if (
-        value.includes("shipped")
+        value.includes(
+            "shipped"
+        )
     ) {
+
         return "status-shipped";
     }
 
 
     if (
-        value.includes("processing")
+        value.includes(
+            "processing"
+        )
     ) {
+
         return "status-processing";
     }
 
 
     if (
-        value.includes("paid")
+        value.includes(
+            "paid"
+        )
     ) {
+
         return "status-paid";
     }
 
 
     if (
-        value.includes("cancel")
+        value.includes(
+            "deposit"
+        )
     ) {
-        return "status-cancelled";
+
+        return "status-paid";
     }
 
 
@@ -505,7 +731,7 @@ function getStatusClass(status) {
 
 
 // =========================================
-// UI
+// LOGIN REQUIRED
 // =========================================
 
 function showLoginRequired() {
@@ -513,70 +739,148 @@ function showLoginRequired() {
     hideLoading();
 
 
-    document
-        .getElementById("loginRequired")
-        ?.classList
-        .remove("hidden");
+    const loginRequired =
+        document.getElementById(
+            "loginRequired"
+        );
+
+
+    if (loginRequired) {
+
+        loginRequired.classList.remove(
+            "hidden"
+        );
+    }
 }
 
+
+// =========================================
+// EMPTY ORDERS
+// =========================================
 
 function showEmptyOrders() {
 
     hideLoading();
 
 
-    document
-        .getElementById("ordersContent")
-        ?.classList
-        .remove("hidden");
+    const content =
+        document.getElementById(
+            "ordersContent"
+        );
 
 
-    document
-        .getElementById("emptyOrders")
-        ?.classList
-        .remove("hidden");
+    if (content) {
+
+        content.classList.remove(
+            "hidden"
+        );
+    }
+
+
+    const empty =
+        document.getElementById(
+            "emptyOrders"
+        );
+
+
+    if (empty) {
+
+        empty.classList.remove(
+            "hidden"
+        );
+    }
 }
 
 
+// =========================================
+// LOADING
+// =========================================
+
 function showLoading() {
 
-    document
-        .getElementById("loadingOrders")
-        ?.classList
-        .remove("hidden");
+    const loading =
+        document.getElementById(
+            "loadingOrders"
+        );
 
 
-    document
-        .getElementById("ordersContent")
-        ?.classList
-        .add("hidden");
+    if (loading) {
+
+        loading.classList.remove(
+            "hidden"
+        );
+    }
 
 
-    document
-        .getElementById("ordersError")
-        ?.classList
-        .add("hidden");
+    const content =
+        document.getElementById(
+            "ordersContent"
+        );
+
+
+    if (content) {
+
+        content.classList.add(
+            "hidden"
+        );
+    }
+
+
+    const error =
+        document.getElementById(
+            "ordersError"
+        );
+
+
+    if (error) {
+
+        error.classList.add(
+            "hidden"
+        );
+    }
 }
 
 
 function hideLoading() {
 
-    document
-        .getElementById("loadingOrders")
-        ?.classList
-        .add("hidden");
+    const loading =
+        document.getElementById(
+            "loadingOrders"
+        );
+
+
+    if (loading) {
+
+        loading.classList.add(
+            "hidden"
+        );
+    }
 }
 
 
-function showError(message) {
+// =========================================
+// ERROR
+// =========================================
+
+function showError(
+    message
+) {
 
     hideLoading();
 
 
-    document
-        .getElementById("ordersError")
-        ?.classList
-        .remove("hidden");
+    const error =
+        document.getElementById(
+            "ordersError"
+        );
+
+
+    if (error) {
+
+        error.classList.remove(
+            "hidden"
+        );
+    }
 
 
     const messageElement =
@@ -588,20 +892,21 @@ function showError(message) {
     if (messageElement) {
 
         messageElement.textContent =
-            message;
+            message ||
+            "Unable to load your orders.";
     }
 
 
-    const retryButton =
+    const retry =
         document.getElementById(
             "retryOrders"
         );
 
 
-    if (retryButton) {
+    if (retry) {
 
-        retryButton.onclick =
-            () => {
+        retry.onclick =
+            function () {
 
                 location.reload();
 
@@ -611,10 +916,12 @@ function showError(message) {
 
 
 // =========================================
-// HELPERS
+// FORMAT CURRENCY
 // =========================================
 
-function formatCurrency(amount) {
+function formatCurrency(
+    amount
+) {
 
     return new Intl.NumberFormat(
         "en-NG",
@@ -629,7 +936,13 @@ function formatCurrency(amount) {
 }
 
 
-function formatDate(dateString) {
+// =========================================
+// FORMAT DATE
+// =========================================
+
+function formatDate(
+    dateString
+) {
 
     if (!dateString) {
         return "";
@@ -637,7 +950,19 @@ function formatDate(dateString) {
 
 
     const date =
-        new Date(dateString);
+        new Date(
+            dateString
+        );
+
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+
+        return "";
+    }
 
 
     return date.toLocaleDateString(
@@ -651,7 +976,13 @@ function formatDate(dateString) {
 }
 
 
-function escapeHTML(value) {
+// =========================================
+// ESCAPE HTML
+// =========================================
+
+function escapeHTML(
+    value
+) {
 
     return String(
         value ?? ""
