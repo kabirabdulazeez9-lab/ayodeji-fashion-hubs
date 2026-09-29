@@ -39,20 +39,16 @@ async function initializeMyOrders() {
                 .auth
                 .getSession();
 
-
         if (error) {
             throw error;
         }
 
-
-        // Customer must be logged in
         if (!session) {
 
             showLoginRequired();
 
             return;
         }
-
 
         await loadCustomerOrders(
             session.user.id
@@ -77,16 +73,12 @@ async function initializeMyOrders() {
 // LOAD CUSTOMER ORDERS
 // =========================================
 
-async function loadCustomerOrders(
-    userId
-) {
+async function loadCustomerOrders(userId) {
 
     const supabaseClient =
         window.supabaseClient;
 
-
     showLoading();
-
 
     const {
         data,
@@ -136,7 +128,6 @@ async function loadCustomerOrders(
                 }
             );
 
-
     if (error) {
 
         console.error(
@@ -147,17 +138,13 @@ async function loadCustomerOrders(
         throw error;
     }
 
-
     hideLoading();
-
 
     const orders =
         Array.isArray(data)
             ? data
             : [];
 
-
-    // No orders
     if (orders.length === 0) {
 
         showEmptyOrders();
@@ -165,12 +152,10 @@ async function loadCustomerOrders(
         return;
     }
 
-
     const content =
         document.getElementById(
             "ordersContent"
         );
-
 
     if (content) {
 
@@ -179,12 +164,10 @@ async function loadCustomerOrders(
         );
     }
 
-
     const countElement =
         document.getElementById(
             "ordersCount"
         );
-
 
     if (countElement) {
 
@@ -195,7 +178,6 @@ async function loadCustomerOrders(
                     : "Orders"
             }`;
     }
-
 
     renderOrders(orders);
 }
@@ -212,14 +194,11 @@ function renderOrders(orders) {
             "ordersList"
         );
 
-
     if (!container) {
         return;
     }
 
-
     container.innerHTML = "";
-
 
     orders.forEach(
         order => {
@@ -239,7 +218,7 @@ function renderOrders(orders) {
 
 
 // =========================================
-// CREATE ONE ORDER CARD
+// CREATE ORDER CARD
 // =========================================
 
 function createOrderCard(order) {
@@ -251,22 +230,74 @@ function createOrderCard(order) {
             ? order.order_items
             : [];
 
-
     const orderReference =
         order.order_reference ||
         "Order";
 
-
     const status =
         order.status ||
         "Pending Payment";
-
 
     const total =
         Number(
             order.total
         ) || 0;
 
+    const storedBalance =
+        Number(
+            order.balance
+        ) || 0;
+
+    const paymentStatus =
+        String(
+            order.payment_status || ""
+        ).toLowerCase();
+
+    const statusText =
+        String(
+            status || ""
+        ).toLowerCase();
+
+
+    // =====================================
+    // PAYMENT STATUS
+    // =====================================
+
+    const isFullyPaid =
+        paymentStatus === "fully paid" ||
+        paymentStatus === "paid" ||
+        statusText === "fully paid" ||
+        statusText === "paid";
+
+
+    // =====================================
+    // BALANCE
+    // =====================================
+
+    let remainingBalance =
+        isFullyPaid
+            ? 0
+            : Math.max(
+                0,
+                storedBalance
+            );
+
+    if (remainingBalance > total) {
+        remainingBalance = total;
+    }
+
+    const amountPaid =
+        isFullyPaid
+            ? total
+            : Math.max(
+                0,
+                total - remainingBalance
+            );
+
+
+    // =====================================
+    // ITEM COUNT
+    // =====================================
 
     const itemCount =
         items.reduce(
@@ -313,9 +344,9 @@ function createOrderCard(order) {
         );
 
 
-    // -------------------------------------
+    // =====================================
     // ORDER ITEMS
-    // -------------------------------------
+    // =====================================
 
     const itemsHTML =
         items.length > 0
@@ -336,9 +367,9 @@ function createOrderCard(order) {
             `;
 
 
-    // -------------------------------------
+    // =====================================
     // TRACKING URL
-    // -------------------------------------
+    // =====================================
 
     const trackingURL =
         `track-order.html?order=${encodeURIComponent(
@@ -346,9 +377,133 @@ function createOrderCard(order) {
         )}`;
 
 
-    // -------------------------------------
+    // =====================================
+    // BALANCE PAYMENT BUTTON
+    // =====================================
+
+    const isOPay =
+        String(
+            order.payment_method || ""
+        )
+            .toLowerCase()
+            .includes("opay");
+
+
+    const isDeposit =
+        String(
+            order.payment_plan || ""
+        )
+            .toLowerCase()
+            .includes("deposit");
+
+
+    const canPayBalance =
+        isOPay &&
+        isDeposit &&
+        remainingBalance > 0 &&
+        !isFullyPaid;
+
+
+    let balanceActionHTML = "";
+
+
+    if (canPayBalance) {
+
+        const balanceURL =
+            `balance-payment.html?order=${encodeURIComponent(
+                order.id
+            )}`;
+
+        balanceActionHTML = `
+            <a
+                href="${balanceURL}"
+                class="track-button balance-payment-button"
+            >
+                💳 Pay Remaining
+                ${formatCurrency(
+                    remainingBalance
+                )}
+            </a>
+        `;
+    }
+
+
+    // =====================================
+    // PAYMENT SUMMARY
+    // =====================================
+
+    const paymentSummaryHTML = `
+        <div
+            class="order-payment-summary"
+            style="
+                margin-top:14px;
+                padding:14px;
+                border-radius:12px;
+                background:#f8f9fa;
+            "
+        >
+
+            <div
+                style="
+                    display:flex;
+                    justify-content:space-between;
+                    gap:10px;
+                    margin-bottom:8px;
+                "
+            >
+                <span>
+                    Total
+                </span>
+
+                <strong>
+                    ${formatCurrency(total)}
+                </strong>
+            </div>
+
+            <div
+                style="
+                    display:flex;
+                    justify-content:space-between;
+                    gap:10px;
+                    margin-bottom:8px;
+                "
+            >
+                <span>
+                    Amount Paid
+                </span>
+
+                <strong>
+                    ${formatCurrency(amountPaid)}
+                </strong>
+            </div>
+
+            <div
+                style="
+                    display:flex;
+                    justify-content:space-between;
+                    gap:10px;
+                    padding-top:8px;
+                    border-top:1px solid #e5e5e5;
+                "
+            >
+                <span>
+                    Remaining Balance
+                </span>
+
+                <strong>
+                    ${formatCurrency(
+                        remainingBalance
+                    )}
+                </strong>
+            </div>
+
+        </div>
+    `;
+
+
+    // =====================================
     // COMPLETE ORDER CARD
-    // -------------------------------------
+    // =====================================
 
     return `
         <article
@@ -381,7 +536,6 @@ function createOrderCard(order) {
                     </p>
 
                 </div>
-
 
                 <span
                     class="status-badge ${statusClass}"
@@ -419,7 +573,6 @@ function createOrderCard(order) {
 
                 </div>
 
-
                 <div>
 
                     <span>
@@ -456,7 +609,12 @@ function createOrderCard(order) {
             </div>
 
 
-            <!-- ONE TRACK ORDER BUTTON -->
+            <!-- PAYMENT SUMMARY -->
+
+            ${paymentSummaryHTML}
+
+
+            <!-- ACTIONS -->
 
             <div class="order-actions">
 
@@ -466,6 +624,8 @@ function createOrderCard(order) {
                 >
                     📦 Track Order
                 </a>
+
+                ${balanceActionHTML}
 
             </div>
 
@@ -485,7 +645,6 @@ function createOrderItem(item) {
             item.price
         ) || 0;
 
-
     const quantity =
         Math.max(
             1,
@@ -494,21 +653,17 @@ function createOrderItem(item) {
             ) || 1
         );
 
-
     const productName =
         item.product_name ||
         "Product";
-
 
     const image =
         item.image ||
         "";
 
-
     const icon =
         item.icon ||
         "👟";
-
 
     const sizeHTML =
         item.size
@@ -522,59 +677,44 @@ function createOrderItem(item) {
             `
             : "";
 
-
     const imageHTML =
         image
-
             ? `
                 <img
-                    src="${escapeHTML(image)}"
-                    alt="${escapeHTML(
+                    src="${escapeAttr(
+                        image
+                    )}"
+                    alt="${escapeAttr(
                         productName
                     )}"
+                    class="order-item-image"
                     loading="lazy"
-                    onerror="
-                        this.style.display='none';
-                        this.parentElement
-                            .querySelector('.fallback-icon')
-                            .style.display='flex';
-                    "
                 >
-
-                <span
-                    class="fallback-icon"
-                    style="display:none;"
-                >
-                    ${escapeHTML(icon)}
-                </span>
             `
-
             : `
-                <span class="fallback-icon">
-                    ${escapeHTML(icon)}
-                </span>
+                <div class="order-item-icon">
+                    ${escapeHTML(
+                        icon
+                    )}
+                </div>
             `;
-
 
     return `
         <div class="order-item">
 
-            <div class="item-image">
-
+            <div class="order-item-media">
                 ${imageHTML}
-
             </div>
 
+            <div class="order-item-details">
 
-            <div class="item-info">
-
-                <strong>
+                <h4>
                     ${escapeHTML(
                         productName
                     )}
-                </strong>
+                </h4>
 
-                <small>
+                <div class="order-item-meta">
 
                     <span>
                         Qty:
@@ -583,18 +723,15 @@ function createOrderItem(item) {
 
                     ${sizeHTML}
 
-                </small>
+                </div>
 
             </div>
 
-
-            <div class="item-price">
-
+            <strong class="order-item-price">
                 ${formatCurrency(
                     price * quantity
                 )}
-
-            </div>
+            </strong>
 
         </div>
     `;
@@ -602,52 +739,31 @@ function createOrderItem(item) {
 
 
 // =========================================
-// PAYMENT PLAN
+// PAYMENT PLAN TEXT
 // =========================================
 
-function getPaymentPlanText(
-    paymentPlan
-) {
+function getPaymentPlanText(plan) {
 
     const value =
         String(
-            paymentPlan || ""
+            plan || ""
         ).toLowerCase();
 
-
     if (
-        value === "deposit"
-    ) {
-
-        return "60% Deposit";
-    }
-
-
-    if (
-        value === "full"
-    ) {
-
-        return "Full Payment";
-    }
-
-
-    if (
+        value.includes("deposit") ||
         value.includes("60")
     ) {
-
         return "60% Deposit";
     }
 
-
     if (
+        value.includes("full") ||
         value.includes("100")
     ) {
-
-        return "Full Payment";
+        return "100% Full Payment";
     }
 
-
-    return paymentPlan || "";
+    return plan || "Payment";
 }
 
 
@@ -655,263 +771,35 @@ function getPaymentPlanText(
 // STATUS CLASS
 // =========================================
 
-function getStatusClass(
-    status
-) {
+function getStatusClass(status) {
 
     const value =
         String(
             status || ""
-        )
-            .toLowerCase();
-
+        ).toLowerCase();
 
     if (
-        value.includes(
-            "cancel"
-        )
+        value.includes("fully paid") ||
+        value === "paid" ||
+        value.includes("delivered")
     ) {
-
-        return "status-cancelled";
+        return "status-success";
     }
-
 
     if (
-        value.includes(
-            "delivered"
-        )
+        value.includes("deposit") ||
+        value.includes("balance")
     ) {
-
-        return "status-delivered";
+        return "status-warning";
     }
-
 
     if (
-        value.includes(
-            "shipped"
-        )
+        value.includes("cancel")
     ) {
-
-        return "status-shipped";
+        return "status-danger";
     }
-
-
-    if (
-        value.includes(
-            "processing"
-        )
-    ) {
-
-        return "status-processing";
-    }
-
-
-    if (
-        value.includes(
-            "paid"
-        )
-    ) {
-
-        return "status-paid";
-    }
-
-
-    if (
-        value.includes(
-            "deposit"
-        )
-    ) {
-
-        return "status-paid";
-    }
-
 
     return "status-pending";
-}
-
-
-// =========================================
-// LOGIN REQUIRED
-// =========================================
-
-function showLoginRequired() {
-
-    hideLoading();
-
-
-    const loginRequired =
-        document.getElementById(
-            "loginRequired"
-        );
-
-
-    if (loginRequired) {
-
-        loginRequired.classList.remove(
-            "hidden"
-        );
-    }
-}
-
-
-// =========================================
-// EMPTY ORDERS
-// =========================================
-
-function showEmptyOrders() {
-
-    hideLoading();
-
-
-    const content =
-        document.getElementById(
-            "ordersContent"
-        );
-
-
-    if (content) {
-
-        content.classList.remove(
-            "hidden"
-        );
-    }
-
-
-    const empty =
-        document.getElementById(
-            "emptyOrders"
-        );
-
-
-    if (empty) {
-
-        empty.classList.remove(
-            "hidden"
-        );
-    }
-}
-
-
-// =========================================
-// LOADING
-// =========================================
-
-function showLoading() {
-
-    const loading =
-        document.getElementById(
-            "loadingOrders"
-        );
-
-
-    if (loading) {
-
-        loading.classList.remove(
-            "hidden"
-        );
-    }
-
-
-    const content =
-        document.getElementById(
-            "ordersContent"
-        );
-
-
-    if (content) {
-
-        content.classList.add(
-            "hidden"
-        );
-    }
-
-
-    const error =
-        document.getElementById(
-            "ordersError"
-        );
-
-
-    if (error) {
-
-        error.classList.add(
-            "hidden"
-        );
-    }
-}
-
-
-function hideLoading() {
-
-    const loading =
-        document.getElementById(
-            "loadingOrders"
-        );
-
-
-    if (loading) {
-
-        loading.classList.add(
-            "hidden"
-        );
-    }
-}
-
-
-// =========================================
-// ERROR
-// =========================================
-
-function showError(
-    message
-) {
-
-    hideLoading();
-
-
-    const error =
-        document.getElementById(
-            "ordersError"
-        );
-
-
-    if (error) {
-
-        error.classList.remove(
-            "hidden"
-        );
-    }
-
-
-    const messageElement =
-        document.getElementById(
-            "ordersErrorMessage"
-        );
-
-
-    if (messageElement) {
-
-        messageElement.textContent =
-            message ||
-            "Unable to load your orders.";
-    }
-
-
-    const retry =
-        document.getElementById(
-            "retryOrders"
-        );
-
-
-    if (retry) {
-
-        retry.onclick =
-            function () {
-
-                location.reload();
-
-            };
-    }
 }
 
 
@@ -919,9 +807,7 @@ function showError(
 // FORMAT CURRENCY
 // =========================================
 
-function formatCurrency(
-    amount
-) {
+function formatCurrency(amount) {
 
     return new Intl.NumberFormat(
         "en-NG",
@@ -940,49 +826,248 @@ function formatCurrency(
 // FORMAT DATE
 // =========================================
 
-function formatDate(
-    dateString
-) {
+function formatDate(dateValue) {
 
-    if (!dateString) {
-        return "";
+    if (!dateValue) {
+        return "Date unavailable";
     }
-
 
     const date =
         new Date(
-            dateString
+            dateValue
         );
-
 
     if (
         Number.isNaN(
             date.getTime()
         )
     ) {
-
-        return "";
+        return "Date unavailable";
     }
-
 
     return date.toLocaleDateString(
         "en-NG",
         {
-            day: "numeric",
+            year: "numeric",
             month: "short",
-            year: "numeric"
+            day: "numeric"
         }
     );
 }
 
 
 // =========================================
+// SHOW LOADING
+// =========================================
+
+function showLoading() {
+
+    const loading =
+        document.getElementById(
+            "loadingOrders"
+        );
+
+    const content =
+        document.getElementById(
+            "ordersContent"
+        );
+
+    const error =
+        document.getElementById(
+            "ordersError"
+        );
+
+    const empty =
+        document.getElementById(
+            "emptyOrders"
+        );
+
+    if (loading) {
+        loading.classList.remove(
+            "hidden"
+        );
+    }
+
+    if (content) {
+        content.classList.add(
+            "hidden"
+        );
+    }
+
+    if (error) {
+        error.classList.add(
+            "hidden"
+        );
+    }
+
+    if (empty) {
+        empty.classList.add(
+            "hidden"
+        );
+    }
+}
+
+
+// =========================================
+// HIDE LOADING
+// =========================================
+
+function hideLoading() {
+
+    const loading =
+        document.getElementById(
+            "loadingOrders"
+        );
+
+    if (loading) {
+
+        loading.classList.add(
+            "hidden"
+        );
+    }
+}
+
+
+// =========================================
+// SHOW EMPTY ORDERS
+// =========================================
+
+function showEmptyOrders() {
+
+    hideLoading();
+
+    const content =
+        document.getElementById(
+            "ordersContent"
+        );
+
+    const empty =
+        document.getElementById(
+            "emptyOrders"
+        );
+
+    if (content) {
+        content.classList.remove(
+            "hidden"
+        );
+    }
+
+    if (empty) {
+        empty.classList.remove(
+            "hidden"
+        );
+    }
+}
+
+
+// =========================================
+// LOGIN REQUIRED
+// =========================================
+
+function showLoginRequired() {
+
+    hideLoading();
+
+    const loginRequired =
+        document.getElementById(
+            "loginRequired"
+        );
+
+    const content =
+        document.getElementById(
+            "ordersContent"
+        );
+
+    if (loginRequired) {
+        loginRequired.classList.remove(
+            "hidden"
+        );
+    }
+
+    if (content) {
+        content.classList.add(
+            "hidden"
+        );
+    }
+}
+
+
+// =========================================
+// SHOW ERROR
+// =========================================
+
+function showError(message) {
+
+    const loading =
+        document.getElementById(
+            "loadingOrders"
+        );
+
+    const content =
+        document.getElementById(
+            "ordersContent"
+        );
+
+    const errorCard =
+        document.getElementById(
+            "ordersError"
+        );
+
+    const errorMessage =
+        document.getElementById(
+            "ordersErrorMessage"
+        );
+
+    if (loading) {
+        loading.classList.add(
+            "hidden"
+        );
+    }
+
+    if (content) {
+        content.classList.add(
+            "hidden"
+        );
+    }
+
+    if (errorMessage) {
+        errorMessage.textContent =
+            message;
+    }
+
+    if (errorCard) {
+        errorCard.classList.remove(
+            "hidden"
+        );
+    }
+}
+
+
+// =========================================
+// RETRY BUTTON
+// =========================================
+
+document.addEventListener(
+    "click",
+    event => {
+
+        if (
+            event.target &&
+            event.target.id ===
+                "retryOrders"
+        ) {
+
+            initializeMyOrders();
+        }
+    }
+);
+
+
+// =========================================
 // ESCAPE HTML
 // =========================================
 
-function escapeHTML(
-    value
-) {
+function escapeHTML(value) {
 
     return String(
         value ?? ""
@@ -1007,4 +1092,16 @@ function escapeHTML(
             /'/g,
             "&#039;"
         );
+}
+
+
+// =========================================
+// ESCAPE ATTRIBUTE
+// =========================================
+
+function escapeAttr(value) {
+
+    return escapeHTML(
+        value
+    );
 }

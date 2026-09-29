@@ -1,6 +1,7 @@
 // =========================================
 // AYODEJI FASHION HUBS
 // CHECKOUT
+// OPay Bank Transfer ONLY
 // =========================================
 
 let checkoutCart = [];
@@ -25,7 +26,6 @@ async function initializeCheckout() {
     const supabaseClient =
         window.supabaseClient;
 
-
     if (!supabaseClient) {
 
         console.error(
@@ -39,7 +39,6 @@ async function initializeCheckout() {
 
         return;
     }
-
 
     try {
 
@@ -55,15 +54,12 @@ async function initializeCheckout() {
                 .auth
                 .getSession();
 
-
         if (error) {
             throw error;
         }
 
-
         checkoutUser =
             data?.session?.user || null;
-
 
         if (!checkoutUser) {
 
@@ -71,7 +67,6 @@ async function initializeCheckout() {
                 "ayodejiCheckoutReturn",
                 "checkout.html"
             );
-
 
             showLoginRequired();
 
@@ -86,10 +81,7 @@ async function initializeCheckout() {
         checkoutCart =
             loadCart();
 
-
-        if (
-            !checkoutCart.length
-        ) {
+        if (!checkoutCart.length) {
 
             showCheckoutMessage(
                 "Your cart is empty. Please add products before checking out.",
@@ -103,7 +95,7 @@ async function initializeCheckout() {
 
 
         // -------------------------------------
-        // LOAD CUSTOMER PROFILE
+        // LOAD PROFILE
         // -------------------------------------
 
         await loadCustomerProfile();
@@ -123,8 +115,6 @@ async function initializeCheckout() {
         setupPaymentMethods();
 
         setupPaymentPlans();
-
-        setupCopyButton();
 
         setupCheckoutForm();
 
@@ -146,9 +136,7 @@ async function initializeCheckout() {
             getCheckoutErrorMessage(error),
             "error"
         );
-
     }
-
 }
 
 
@@ -165,20 +153,16 @@ function loadCart() {
                 "ayodejiCart"
             );
 
-
         if (!savedCart) {
             return [];
         }
 
-
         const cart =
             JSON.parse(savedCart);
-
 
         if (!Array.isArray(cart)) {
             return [];
         }
-
 
         return cart
             .filter(item => item)
@@ -209,9 +193,7 @@ function loadCart() {
         );
 
         return [];
-
     }
-
 }
 
 
@@ -221,16 +203,12 @@ function loadCart() {
 
 async function loadCustomerProfile() {
 
-    if (
-        !checkoutUser
-    ) {
+    if (!checkoutUser) {
         return;
     }
 
-
     const supabaseClient =
         window.supabaseClient;
-
 
     try {
 
@@ -239,25 +217,20 @@ async function loadCustomerProfile() {
             error
         } =
             await supabaseClient
-                .from(
-                    "customer_profiles"
-                )
-                .select(
-                    `
+                .from("customer_profiles")
+                .select(`
                     user_id,
                     full_name,
                     phone,
                     delivery_address,
                     delivery_city,
                     delivery_state
-                    `
-                )
+                `)
                 .eq(
                     "user_id",
                     checkoutUser.id
                 )
                 .maybeSingle();
-
 
         if (error) {
 
@@ -271,7 +244,6 @@ async function loadCustomerProfile() {
             return;
         }
 
-
         checkoutProfile =
             data || null;
 
@@ -283,9 +255,7 @@ async function loadCustomerProfile() {
         );
 
         checkoutProfile = null;
-
     }
-
 }
 
 
@@ -299,10 +269,8 @@ function populateCustomerInformation() {
         return;
     }
 
-
     const metadata =
         checkoutUser.user_metadata || {};
-
 
     const fullName =
         checkoutProfile?.full_name ||
@@ -310,58 +278,50 @@ function populateCustomerInformation() {
         metadata.name ||
         "";
 
-
     const phone =
         checkoutProfile?.phone ||
         metadata.phone ||
         "";
 
-
     const email =
         checkoutUser.email ||
         "";
-
 
     setValue(
         "customerName",
         fullName
     );
 
-
     setValue(
         "customerPhone",
         phone
     );
-
 
     setValue(
         "customerEmail",
         email
     );
 
-
     setValue(
         "deliveryAddress",
         checkoutProfile?.delivery_address || ""
     );
-
 
     setValue(
         "deliveryCity",
         checkoutProfile?.delivery_city || ""
     );
 
-
     setValue(
         "deliveryState",
         checkoutProfile?.delivery_state || ""
     );
-
 }
 
 
 // =========================================
-// PAYMENT METHODS
+// PAYMENT METHOD
+// OPay ONLY
 // =========================================
 
 function setupPaymentMethods() {
@@ -371,63 +331,40 @@ function setupPaymentMethods() {
             'input[name="paymentMethod"]'
         );
 
-
-    const paymentDetails =
-        document.getElementById(
-            "paymentDetails"
-        );
-
-
-    if (!paymentMethods.length) {
-        return;
-    }
-
-
-    function updatePaymentDetails() {
-
-        const selected =
-            document.querySelector(
-                'input[name="paymentMethod"]:checked'
-            );
-
-
-        if (!paymentDetails) {
-            return;
-        }
-
-
-        if (
-            selected?.value ===
-            "OPay Bank Transfer"
-        ) {
-
-            paymentDetails.style.display =
-                "block";
-
-        } else {
-
-            paymentDetails.style.display =
-                "none";
-
-        }
-
-    }
-
-
     paymentMethods.forEach(
         radio => {
 
             radio.addEventListener(
                 "change",
-                updatePaymentDetails
+                () => {
+
+                    // OPay is the only
+                    // supported payment method.
+
+                    if (
+                        radio.value !==
+                        "OPay Bank Transfer"
+                    ) {
+
+                        radio.checked =
+                            false;
+
+                        const opay =
+                            document.getElementById(
+                                "opayBankTransfer"
+                            );
+
+                        if (opay) {
+                            opay.checked =
+                                true;
+                        }
+                    }
+
+                }
             );
 
         }
     );
-
-
-    updatePaymentDetails();
-
 }
 
 
@@ -442,94 +379,64 @@ function setupPaymentPlans() {
             'input[name="paymentPlan"]'
         );
 
-
     plans.forEach(
         plan => {
 
             plan.addEventListener(
                 "change",
-                renderOrderSummary
+                () => {
+
+                    updatePaymentPlanStyles();
+
+                    renderOrderSummary();
+
+                }
             );
 
         }
     );
 
+    updatePaymentPlanStyles();
 }
 
 
 // =========================================
-// COPY ACCOUNT NUMBER
+// PAYMENT PLAN VISUAL STATE
 // =========================================
 
-function setupCopyButton() {
+function updatePaymentPlanStyles() {
 
-    const button =
-        document.getElementById(
-            "copyAccountNumber"
+    const options =
+        document.querySelectorAll(
+            ".payment-plan-option"
         );
 
+    options.forEach(
+        option => {
 
-    const accountNumber =
-        document.getElementById(
-            "accountNumber"
-        );
-
-
-    if (
-        !button ||
-        !accountNumber
-    ) {
-        return;
-    }
-
-
-    button.addEventListener(
-        "click",
-        async () => {
-
-            const number =
-                accountNumber.textContent
-                    .trim();
-
-
-            try {
-
-                await navigator.clipboard.writeText(
-                    number
+            const radio =
+                option.querySelector(
+                    'input[name="paymentPlan"]'
                 );
 
+            if (
+                radio &&
+                radio.checked
+            ) {
 
-                button.textContent =
-                    "Copied!";
-
-
-                setTimeout(
-                    () => {
-
-                        button.textContent =
-                            "Copy";
-
-                    },
-                    1500
+                option.classList.add(
+                    "selected"
                 );
 
-            } catch (error) {
+            } else {
 
-                console.error(
-                    "Copy failed:",
-                    error
+                option.classList.remove(
+                    "selected"
                 );
-
-                showCheckoutMessage(
-                    "Could not copy the account number. Please copy it manually.",
-                    "error"
-                );
-
             }
 
         }
     );
-
 }
 
 
@@ -544,17 +451,14 @@ function setupCheckoutForm() {
             "checkoutForm"
         );
 
-
     if (!form) {
         return;
     }
-
 
     form.addEventListener(
         "submit",
         handleCheckoutSubmit
     );
-
 }
 
 
@@ -564,144 +468,10 @@ function setupCheckoutForm() {
 
 function renderOrderSummary() {
 
-    const itemsContainer =
-        document.getElementById(
-            "orderItems"
-        );
-
-
-    if (!itemsContainer) {
-        return;
-    }
-
-
-    if (!checkoutCart.length) {
-
-        itemsContainer.innerHTML =
-            `
-            <div class="empty-checkout-cart">
-                Your cart is empty.
-            </div>
-            `;
-
-        checkoutTotal = 0;
-
-        updatePaymentAmounts();
-
-        return;
-    }
-
-
-    let html = "";
-
-
-    checkoutCart.forEach(
-        item => {
-
-            const quantity =
-                Math.max(
-                    1,
-                    Number(
-                        item.quantity
-                    ) || 1
-                );
-
-
-            const price =
-                Number(
-                    item.price
-                ) || 0;
-
-
-            const subtotal =
-                price * quantity;
-
-
-            const productName =
-                escapeHTML(
-                    item.name ||
-                    item.product_name ||
-                    "Product"
-                );
-
-
-            const size =
-                item.size
-                    ? `
-                        <span class="checkout-item-size">
-                            Size: ${escapeHTML(
-                                String(item.size)
-                            )}
-                        </span>
-                      `
-                    : "";
-
-
-            const image =
-                item.image ||
-                item.product_image ||
-                "";
-
-
-            html += `
-                <div class="checkout-item">
-
-                    <div class="checkout-item-image">
-
-                        ${
-                            image
-                                ? `
-                                    <img
-                                        src="${escapeHTML(image)}"
-                                        alt="${productName}"
-                                    >
-                                  `
-                                : `
-                                    <span>
-                                        👟
-                                    </span>
-                                  `
-                        }
-
-                    </div>
-
-
-                    <div class="checkout-item-info">
-
-                        <strong>
-                            ${productName}
-                        </strong>
-
-                        ${size}
-
-                        <span>
-                            Qty: ${quantity}
-                        </span>
-
-                    </div>
-
-
-                    <strong class="checkout-item-price">
-                        ${formatCurrency(subtotal)}
-                    </strong>
-
-                </div>
-            `;
-
-        }
-    );
-
-
-    itemsContainer.innerHTML =
-        html;
-
-
     checkoutTotal =
         calculateCartTotal();
 
-
     updatePaymentAmounts();
-
 }
 
 
@@ -722,7 +492,6 @@ function calculateCartTotal() {
                     item.price
                 ) || 0;
 
-
             const quantity =
                 Math.max(
                     1,
@@ -730,7 +499,6 @@ function calculateCartTotal() {
                         item.quantity
                     ) || 1
                 );
-
 
             return (
                 total +
@@ -743,7 +511,6 @@ function calculateCartTotal() {
         },
         0
     );
-
 }
 
 
@@ -756,17 +523,14 @@ function updatePaymentAmounts() {
     const subtotal =
         checkoutTotal;
 
-
     const paymentPlan =
         document.querySelector(
             'input[name="paymentPlan"]:checked'
         )?.value ||
         "deposit";
 
-
     let payNow =
         0;
-
 
     if (
         paymentPlan ===
@@ -782,9 +546,7 @@ function updatePaymentAmounts() {
             Math.round(
                 subtotal * 0.60
             );
-
     }
-
 
     const balance =
         Math.max(
@@ -798,24 +560,35 @@ function updatePaymentAmounts() {
         formatCurrency(subtotal)
     );
 
-
     setText(
         "checkoutTotal",
         formatCurrency(subtotal)
     );
-
 
     setText(
         "payNowAmount",
         formatCurrency(payNow)
     );
 
-
     setText(
         "balanceAmount",
         formatCurrency(balance)
     );
 
+
+    setText(
+        "depositAmount",
+        formatCurrency(
+            Math.round(
+                subtotal * 0.60
+            )
+        )
+    );
+
+    setText(
+        "fullPaymentAmount",
+        formatCurrency(subtotal)
+    );
 }
 
 
@@ -829,15 +602,12 @@ async function handleCheckoutSubmit(
 
     event.preventDefault();
 
-
     if (checkoutSubmitting) {
         return;
     }
 
-
     const supabaseClient =
         window.supabaseClient;
-
 
     if (!supabaseClient) {
 
@@ -849,10 +619,8 @@ async function handleCheckoutSubmit(
         return;
     }
 
-
     checkoutSubmitting =
         true;
-
 
     setSubmitLoading(true);
 
@@ -862,7 +630,7 @@ async function handleCheckoutSubmit(
     try {
 
         // -------------------------------------
-        // CHECK SESSION AGAIN
+        // CHECK SESSION
         // -------------------------------------
 
         const {
@@ -873,18 +641,12 @@ async function handleCheckoutSubmit(
                 .auth
                 .getSession();
 
-
-        if (
-            sessionError
-        ) {
-
+        if (sessionError) {
             throw sessionError;
         }
 
-
         const session =
             sessionData?.session;
-
 
         if (!session?.user) {
 
@@ -893,13 +655,10 @@ async function handleCheckoutSubmit(
                 "checkout.html"
             );
 
-
             showLoginRequired();
 
             return;
-
         }
-
 
         checkoutUser =
             session.user;
@@ -912,18 +671,16 @@ async function handleCheckoutSubmit(
         checkoutCart =
             loadCart();
 
-
         if (!checkoutCart.length) {
 
             throw new Error(
                 "Your cart is empty."
             );
-
         }
 
 
         // -------------------------------------
-        // GET FORM VALUES
+        // FORM VALUES
         // -------------------------------------
 
         const customerName =
@@ -931,36 +688,30 @@ async function handleCheckoutSubmit(
                 "customerName"
             );
 
-
         const customerPhone =
             getValue(
                 "customerPhone"
             );
-
 
         const customerEmail =
             getValue(
                 "customerEmail"
             );
 
-
         const deliveryAddress =
             getValue(
                 "deliveryAddress"
             );
-
 
         const deliveryCity =
             getValue(
                 "deliveryCity"
             );
 
-
         const deliveryState =
             getValue(
                 "deliveryState"
             );
-
 
         const paymentMethod =
             document.querySelector(
@@ -968,13 +719,11 @@ async function handleCheckoutSubmit(
             )?.value ||
             "";
 
-
         const paymentPlan =
             document.querySelector(
                 'input[name="paymentPlan"]:checked'
             )?.value ||
             "deposit";
-
 
         const orderNote =
             getValue(
@@ -983,7 +732,22 @@ async function handleCheckoutSubmit(
 
 
         // -------------------------------------
-        // VALIDATION
+        // PAYMENT METHOD VALIDATION
+        // -------------------------------------
+
+        if (
+            paymentMethod !==
+            "OPay Bank Transfer"
+        ) {
+
+            throw new Error(
+                "Please select OPay Bank Transfer."
+            );
+        }
+
+
+        // -------------------------------------
+        // CUSTOMER VALIDATION
         // -------------------------------------
 
         if (!customerName) {
@@ -995,13 +759,14 @@ async function handleCheckoutSubmit(
             throw new Error(
                 "Please enter your full name."
             );
-
         }
 
 
         if (
             !customerPhone ||
-            !isValidPhone(customerPhone)
+            !isValidPhone(
+                customerPhone
+            )
         ) {
 
             focusElement(
@@ -1011,7 +776,6 @@ async function handleCheckoutSubmit(
             throw new Error(
                 "Please enter a valid Nigerian phone number."
             );
-
         }
 
 
@@ -1020,7 +784,6 @@ async function handleCheckoutSubmit(
             throw new Error(
                 "Your account email could not be found. Please log in again."
             );
-
         }
 
 
@@ -1033,7 +796,6 @@ async function handleCheckoutSubmit(
             throw new Error(
                 "Please enter your delivery address."
             );
-
         }
 
 
@@ -1046,7 +808,6 @@ async function handleCheckoutSubmit(
             throw new Error(
                 "Please enter your delivery city."
             );
-
         }
 
 
@@ -1059,26 +820,15 @@ async function handleCheckoutSubmit(
             throw new Error(
                 "Please enter your delivery state."
             );
-
-        }
-
-
-        if (!paymentMethod) {
-
-            throw new Error(
-                "Please select a payment method."
-            );
-
         }
 
 
         // -------------------------------------
-        // CALCULATE TOTAL
+        // CALCULATE PAYMENT
         // -------------------------------------
 
         const subtotal =
             calculateCartTotal();
-
 
         if (
             subtotal <= 0
@@ -1087,7 +837,6 @@ async function handleCheckoutSubmit(
             throw new Error(
                 "Your order total is invalid."
             );
-
         }
 
 
@@ -1115,21 +864,14 @@ async function handleCheckoutSubmit(
 
 
         // -------------------------------------
-        // ORDER STATUS
+        // OPay ORDER STATUS
         // -------------------------------------
 
         const orderStatus =
-            paymentMethod ===
-            "Cash on Delivery"
-                ? "Processing"
-                : "Pending Payment";
-
+            "Pending Payment";
 
         const paymentStatus =
-            paymentMethod ===
-            "Cash on Delivery"
-                ? "Cash on Delivery"
-                : "Pending";
+            "Pending";
 
 
         // -------------------------------------
@@ -1169,7 +911,7 @@ async function handleCheckoutSubmit(
                         deliveryState,
 
                     payment_method:
-                        paymentMethod,
+                        "OPay Bank Transfer",
 
                     payment_plan:
                         paymentPlan,
@@ -1208,7 +950,6 @@ async function handleCheckoutSubmit(
             );
 
             throw orderError;
-
         }
 
 
@@ -1217,7 +958,6 @@ async function handleCheckoutSubmit(
             throw new Error(
                 "The order could not be created."
             );
-
         }
 
 
@@ -1226,78 +966,83 @@ async function handleCheckoutSubmit(
         // -------------------------------------
 
         const orderItems =
-    checkoutCart.map(
-        item => {
+            checkoutCart.map(
+                item => {
 
-            const price =
-                Number(item.price) || 0;
+                    const price =
+                        Number(
+                            item.price
+                        ) || 0;
 
-            const quantity =
-                Math.max(
-                    1,
-                    Number(item.quantity) || 1
+                    const quantity =
+                        Math.max(
+                            1,
+                            Number(
+                                item.quantity
+                            ) || 1
+                        );
+
+                    return {
+
+                        order_id:
+                            order.id,
+
+                        product_id:
+                            item.product_id ||
+                            item.productId ||
+                            item.id ||
+                            null,
+
+                        product_name:
+                            item.name ||
+                            item.product_name ||
+                            "Product",
+
+                        price:
+                            price,
+
+                        quantity:
+                            quantity,
+
+                        size:
+                            item.size ||
+                            null,
+
+                        category:
+                            item.category ||
+                            null,
+
+                        image:
+                            item.image ||
+                            null,
+
+                        icon:
+                            item.icon ||
+                            null
+                    };
+                }
+            );
+
+
+        const {
+            error: itemsError
+        } =
+            await supabaseClient
+                .from("order_items")
+                .insert(
+                    orderItems
                 );
 
-            return {
 
-                order_id:
-                    order.id,
+        if (itemsError) {
 
-                product_id:
-                    item.product_id ||
-                    item.productId ||
-                    item.id ||
-                    null,
+            console.error(
+                "Order items error:",
+                itemsError
+            );
 
-                product_name:
-                    item.name ||
-                    item.product_name ||
-                    "Product",
-
-                price:
-                    price,
-
-                quantity:
-                    quantity,
-
-                size:
-                    item.size ||
-                    null,
-
-                category:
-                    item.category ||
-                    null,
-
-                image:
-                    item.image ||
-                    null,
-
-                icon:
-                    item.icon ||
-                    null
-            };
+            throw itemsError;
         }
-    );
-
-
-const {
-    error: itemsError
-} =
-    await supabaseClient
-        .from("order_items")
-        .insert(orderItems);
-
-
-if (itemsError) {
-
-    console.error(
-        "Order items error:",
-        itemsError
-    );
-
-    throw itemsError;
-
-}
 
 
         // -------------------------------------
@@ -1346,7 +1091,6 @@ if (itemsError) {
                 "Profile update failed:",
                 profileError
             );
-
         }
 
 
@@ -1358,11 +1102,9 @@ if (itemsError) {
             "ayodejiCart"
         );
 
-
         localStorage.removeItem(
             "ayodejiPendingProfile"
         );
-
 
         localStorage.removeItem(
             "ayodejiCheckoutReturn"
@@ -1375,12 +1117,10 @@ if (itemsError) {
 
         showOrderSuccess(
             orderReference,
-            paymentMethod,
             paymentPlan,
             payNow,
             balance
         );
-
 
     } catch (error) {
 
@@ -1389,7 +1129,6 @@ if (itemsError) {
             error
         );
 
-
         showCheckoutMessage(
             getCheckoutErrorMessage(
                 error
@@ -1397,19 +1136,15 @@ if (itemsError) {
             "error"
         );
 
-
     } finally {
 
         checkoutSubmitting =
             false;
 
-
         setSubmitLoading(
             false
         );
-
     }
-
 }
 
 
@@ -1422,10 +1157,8 @@ function generateOrderReference() {
     const now =
         new Date();
 
-
     const year =
         now.getFullYear();
-
 
     const month =
         String(
@@ -1435,7 +1168,6 @@ function generateOrderReference() {
             "0"
         );
 
-
     const day =
         String(
             now.getDate()
@@ -1444,19 +1176,15 @@ function generateOrderReference() {
             "0"
         );
 
-
     const random =
         Math.floor(
             1000 +
-            Math.random() *
-            9000
+            Math.random() * 9000
         );
-
 
     return (
         `AFH-${year}${month}${day}-${random}`
     );
-
 }
 
 
@@ -1466,7 +1194,6 @@ function generateOrderReference() {
 
 function showOrderSuccess(
     reference,
-    paymentMethod,
     paymentPlan,
     payNow,
     balance
@@ -1477,22 +1204,24 @@ function showOrderSuccess(
             "checkoutForm"
         );
 
-
     const success =
         document.getElementById(
-            "orderSuccess"
+            "orderSuccessModal"
         );
-
 
     const successMessage =
         document.getElementById(
             "successMessage"
         );
 
-
     const referenceElement =
         document.getElementById(
-            "orderReference"
+            "successOrderReference"
+        );
+
+    const trackButton =
+        document.getElementById(
+            "trackOrderButton"
         );
 
 
@@ -1500,66 +1229,54 @@ function showOrderSuccess(
 
         form.style.display =
             "none";
-
-    }
-
-
-    const loginRequired =
-        document.getElementById(
-            "loginRequiredMessage"
-        );
-
-
-    if (loginRequired) {
-
-        loginRequired.style.display =
-            "none";
-
     }
 
 
     if (referenceElement) {
 
         referenceElement.textContent =
-            reference;
-
+            `Order Reference: ${reference}`;
     }
 
 
     if (successMessage) {
 
         if (
-            paymentMethod ===
-            "OPay Bank Transfer"
+            paymentPlan ===
+            "deposit"
         ) {
 
             successMessage.textContent =
-                paymentPlan === "deposit"
-                    ? `Your order has been received. Please transfer ${formatCurrency(payNow)} to our OPay account. Your remaining balance is ${formatCurrency(balance)}.`
-                    : `Your order has been received. Please transfer ${formatCurrency(payNow)} to our OPay account.`;
+                `Your order has been received. Please transfer ${formatCurrency(payNow)} to our OPay account. Your remaining balance is ${formatCurrency(balance)}. Your payment will be verified by the store.`;
 
         } else {
 
             successMessage.textContent =
-                "Your order has been received. Please prepare your payment for delivery.";
-
+                `Your order has been received. Please transfer ${formatCurrency(payNow)} to our OPay account. Your payment will be verified by the store.`;
         }
+    }
 
+
+    if (trackButton) {
+
+        trackButton.href =
+            `track-order.html?order=${encodeURIComponent(
+                reference
+            )}`;
     }
 
 
     if (success) {
 
-        success.style.display =
-            "block";
+        success.classList.remove(
+            "hidden"
+        );
 
         success.scrollIntoView({
             behavior: "smooth",
-            block: "start"
+            block: "center"
         });
-
     }
-
 }
 
 
@@ -1574,7 +1291,6 @@ function showLoginRequired() {
             "loginRequiredMessage"
         );
 
-
     const form =
         document.getElementById(
             "checkoutForm"
@@ -1585,7 +1301,6 @@ function showLoginRequired() {
 
         form.style.display =
             "none";
-
     }
 
 
@@ -1598,9 +1313,7 @@ function showLoginRequired() {
             behavior: "smooth",
             block: "start"
         });
-
     }
-
 }
 
 
@@ -1615,11 +1328,9 @@ function disableCheckoutForm() {
             "checkoutForm"
         );
 
-
     if (!form) {
         return;
     }
-
 
     form
         .querySelectorAll(
@@ -1630,10 +1341,8 @@ function disableCheckoutForm() {
 
                 element.disabled =
                     true;
-
             }
         );
-
 }
 
 
@@ -1650,12 +1359,10 @@ function setSubmitLoading(
             "placeOrderButton"
         );
 
-
     const buttonText =
         document.getElementById(
             "placeOrderButtonText"
         );
-
 
     const spinner =
         document.getElementById(
@@ -1667,7 +1374,6 @@ function setSubmitLoading(
 
         button.disabled =
             loading;
-
     }
 
 
@@ -1677,7 +1383,6 @@ function setSubmitLoading(
             loading
                 ? "none"
                 : "inline";
-
     }
 
 
@@ -1687,9 +1392,7 @@ function setSubmitLoading(
             loading
                 ? "inline"
                 : "none";
-
     }
-
 }
 
 
@@ -1707,25 +1410,20 @@ function showCheckoutMessage(
             "checkoutMessage"
         );
 
-
     if (!element) {
         return;
     }
 
-
     element.textContent =
         message;
 
-
     element.className =
         `checkout-message show ${type}`;
-
 
     element.scrollIntoView({
         behavior: "smooth",
         block: "nearest"
     });
-
 }
 
 
@@ -1736,19 +1434,15 @@ function clearCheckoutMessage() {
             "checkoutMessage"
         );
 
-
     if (!element) {
         return;
     }
 
-
     element.textContent =
         "";
 
-
     element.className =
         "checkout-message";
-
 }
 
 
@@ -1766,7 +1460,6 @@ function getValue(
             ?.trim() ||
         ""
     );
-
 }
 
 
@@ -1778,14 +1471,11 @@ function setValue(
     const element =
         document.getElementById(id);
 
-
     if (element) {
 
         element.value =
             value || "";
-
     }
-
 }
 
 
@@ -1797,14 +1487,11 @@ function setText(
     const element =
         document.getElementById(id);
 
-
     if (element) {
 
         element.textContent =
             value;
-
     }
-
 }
 
 
@@ -1815,13 +1502,10 @@ function focusElement(
     const element =
         document.getElementById(id);
 
-
     if (element) {
 
         element.focus();
-
     }
-
 }
 
 
@@ -1829,24 +1513,35 @@ function focusElement(
 // PHONE VALIDATION
 // =========================================
 
-function isValidPhone(phone) {
-    if (!phone) return false;
+function isValidPhone(
+    phone
+) {
 
-    const cleaned = phone
-        .trim()
-        .replace(/[\s\-()]/g, "");
+    if (!phone) {
+        return false;
+    }
 
-    // Nigerian local format
-    // Examples: 08012345678, 08123456789, 09012345678
-    const localFormat = /^0[789][01]\d{8}$/;
+    const cleaned =
+        phone
+            .trim()
+            .replace(
+                /[\s\-()]/g,
+                ""
+            );
 
-    // Nigerian international format
-    // Examples: +2348012345678
-    const internationalFormat = /^\+234[789][01]\d{8}$/;
+    const localFormat =
+        /^0[789][01]\d{8}$/;
+
+    const internationalFormat =
+        /^\+234[789][01]\d{8}$/;
 
     return (
-        localFormat.test(cleaned) ||
-        internationalFormat.test(cleaned)
+        localFormat.test(
+            cleaned
+        ) ||
+        internationalFormat.test(
+            cleaned
+        )
     );
 }
 
@@ -1871,7 +1566,6 @@ function formatCurrency(
             }
         )
     );
-
 }
 
 
@@ -1906,7 +1600,6 @@ function escapeHTML(
             /'/g,
             "&#039;"
         );
-
 }
 
 
@@ -1922,7 +1615,6 @@ function getCheckoutErrorMessage(
         error?.message ||
         "";
 
-
     const lower =
         message.toLowerCase();
 
@@ -1936,7 +1628,6 @@ function getCheckoutErrorMessage(
         return (
             "Your account is not currently allowed to place this order. Please make sure you are logged in and try again."
         );
-
     }
 
 
@@ -1952,7 +1643,6 @@ function getCheckoutErrorMessage(
         return (
             "There was a problem generating your order reference. Please try again."
         );
-
     }
 
 
@@ -1968,7 +1658,6 @@ function getCheckoutErrorMessage(
         return (
             "Network error. Please check your internet connection and try again."
         );
-
     }
 
 
@@ -1984,7 +1673,6 @@ function getCheckoutErrorMessage(
         return (
             "Your cart is empty. Please add a product before checking out."
         );
-
     }
 
 
@@ -1992,7 +1680,6 @@ function getCheckoutErrorMessage(
         message ||
         "We could not complete your order. Please try again."
     );
-
 }
 
 

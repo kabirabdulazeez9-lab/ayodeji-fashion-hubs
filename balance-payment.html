@@ -1,0 +1,219 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Pay Remaining Balance - Ayodeji Fashion Hubs</title>
+
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/balance-payment.css">
+
+</head><body><header class="balance-header">
+    <a href="my-orders.html" class="back-button">←</a><div>
+    <h1>Complete Payment</h1>
+    <p>Pay the remaining balance for your order</p>
+</div>
+
+</header><main class="balance-container"><!-- Loading -->
+<div id="loadingBalance" class="balance-card">
+    <div class="loader"></div>
+    <p>Loading payment details...</p>
+</div>
+
+<!-- Error -->
+<div id="balanceError" class="message-card hidden">
+    <div class="message-icon">⚠️</div>
+
+    <h2>Unable to Load Order</h2>
+
+    <p id="balanceErrorMessage">
+        We could not load this order.
+    </p>
+
+    <a href="my-orders.html" class="primary-button">
+        Back to My Orders
+    </a>
+</div>
+
+<!-- Payment Content -->
+<div id="balanceContent" class="hidden">
+
+    <!-- Order Information -->
+    <section class="balance-card">
+
+        <span class="small-label">ORDER</span>
+
+        <h2 id="orderReference">
+            —
+        </h2>
+
+        <p class="order-status" id="orderStatus">
+            —
+        </p>
+
+    </section>
+
+
+    <!-- Amount Due -->
+    <section class="amount-card">
+
+        <span class="small-label">
+            REMAINING BALANCE
+        </span>
+
+        <div class="balance-amount" id="remainingAmount">
+            ₦0
+        </div>
+
+        <p>
+            This is the exact amount remaining on your order.
+        </p>
+
+    </section>
+
+
+    <!-- Payment Method -->
+    <section class="balance-card">
+
+        <span class="small-label">
+            PAYMENT METHOD
+        </span>
+
+        <h2>🏦 OPay Bank Transfer</h2>
+
+        <p class="payment-description">
+            Transfer the remaining balance to the OPay account below.
+        </p>
+
+
+        <div class="bank-details">
+
+            <div class="bank-row">
+                <span>Bank</span>
+                <strong>OPay</strong>
+            </div>
+
+            <div class="bank-row">
+                <span>Account Name</span>
+                <strong>Kabir Abdulazeez</strong>
+            </div>
+
+            <div class="bank-row">
+                <span>Account Number</span>
+
+                <div class="account-number-wrapper">
+                    <strong id="accountNumber">
+                        07019154961
+                    </strong>
+
+                    <button
+                        type="button"
+                        id="copyAccountNumber"
+                        class="copy-button"
+                    >
+                        Copy
+                    </button>
+                </div>
+            </div>
+
+            <div class="bank-row amount-row">
+                <span>Amount to Transfer</span>
+
+                <strong id="transferAmount">
+                    ₦0
+                </strong>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Instructions -->
+    <section class="balance-card">
+
+        <span class="small-label">
+            HOW TO COMPLETE PAYMENT
+        </span>
+
+        <ol class="payment-steps">
+
+            <li>
+                Open your OPay app or your bank app.
+            </li>
+
+            <li>
+                Transfer the exact remaining balance shown above.
+            </li>
+
+            <li>
+                Use your order reference as the transfer description
+                if your banking app allows it.
+            </li>
+
+            <li>
+                Keep your transfer receipt or transaction confirmation.
+            </li>
+
+            <li>
+                Send your payment confirmation through the store's
+                existing contact/support process and include your
+                order reference.
+            </li>
+
+        </ol>
+
+    </section>
+
+
+    <!-- Important Notice -->
+    <section class="notice-card">
+
+        <div class="notice-icon">
+            ℹ️
+        </div>
+
+        <div>
+            <h3>Important</h3>
+
+            <p>
+                Your order will not automatically be marked as fully
+                paid when you make the transfer. The store will verify
+                your payment first.
+            </p>
+
+            <p>
+                Once your transfer is confirmed, your payment status
+                will be updated to <strong>Fully Paid</strong>.
+            </p>
+        </div>
+
+    </section>
+
+
+    <!-- Payment Status -->
+    <section class="status-card">
+
+        <div class="status-icon">
+            🔄
+        </div>
+
+        <div>
+            <h3>Waiting for payment verification</h3>
+
+            <p>
+                After making the transfer, keep your receipt until
+                your payment has been verified.
+            </p>
+        </div>
+
+    </section>
+
+
+    <!-- Back -->
+    <a href="my-orders.html" class="back-orders-button">
+        ← Back to My Orders
+    </a>
+
+</div>
+
+</main><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="js/supabase.js"></script><script src="js/balance-payment.js"></script></body>
+</html>
